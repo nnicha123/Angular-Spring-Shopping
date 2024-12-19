@@ -41,4 +41,10 @@ public class OrdersServiceImpl implements OrdersService {
 
 		
 	}
+
+
+	@Override
+	public List<Orders> findByCustomerId(Long customerId) {
+		return this.ordersRepository.findByCustomerId(customerId);
+	}
 }

@@ -6,5 +6,6 @@ import com.nicha.shopping.entity.Orders;
 
 public interface OrdersService {
 	List<Orders> getAllOrders();
+	List<Orders> findByCustomerId(Long customerId);
 	void updateOrderById(Long orderId, Orders orders);
 }
