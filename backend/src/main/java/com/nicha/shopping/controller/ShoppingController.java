@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.nicha.shopping.entity.Customer;
+import com.nicha.shopping.entity.OrderItems;
+import com.nicha.shopping.entity.Orders;
 import com.nicha.shopping.entity.Product;
 import com.nicha.shopping.service.ShoppingService;
 
@@ -22,13 +24,23 @@ public class ShoppingController {
 		this.shoppingService = shoppingService;
 	}
 	
-//	@GetMapping("/customers")
-//	List<Customer> getAllCustomers(){
-//		return this.shoppingService.getAllCustomers();
-//	}
+	@GetMapping("/customers")
+	List<Customer> getAllCustomers(){
+		return this.shoppingService.getAllCustomers();
+	}
 	
 	@GetMapping("/products")
 	List<Product> getAllProducts(){
 		return this.shoppingService.getAllProducts();
+	}
+	
+	@GetMapping("/orders")
+	List<Orders> getAllOrders(){
+		return this.shoppingService.getAllOrders();
+	}
+	
+	@GetMapping("/order-items")
+	List<OrderItems> getAllOrderItems(){
+		return this.shoppingService.getAllOrderItems();
 	}
 }

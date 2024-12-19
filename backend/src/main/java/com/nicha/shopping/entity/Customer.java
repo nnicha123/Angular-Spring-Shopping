@@ -18,20 +18,11 @@ public class Customer {
 	@Column(name = "last_name")
 	private String lastName;
 	
-	@Column(name = "email")
-	private String email;
+	@Column(name = "role")
+	@Enumerated(EnumType.STRING)
+	private Role role;
+
+	@Column(name = "address")
+	private String address;
 	
-//	@OneToMany (mappedBy = "customer", cascade = CascadeType.ALL)
-//	private Set<Order> orders = new HashSet<>();
-//	
-//	public void add(Order order) {
-//		if(order != null) {
-//			if(orders == null) {
-//				orders = new HashSet<>();
-//			}
-//			orders.add(order);
-//			order.setCustomer(this);
-//		}
-//		
-//	}
 }
