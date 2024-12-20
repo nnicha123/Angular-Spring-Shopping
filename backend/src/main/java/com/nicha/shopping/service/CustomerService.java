@@ -6,5 +6,6 @@ import com.nicha.shopping.entity.Customer;
 
 public interface CustomerService {
 	List<Customer> getAllCustomers();
+	Customer getCustomerById(Long id);
 
 }

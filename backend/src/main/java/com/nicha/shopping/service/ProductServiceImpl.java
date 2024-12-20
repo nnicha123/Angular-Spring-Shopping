@@ -38,6 +38,12 @@ public class ProductServiceImpl implements ProductService {
 		
 		this.productRepository.save(existingProduct);
 	}
+
+	@Override
+	public void addProduct(Product newProduct) {
+		newProduct.setId(null);
+		this.productRepository.save(newProduct);
+	}
 	
 
 }
