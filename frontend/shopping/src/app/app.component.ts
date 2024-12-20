@@ -11,19 +11,11 @@ import { CustomerService } from './services/customer.service';
 export class AppComponent implements OnInit, OnDestroy {
   private destroy$: Subject<void> = new Subject<void>();
 
-  constructor(
-    private productsService: ProductsService,
-    private customerService: CustomerService
-  ) {}
+  constructor(private customerService: CustomerService) {}
 
   title = 'shopping';
   ngOnInit(): void {
     // Test -> might not do it here but in its' own component
-    this.productsService
-      .getProducts()
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((products) => console.log(products));
-
     this.customerService
       .getCustomerById(1)
       .pipe(takeUntil(this.destroy$))
