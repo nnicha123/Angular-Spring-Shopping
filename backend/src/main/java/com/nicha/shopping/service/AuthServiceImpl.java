@@ -1,5 +1,6 @@
 package com.nicha.shopping.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
@@ -47,5 +48,10 @@ public class AuthServiceImpl implements AuthService {
 
         return optionalCustomer.get();
     }
+
+	@Override
+	public List<Auth> findAll() {
+		return this.authRepository.findAll();
+	}
 
 }
