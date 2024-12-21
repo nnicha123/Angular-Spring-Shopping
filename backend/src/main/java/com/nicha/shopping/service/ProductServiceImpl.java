@@ -44,6 +44,12 @@ public class ProductServiceImpl implements ProductService {
 		newProduct.setId(null);
 		this.productRepository.save(newProduct);
 	}
+
+	@Override
+	public Product getProductById(Long id) {
+		Product product =  this.productRepository.findById(id).orElseThrow(() -> new RuntimeException("Product with ID: " + id + " not found"));
+		return product;
+	}
 	
 
 }
