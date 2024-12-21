@@ -16,6 +16,9 @@ import { OrdersComponent } from './components/orders/orders.component';
 import { LoginComponent } from './components/login/login.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ProductDetailsComponent } from './components/product-details/product-details.component';
+import { AuthService } from './services/auth.service';
+import { ReviewService } from './services/review.service';
+import { ReviewComponent } from './components/review/review.component';
 
 @NgModule({
   declarations: [
@@ -27,6 +30,7 @@ import { ProductDetailsComponent } from './components/product-details/product-de
     OrdersComponent,
     LoginComponent,
     ProductDetailsComponent,
+    ReviewComponent,
   ],
   imports: [
     BrowserModule,
@@ -34,7 +38,14 @@ import { ProductDetailsComponent } from './components/product-details/product-de
     HttpClientModule,
     ReactiveFormsModule,
   ],
-  providers: [ProductsService, CustomerService, OrderService, OrderItemService],
+  providers: [
+    ProductsService,
+    CustomerService,
+    OrderService,
+    OrderItemService,
+    AuthService,
+    ReviewService,
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

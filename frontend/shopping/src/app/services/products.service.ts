@@ -11,6 +11,11 @@ export class ProductsService {
   url: string = URL + '/products';
   constructor(private httpClient: HttpClient) {}
 
+  getProductById(id: number): Observable<Product> {
+    const url: string = this.url + `/${id}`;
+    return this.httpClient.get<Product>(url);
+  }
+
   getProducts(): Observable<Product[]> {
     return this.httpClient.get<Product[]>(this.url);
   }
