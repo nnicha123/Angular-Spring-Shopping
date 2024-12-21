@@ -16,10 +16,10 @@ export class AppComponent implements OnInit, OnDestroy {
   title = 'shopping';
   ngOnInit(): void {
     // Test -> might not do it here but in its' own component
-    this.customerService
-      .getCustomerById(1)
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((customer) => console.log(customer));
+    // this.customerService
+    //   .getCustomerById(1)
+    //   .pipe(takeUntil(this.destroy$))
+    //   .subscribe((customer) => console.log(customer));
   }
 
   ngOnDestroy() {

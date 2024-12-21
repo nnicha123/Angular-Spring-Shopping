@@ -1,1 +1,15 @@
-<p>login component!</p>
+<div class="login-container">
+  <form [formGroup]="loginForm" class="login-form" (ngSubmit)="onSubmit()">
+    <div class="input-container">
+      <label>Username</label>
+      <input type="text" formControlName="username" />
+    </div>
+    <div class="input-container">
+      <label>Password</label>
+      <input type="text" formControlName="password" />
+    </div>
+    <div class="button-container">
+      <button type="submit">Submit</button>
+    </div>
+  </form>
+</div>
