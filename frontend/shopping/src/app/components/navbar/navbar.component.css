@@ -1,10 +1,16 @@
 .navbar-container {
     /* height: 70px; */
-    background-color: blue;
+    background-color: rgb(109, 109, 145);
     height: max-content;
     padding: 15px 15px;
     display: flex;
     justify-content: space-between;
+
+
+}
+
+.navbar-container a:hover {
+    background-color: rgb(139, 139, 169);
 
 }
 

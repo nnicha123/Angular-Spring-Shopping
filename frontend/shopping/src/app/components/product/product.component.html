@@ -1,5 +1,7 @@
 <div class="product-container">
   <div *ngFor="let product of products$ | async">
-    <app-product-card></app-product-card>
+    <a [routerLink]="['/details', product.id]">
+      <app-product-card></app-product-card>
+    </a>
   </div>
 </div>

@@ -40,7 +40,7 @@ export class LoginComponent implements OnInit, OnDestroy {
         // Log customer -> At this stage, can store customer in store
         console.log(customer);
         // Then navigate
-        this.router.navigateByUrl('/');
+        this.router.navigateByUrl('/product');
       });
   }
 
