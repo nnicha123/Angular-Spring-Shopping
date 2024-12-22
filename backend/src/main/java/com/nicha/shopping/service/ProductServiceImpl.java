@@ -35,6 +35,7 @@ public class ProductServiceImpl implements ProductService {
 		existingProduct.setNumSold(updatedProduct.getNumSold());
 		existingProduct.setPrice(updatedProduct.getPrice());
 		existingProduct.setRating(updatedProduct.getRating());
+		existingProduct.setNumRatings(updatedProduct.getNumRatings());
 		
 		this.productRepository.save(existingProduct);
 	}

@@ -27,4 +27,14 @@ public class CustomerServiceImpl implements CustomerService {
 		Customer customer = this.customerRepository.findById(id).orElseThrow(() -> new RuntimeException("Customer with ID: " + id + " not found"));
 		return customer;
 	}
+
+	@Override
+	public ReviewCustomerDetails getReviewDetails(Long id) {
+		Customer customer = this.getCustomerById(id);
+		ReviewCustomerDetails details = new ReviewCustomerDetails();
+		details.setName(customer.getFirstName() + " " + customer.getLastName());
+		details.setImageUrl(customer.getImageUrl());
+		return details;
+	}
+	
 }

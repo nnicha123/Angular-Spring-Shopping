@@ -26,6 +26,9 @@ public class Product {
 	@Column(name = "rating")
 	private Integer rating;
 	
+	@Column(name = "num_ratings")
+	private Integer numRatings;
+	
 	@Column(name = "num_in_stock")
 	private Integer numInStock;
 	

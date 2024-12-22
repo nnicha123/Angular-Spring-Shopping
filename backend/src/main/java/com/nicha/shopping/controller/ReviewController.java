@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.nicha.shopping.entity.Review;
+import com.nicha.shopping.service.CustomerService;
+import com.nicha.shopping.service.ReviewCustomerDetails;
 import com.nicha.shopping.service.ReviewService;
 
 @CrossOrigin("http://localhost:4200")
@@ -22,12 +24,12 @@ public class ReviewController {
 	}
 	
 	@GetMapping("/customer/{customerId}")
-	List<Review> getReviewByCustomerId(@PathVariable Long customerId){
+	List<ReviewCustomerDetails> getReviewByCustomerId(@PathVariable Long customerId){
 		return this.reviewService.findByCustomerId(customerId);
 	}
 	
 	@GetMapping("/product/{productId}")
-	List<Review> getReviewByProductId(@PathVariable Long productId){
+	List<ReviewCustomerDetails> getReviewByProductId(@PathVariable Long productId){
 		return this.reviewService.findByProductId(productId);
 	}
 }
