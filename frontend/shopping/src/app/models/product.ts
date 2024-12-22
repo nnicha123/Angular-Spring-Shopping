@@ -7,4 +7,5 @@ export interface Product {
   numInStock: number;
   numSold: number;
   price: number;
+  numRatings: number;
 }

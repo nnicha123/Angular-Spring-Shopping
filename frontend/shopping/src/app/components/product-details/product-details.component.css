@@ -1,0 +1,86 @@
+.product-container {
+    margin: 10px 40px;
+    box-shadow: 0px 5px 10px 0px rgba(0, 0.1, 0.1, 0.1);
+    padding: 20px 40px;
+    border-radius: 10px;
+}
+
+.rating-info{
+    display: flex;
+    align-items: center;
+}
+
+.product-info {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    margin: 20px 40px;
+    /* background-color: rgb(197, 187, 187); */
+}
+
+.review-container{
+    margin: 20px 40px;
+}
+
+.product-img{
+    width: 300px;
+}
+
+.product-img img {
+    width: 100%;
+    height: auto;
+}
+
+/* .quantity button {
+    background-color: rgb(235, 195, 227);
+    border: none;
+    padding: 10px 15px;
+    font-size: 20px;
+    color: grey;
+    border-radius: 10px;
+
+}
+
+.quantity button:hover {
+    background-color: rgb(211, 133, 196);
+    cursor: pointer;
+    overflow: hidden;
+} */
+
+button {
+    margin-top: 20px;
+    background-color: rgb(222, 178, 214);;
+    border: none;
+    padding: 10px 20px;
+    color: rgb(255, 249, 249);
+}
+
+button:hover{
+    background-color: rgb(191, 133, 180);
+    cursor: pointer;
+}
+
+button:disabled {
+    background-color: grey;
+    cursor: unset;
+}
+
+.button-basket {
+    background-color: rgb(193, 163, 199);
+}
+
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+input {
+    border: none;
+    margin: auto;
+}

@@ -1,8 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Review } from '../models/review';
 import { URL } from '../utilities';
+import { ReviewCustomerDetails } from '../models/review-customer-details';
 
 @Injectable({
   providedIn: 'root',
@@ -12,13 +12,15 @@ export class ReviewService {
 
   constructor(private httpClient: HttpClient) {}
 
-  getReviewsByCustomer(customerId: number): Observable<Review[]> {
+  getReviewsByCustomer(
+    customerId: number
+  ): Observable<ReviewCustomerDetails[]> {
     const url = this.url + `/customer/${customerId}`;
-    return this.httpClient.get<Review[]>(url);
+    return this.httpClient.get<ReviewCustomerDetails[]>(url);
   }
 
-  getReviewsByProduct(productId: number): Observable<Review[]> {
+  getReviewsByProduct(productId: number): Observable<ReviewCustomerDetails[]> {
     const url = this.url + `/product/${productId}`;
-    return this.httpClient.get<Review[]>(url);
+    return this.httpClient.get<ReviewCustomerDetails[]>(url);
   }
 }

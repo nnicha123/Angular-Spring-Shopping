@@ -13,6 +13,10 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
   id: number = 0;
   product$: Observable<Product> = of();
   destroy$: Subject<void> = new Subject<void>();
+  quantity: number = 1;
+  maxQuantity: number = 10;
+  minQuantity: number = 1;
+
   constructor(
     private productService: ProductsService,
     private route: ActivatedRoute
@@ -24,6 +28,14 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.product$ = this.productService.getProductById(this.id);
+  }
+
+  updateQuantity(instruction: string) {
+    if (instruction === 'increment') {
+      this.quantity += 1;
+    } else {
+      this.quantity -= 1;
+    }
   }
 
   ngOnDestroy(): void {

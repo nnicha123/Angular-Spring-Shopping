@@ -8,6 +8,9 @@ import { Product } from '../../models/product';
 })
 export class ProductCardComponent {
   @Input() product!: Product;
+  showFullText = false;
 
-  starsArray = Array(5).fill(0);
+  toggleShowFullText() {
+    this.showFullText = !this.showFullText;
+  }
 }

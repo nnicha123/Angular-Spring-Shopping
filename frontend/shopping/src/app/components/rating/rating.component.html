@@ -1,0 +1,11 @@
+<div class="rating">
+  <ng-container *ngFor="let star of starsArray; let i = index">
+    <i
+      class="fa-star"
+      [ngClass]="{
+        'fa-solid': i < rating,
+        'fa-regular': i >= rating
+      }"
+    ></i>
+  </ng-container>
+</div>

@@ -14,11 +14,13 @@ import { ProductCardComponent } from './components/product-card/product-card.com
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { OrdersComponent } from './components/orders/orders.component';
 import { LoginComponent } from './components/login/login.component';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ProductDetailsComponent } from './components/product-details/product-details.component';
 import { AuthService } from './services/auth.service';
 import { ReviewService } from './services/review.service';
 import { ReviewComponent } from './components/review/review.component';
+import { RatingComponent } from './components/rating/rating.component';
+import { TruncatePipe } from './pipes/truncate.pipe';
 
 @NgModule({
   declarations: [
@@ -31,12 +33,15 @@ import { ReviewComponent } from './components/review/review.component';
     LoginComponent,
     ProductDetailsComponent,
     ReviewComponent,
+    RatingComponent,
+    TruncatePipe,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
     ReactiveFormsModule,
+    FormsModule,
   ],
   providers: [
     ProductsService,

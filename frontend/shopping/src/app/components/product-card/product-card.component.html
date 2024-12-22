@@ -8,18 +8,15 @@
       <span class="price" style="font-size: 20px">{{
         product.price | currency : "USD"
       }}</span>
-      <span>{{ product.description }}</span>
-      <div class="rating">
-        <ng-container *ngFor="let star of starsArray; let i = index">
-          <i
-            class="fa-star"
-            [ngClass]="{
-              'fa-solid': i < product.rating,
-              'fa-regular': i >= product.rating
-            }"
-          ></i>
-        </ng-container>
-      </div>
+      <span
+        (mouseenter)="showFullText = true"
+        (mouseleave)="showFullText = false"
+        >{{ product.description | truncate : 30 : showFullText }}</span
+      >
+      <app-rating
+        style="margin-top: 15px"
+        [rating]="product.rating"
+      ></app-rating>
     </div>
   </div>
   <div class="footer" style="color: rgb(255, 249, 254)">Buy</div>
