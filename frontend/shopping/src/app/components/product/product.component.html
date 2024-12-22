@@ -1,7 +1,12 @@
+<div class="header">
+  <span class="header-label">Checkout Our Products!</span>
+  <button class="header-label">Add +</button>
+</div>
+
 <div class="product-container">
   <div *ngFor="let product of products$ | async">
-    <a [routerLink]="['/details', product.id]">
-      <app-product-card></app-product-card>
+    <a [routerLink]="['/details', product.id]" style="text-decoration: none">
+      <app-product-card [product]="product"></app-product-card>
     </a>
   </div>
 </div>

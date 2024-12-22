@@ -1,5 +1,26 @@
 <div class="container">
+  <div class="content">
     <div class="img-container">
-        
+      <img [src]="product.imageUrl" alt="" />
     </div>
+    <div class="text">
+      <h4 style="color: rgb(200, 143, 177)">{{ product.name }}</h4>
+      <span class="price" style="font-size: 20px">{{
+        product.price | currency : "USD"
+      }}</span>
+      <span>{{ product.description }}</span>
+      <div class="rating">
+        <ng-container *ngFor="let star of starsArray; let i = index">
+          <i
+            class="fa-star"
+            [ngClass]="{
+              'fa-solid': i < product.rating,
+              'fa-regular': i >= product.rating
+            }"
+          ></i>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+  <div class="footer" style="color: rgb(255, 249, 254)">Buy</div>
 </div>

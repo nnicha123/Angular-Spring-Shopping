@@ -1,8 +1,8 @@
 .navbar-container {
     /* height: 70px; */
-    background-color: rgb(109, 109, 145);
+    background-color: rgb(193, 163, 199);
     height: max-content;
-    padding: 15px 15px;
+    padding: 25px 15px;
     display: flex;
     justify-content: space-between;
 
