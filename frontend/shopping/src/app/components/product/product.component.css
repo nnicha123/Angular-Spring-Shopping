@@ -31,6 +31,16 @@ button:hover{
     gap: 20px;
 }
 
+.adding-product {
+    opacity: 0.1;
+    
+}
+
+.disable-link {
+    pointer-events: none; 
+
+}
+
 @media only screen and (max-width: 1400px) {
     .product-container{
         grid-template-columns: repeat(4, 1fr);

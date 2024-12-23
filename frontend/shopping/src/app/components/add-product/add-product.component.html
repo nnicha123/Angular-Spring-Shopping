@@ -1,0 +1,30 @@
+<div class="add-container" [ngClass]="{ display: addingProduct }">
+  <div class="button-container">
+    <button class="close-button" (click)="onClose()">x</button>
+  </div>
+  <form [formGroup]="addForm" (ngSubmit)="onAddProduct()">
+    <div class="input-group">
+      <label>Name</label>
+      <input type="text" formControlName="name" />
+    </div>
+    <div class="input-group">
+      <label>Description</label>
+      <textarea formControlName="description"></textarea>
+    </div>
+    <div class="input-group">
+      <label>Price</label>
+      <input type="number" formControlName="price" />
+    </div>
+    <div class="input-group">
+      <label>Quantity in Stock</label>
+      <input type="number" formControlName="numInStock" />
+    </div>
+    <div class="input-group">
+      <label>Image Link</label>
+      <input type="text" formControlName="imageUrl" />
+    </div>
+    <div class="input-group add-button">
+      <button type="submit">Add</button>
+    </div>
+  </form>
+</div>

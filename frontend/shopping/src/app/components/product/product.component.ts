@@ -10,10 +10,15 @@ import { Observable, of } from 'rxjs';
 })
 export class ProductComponent implements OnInit {
   products$: Observable<Product[]> = of([]);
+  addingProduct: boolean = true;
 
   constructor(private productService: ProductsService) {}
 
   ngOnInit(): void {
     this.products$ = this.productService.getProducts();
+  }
+
+  onClose() {
+    this.addingProduct = false;
   }
 }

@@ -21,6 +21,7 @@ import { ReviewService } from './services/review.service';
 import { ReviewComponent } from './components/review/review.component';
 import { RatingComponent } from './components/rating/rating.component';
 import { TruncatePipe } from './pipes/truncate.pipe';
+import { AddProductComponent } from './components/add-product/add-product.component';
 
 @NgModule({
   declarations: [
@@ -35,6 +36,7 @@ import { TruncatePipe } from './pipes/truncate.pipe';
     ReviewComponent,
     RatingComponent,
     TruncatePipe,
+    AddProductComponent,
   ],
   imports: [
     BrowserModule,

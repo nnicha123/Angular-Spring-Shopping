@@ -49,10 +49,13 @@ export class ReviewComponent implements OnInit, OnDestroy {
       productId: this.productId,
       customerId: 3, //default for now but later take from customerInfo (maybe in facade later on),
     };
-    return this.reviewService
-      .addReview(review)
-      .pipe(takeUntil(this.destroy$))
-      .subscribe();
+    if (confirm('Are You sure you want to add this review?')) {
+      return this.reviewService
+        .addReview(review)
+        .pipe(takeUntil(this.destroy$))
+        .subscribe();
+    }
+    return;
   }
 
   get buttonDisabled() {

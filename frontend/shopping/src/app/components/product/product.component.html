@@ -1,12 +1,23 @@
-<div class="header">
-  <span class="header-label">Checkout Our Products!</span>
-  <button class="header-label">Add +</button>
-</div>
+<app-add-product
+  (closeAddDialogEvent)="onClose()"
+  [addingProduct]="addingProduct"
+></app-add-product>
 
-<div class="product-container">
-  <div *ngFor="let product of products$ | async">
-    <a [routerLink]="['/details', product.id]" style="text-decoration: none">
-      <app-product-card [product]="product"></app-product-card>
-    </a>
+<div class="products" [ngClass]="{ 'adding-product': addingProduct }">
+  <div class="header">
+    <span class="header-label">Checkout Our Products!</span>
+    <button class="header-label" (click)="addingProduct = true">Add +</button>
+  </div>
+
+  <div class="product-container">
+    <div *ngFor="let product of products$ | async">
+      <a
+        [ngClass]="{ 'disable-link': addingProduct }"
+        [routerLink]="['/details', product.id]"
+        style="text-decoration: none"
+      >
+        <app-product-card [product]="product"></app-product-card>
+      </a>
+    </div>
   </div>
 </div>
