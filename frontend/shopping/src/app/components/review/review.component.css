@@ -1,4 +1,56 @@
-textarea {}
+textarea {
+    margin-top: 10px;
+    width:98%;
+    height: 150px;
+    border: none;
+    background-color: rgb(249, 244, 250);
+    font-size: 20px;
+    font-family: inherit;
+    padding: 10px;
+    color: grey;
+    /* pointer-events: none; */
+}
+
+textarea:focus {
+    outline: none;
+}
+
+
+
+button {
+    margin-top: 5px;
+    border: none;
+    padding: 10px 20px;
+    color: rgb(255, 249, 249);
+}
+
+button:hover{
+    background-color: rgb(191, 133, 180);
+    cursor: pointer;
+}
+
+button:disabled {
+    background-color: grey;
+    cursor: unset;
+}
+
+.button-basket {
+    background-color: rgb(193, 163, 199);
+}
+
+
+.rating {
+    color: rgb(243, 223, 37);
+    cursor: pointer;
+    caret-color: transparent; /* Hides the blinking cursor */
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.rating-text{
+    font-size: 15px; color: grey; margin-left: 10px
+}
 
 .review-container {
     margin: 20px 0;
