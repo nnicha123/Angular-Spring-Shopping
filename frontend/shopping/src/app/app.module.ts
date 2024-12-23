@@ -22,6 +22,7 @@ import { ReviewComponent } from './components/review/review.component';
 import { RatingComponent } from './components/rating/rating.component';
 import { TruncatePipe } from './pipes/truncate.pipe';
 import { AddProductComponent } from './components/add-product/add-product.component';
+import { OrderCardComponent } from './components/order-card/order-card.component';
 
 @NgModule({
   declarations: [
@@ -37,6 +38,7 @@ import { AddProductComponent } from './components/add-product/add-product.compon
     RatingComponent,
     TruncatePipe,
     AddProductComponent,
+    OrderCardComponent,
   ],
   imports: [
     BrowserModule,

@@ -1,0 +1,28 @@
+<div class="img-container">
+  <img [src]="order.imageUrl" alt="" />
+</div>
+<div>{{ order.name }}</div>
+<div>{{ order.price | currency : "USD" }}</div>
+<span class="quantity">
+  <button
+    (click)="updateQuantity('decrement')"
+    [disabled]="order.quantity == minQuantity"
+  >
+    -
+  </button>
+  <input
+    type="number"
+    style="width: 30px; height: 30px; text-align: center"
+    [(ngModel)]="order.quantity"
+    [max]="maxQuantity"
+    [min]="minQuantity"
+  />
+  <button
+    [disabled]="order.quantity == maxQuantity"
+    (click)="updateQuantity('increment')"
+  >
+    +
+  </button>
+</span>
+<!-- <div>{{ order.quantity }}</div> -->
+<div>{{ order.price * order.quantity | currency : "USD" }}</div>

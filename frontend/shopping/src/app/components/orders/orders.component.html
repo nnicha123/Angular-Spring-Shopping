@@ -1,1 +1,20 @@
-<p>Orders component!</p>
+<h2 style="margin-bottom: 50px; margin-left: 20px">Orders</h2>
+<div class="orders-container">
+  <div class="order-header">
+    <div>Image</div>
+    <div>Name</div>
+    <div>Price</div>
+    <div>Quantity</div>
+    <div>Total</div>
+  </div>
+  <div *ngFor="let order of tempProducts">
+    <app-order-card class="order-card" [order]="order"></app-order-card>
+  </div>
+  <div class="order-card">
+    <div>Total</div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div>{{ totalPrice | currency : "USD" }}</div>
+  </div>
+</div>
