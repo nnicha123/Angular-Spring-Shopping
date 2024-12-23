@@ -7,4 +7,5 @@ import com.nicha.shopping.entity.Review;
 public interface ReviewService {
 	List<ReviewCustomerDetails> findByCustomerId(Long customerId);
 	List<ReviewCustomerDetails> findByProductId(Long productId);
+	void addReview(Review review);
 }

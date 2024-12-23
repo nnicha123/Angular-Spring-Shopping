@@ -61,4 +61,11 @@ public class ReviewServiceImpl implements ReviewService {
 		return reviewCustomerDetails;
 	}
 
+	@Override
+	public void addReview(Review review) {
+		review.setId(null);
+		this.reviewRepository.save(review);
+		
+	}
+
 }
