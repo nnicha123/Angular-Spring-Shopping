@@ -1,10 +1,14 @@
 <div class="navbar-container">
-  <span>
-    <a routerLink="/product">Home</a>
-    <a routerLink="/profile">My Profile</a>
-    <a routerLink="/orders">Orders</a>
-  </span>
-  <span>
+  <div class="navbar-left">
+    <a
+      *ngFor="let nav of navBar; let i = index"
+      [routerLink]="nav.link"
+      (click)="setActive(i)"
+      [ngClass]="{ active: nav.active }"
+      >{{ nav.name }}</a
+    >
+  </div>
+  <div class="navbar-right">
     <a routerLink="/login">Logout</a>
-  </span>
+  </div>
 </div>

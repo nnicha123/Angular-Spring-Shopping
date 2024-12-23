@@ -1,21 +1,43 @@
-.navbar-container {
-    /* height: 70px; */
+/* .navbar-container span {
+    height: 70px; 
     background-color: rgb(193, 163, 199);
     height: max-content;
-    padding: 25px 15px;
+    display: flex;
+    /* justify-content: space-between; 
+
+} */
+
+.navbar-container {
     display: flex;
     justify-content: space-between;
+    height: max-content;
+    background-color: rgb(193, 163, 199);
+    padding: 25px 0;
+}
 
+
+a {
+    padding: 25px 15px;
+    background-color: rgb(193, 163, 199);
+}
+
+a:hover {
+    background-color: rgb(220, 201, 224);
 
 }
 
-.navbar-container a:hover {
-    background-color: rgb(139, 139, 169);
+.active {
+    background-color: rgb(220, 201, 224);
 
 }
+
 
 .navbar-container a {
     text-decoration: none;
     color: white;
-    margin: 10px;
+
 }
+
+/* .navbar-left a {
+    height: 100%;
+} */ 

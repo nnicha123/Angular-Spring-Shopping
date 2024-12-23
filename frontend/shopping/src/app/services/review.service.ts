@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { URL } from '../utilities';
 import { ReviewCustomerDetails } from '../models/review-customer-details';
+import { Review } from '../models/review';
 
 @Injectable({
   providedIn: 'root',
@@ -22,5 +23,9 @@ export class ReviewService {
   getReviewsByProduct(productId: number): Observable<ReviewCustomerDetails[]> {
     const url = this.url + `/product/${productId}`;
     return this.httpClient.get<ReviewCustomerDetails[]>(url);
+  }
+
+  addReview(review: Review) {
+    return this.httpClient.post<Review>(this.url, review);
   }
 }

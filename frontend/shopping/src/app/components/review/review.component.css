@@ -4,7 +4,7 @@ textarea {
     height: 150px;
     border: none;
     background-color: rgb(249, 244, 250);
-    font-size: 20px;
+    font-size: 15px;
     font-family: inherit;
     padding: 10px;
     color: grey;
@@ -15,10 +15,16 @@ textarea:focus {
     outline: none;
 }
 
+.comment {
+    width: 550px;
+}
+
+
+
 
 
 button {
-    margin-top: 5px;
+    margin-top: 10px;
     border: none;
     padding: 10px 20px;
     color: rgb(255, 249, 249);
@@ -63,6 +69,7 @@ button:disabled {
 
 .text-container {
     display: flex;
+    /* width: 750px; */
 }
 
 .review-left {

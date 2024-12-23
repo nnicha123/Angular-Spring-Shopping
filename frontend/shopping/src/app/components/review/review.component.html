@@ -13,8 +13,10 @@
   </ng-container>
   <span class="rating-text">{{ "( " + (rating + 1) + " Stars )" }} </span>
 </div>
-<textarea name="" id=""></textarea>
-<button class="button-basket">Add Review</button>
+<textarea [(ngModel)]="comment"></textarea>
+<button class="button-basket" [disabled]="buttonDisabled" (click)="addReview()">
+  Add Review
+</button>
 
 <h2 style="margin-top: 60px">Reviews</h2>
 <div class="reviews" *ngIf="reviews$ | async as reviews">
@@ -27,7 +29,7 @@
         <div>
           <div class="text-container">
             <span class="name-container">{{ r.name }}</span>
-            <span class="comment">{{ r.comment }}</span>
+            <span class="comment">{{ r.comment || "-" }}</span>
           </div>
           <div class="rating-container">
             <app-rating [rating]="r.rating" [fontSize]="15"></app-rating>

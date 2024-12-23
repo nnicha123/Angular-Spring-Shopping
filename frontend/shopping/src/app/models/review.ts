@@ -4,6 +4,6 @@ export interface Review {
   rating: number;
   productId: number;
   customerId: number;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
