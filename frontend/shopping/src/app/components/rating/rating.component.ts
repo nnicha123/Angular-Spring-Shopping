@@ -7,5 +7,6 @@ import { Component, Input } from '@angular/core';
 })
 export class RatingComponent {
   @Input() rating: number = 0;
+  @Input() fontSize: number = 20;
   starsArray = Array(5).fill(0);
 }
