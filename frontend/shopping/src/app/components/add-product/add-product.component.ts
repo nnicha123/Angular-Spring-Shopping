@@ -1,23 +1,36 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output,
+} from '@angular/core';
 import {
   FormBuilder,
   FormControl,
   FormGroup,
   Validators,
 } from '@angular/forms';
+import { ProductsService } from '../../services/products.service';
+import { Product } from '../../models/product';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-add-product',
   templateUrl: './add-product.component.html',
   styleUrls: ['./add-product.component.css'],
 })
-export class AddProductComponent implements OnInit {
-  @Input() addingProduct: boolean = true;
+export class AddProductComponent implements OnInit, OnDestroy {
+  @Input() addingProduct: boolean = false;
   @Output() closeAddDialogEvent = new EventEmitter<boolean>();
-
+  destroy$: Subject<void> = new Subject();
   addForm!: FormGroup;
 
-  constructor(private fb: FormBuilder) {}
+  constructor(
+    private fb: FormBuilder,
+    private productsService: ProductsService
+  ) {}
 
   ngOnInit(): void {
     this.addForm = this.fb.group({
@@ -30,11 +43,22 @@ export class AddProductComponent implements OnInit {
   }
 
   onAddProduct() {
-    console.log('adding product');
-    console.log(this.addForm.value);
+    const newProduct: Product = {
+      id: 0, //default,
+      ...this.addForm.value,
+    };
+    this.productsService
+      .addProduct(newProduct)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(() => this.onClose());
   }
 
   onClose() {
     this.closeAddDialogEvent.emit(true);
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

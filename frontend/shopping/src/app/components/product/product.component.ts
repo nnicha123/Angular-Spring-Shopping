@@ -10,7 +10,7 @@ import { Observable, of } from 'rxjs';
 })
 export class ProductComponent implements OnInit {
   products$: Observable<Product[]> = of([]);
-  addingProduct: boolean = true;
+  addingProduct: boolean = false;
 
   constructor(private productService: ProductsService) {}
 
