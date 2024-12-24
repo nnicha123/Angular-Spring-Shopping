@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'app-order-card',
@@ -7,9 +7,14 @@ import { Component, Input } from '@angular/core';
 })
 export class OrderCardComponent {
   @Input() order: any;
+  @Output() quantity: EventEmitter<number> = new EventEmitter();
 
   minQuantity: number = 1;
   maxQuantity: number = 10;
+
+  onDelete() {
+    this.quantity.emit(0);
+  }
 
   updateQuantity(instruction: string) {
     if (instruction === 'increment') {
@@ -17,5 +22,6 @@ export class OrderCardComponent {
     } else {
       this.order.quantity -= 1;
     }
+    this.quantity.emit(this.order.quantity);
   }
 }

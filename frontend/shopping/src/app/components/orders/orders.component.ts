@@ -11,6 +11,7 @@ export class OrdersComponent implements OnInit {
   quantity: number = 0;
   maxQuantity: number = 10;
   minQuantity: number = 1;
+  justPurchased: boolean = false;
 
   tempProducts: any[] = [
     {
@@ -48,5 +49,12 @@ export class OrdersComponent implements OnInit {
     );
   }
 
-
+  quantityUpdate(quantity: number, index: number) {
+    if (quantity === 0) {
+      this.tempProducts.splice(index, 1);
+    } else {
+      this.tempProducts[index].quantity = quantity;
+    }
+    this.calculateTotalPrice(this.tempProducts);
+  }
 }

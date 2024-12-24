@@ -25,4 +25,11 @@
   </button>
 </span>
 <!-- <div>{{ order.quantity }}</div> -->
-<div>{{ order.price * order.quantity | currency : "USD" }}</div>
+<div class="total-column">
+  <span>
+    {{ order.price * order.quantity | currency : "USD" }}
+  </span>
+  <span>
+    <button (click)="onDelete()"><i class="fa fa-trash" aria-hidden="true"></i></button>
+  </span>
+</div>

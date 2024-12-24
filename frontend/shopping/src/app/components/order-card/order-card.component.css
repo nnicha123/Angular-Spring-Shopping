@@ -35,3 +35,10 @@ input {
     border: none;
     margin: auto;
 }
+
+.total-column {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-right: 10px;
+}

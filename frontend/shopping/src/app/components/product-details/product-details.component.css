@@ -1,3 +1,7 @@
+.outer-container {
+    margin: 40px 20px 20px;
+}
+
 .product-container {
     /* margin: 10px 40px; */
     margin: auto;
