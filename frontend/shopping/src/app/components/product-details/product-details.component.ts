@@ -3,6 +3,8 @@ import { ProductsService } from '../../services/products.service';
 import { Observable, of, Subject, takeUntil } from 'rxjs';
 import { Product } from '../../models/product';
 import { ActivatedRoute } from '@angular/router';
+import { OrderService } from '../../services/order.service';
+import { OrderItemFront } from '../../models/orderItem';
 
 @Component({
   selector: 'app-product-details',
@@ -19,6 +21,7 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
 
   constructor(
     private productService: ProductsService,
+    private orderService: OrderService,
     private route: ActivatedRoute
   ) {
     this.route.paramMap
@@ -36,6 +39,17 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
     } else {
       this.quantity -= 1;
     }
+  }
+
+  addToBasket(name: string, imageUrl: string, price: number) {
+    const orderItem: OrderItemFront = {
+      productId: this.id,
+      quantity: this.quantity,
+      name,
+      imageUrl,
+      price,
+    };
+    this.orderService.addOrderItem(orderItem);
   }
 
   ngOnDestroy(): void {

@@ -1,11 +1,14 @@
+import { OrderItem } from './orderItem';
+
 export interface Order {
-  id: number;
+  id?: number;
   status: Status;
   totalPrice: number;
   totalQuantity: number;
   customerId: number;
-  createdAt: Date;
-  updatedAt: Date;
+  orderItems: OrderItem[];
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
 type Status = 'PENDING' | 'FAILED' | 'COMPLETED';

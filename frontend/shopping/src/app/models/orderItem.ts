@@ -1,8 +1,11 @@
 export interface OrderItem {
-  id: number;
+  id?: number;
   productId: number;
-  orderId: number;
   quantity: number;
-  createdAt: Date;
-  updatedAt: Date;
+}
+
+export interface OrderItemFront extends OrderItem {
+  name: string;
+  imageUrl: string;
+  price: number;
 }

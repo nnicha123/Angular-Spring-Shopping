@@ -1,0 +1,23 @@
+tempProducts: OrderItemFront[] = [
+    {
+      productId: 1,
+      name: 'Tooth Brush New Price!',
+      imageUrl: 'baby-pink.jpg',
+      quantity: 2,
+      price: 40,
+    },
+    {
+      productId: 2,
+      name: 'Keyboard',
+      imageUrl: 'lip-bright-pink.jpg',
+      quantity: 3,
+      price: 33,
+    },
+    {
+      productId: 3,
+      name: 'Hair Gel',
+      imageUrl: 'lip-gloss.jpg',
+      quantity: 2,
+      price: 10,
+    },
+  ];
