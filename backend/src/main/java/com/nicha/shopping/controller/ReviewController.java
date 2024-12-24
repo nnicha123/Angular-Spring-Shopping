@@ -10,9 +10,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.nicha.shopping.dto.ReviewCustomerDetails;
 import com.nicha.shopping.entity.Review;
-import com.nicha.shopping.service.CustomerService;
-import com.nicha.shopping.service.ReviewCustomerDetails;
 import com.nicha.shopping.service.ReviewService;
 
 @CrossOrigin("http://localhost:4200")

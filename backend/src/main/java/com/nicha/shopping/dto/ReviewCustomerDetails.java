@@ -1,4 +1,4 @@
-package com.nicha.shopping.service;
+package com.nicha.shopping.dto;
 
 import java.util.Date;
 

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.nicha.shopping.dao.CustomerRepository;
+import com.nicha.shopping.dto.ReviewCustomerDetails;
 import com.nicha.shopping.entity.Customer;
 
 @Service

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.nicha.shopping.dao.AuthRepository;
 import com.nicha.shopping.dao.CustomerRepository;
+import com.nicha.shopping.dto.Login;
 import com.nicha.shopping.entity.Auth;
 import com.nicha.shopping.entity.Customer;
 

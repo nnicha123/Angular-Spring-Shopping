@@ -32,4 +32,5 @@ public class OrderItemsController {
 	List<OrderItems> getOrderItemsByOrderId(@PathVariable Long orderId){
 		return this.orderItemsService.getOrderItemsByOrderId(orderId);
 	}
+
 }
