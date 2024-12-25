@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ProductsService } from '../../services/products.service';
-import { Observable, of, Subject, takeUntil } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
 import { Product } from '../../models/product';
 import { ActivatedRoute } from '@angular/router';
 import { OrderService } from '../../services/order.service';
@@ -13,11 +13,11 @@ import { OrderItemFront } from '../../models/orderItem';
 })
 export class ProductDetailsComponent implements OnInit, OnDestroy {
   id: number = 0;
-  product$: Observable<Product> = of();
   destroy$: Subject<void> = new Subject<void>();
   quantity: number = 1;
   maxQuantity: number = 10;
   minQuantity: number = 1;
+  product!: Product;
 
   constructor(
     private productService: ProductsService,
@@ -27,11 +27,11 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
     this.route.paramMap
       .pipe(takeUntil(this.destroy$))
       .subscribe((params) => (this.id = +(params.get('id') || 0)));
+
+    this.product = this.productService.getProductById(this.id) as Product;
   }
 
-  ngOnInit(): void {
-    this.product$ = this.productService.getProductById(this.id);
-  }
+  ngOnInit(): void {}
 
   updateQuantity(instruction: string) {
     if (instruction === 'increment') {
@@ -41,13 +41,11 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
     }
   }
 
-  addToBasket(name: string, imageUrl: string, price: number) {
+  addToBasket(product: Product) {
     const orderItem: OrderItemFront = {
       productId: this.id,
       quantity: this.quantity,
-      name,
-      imageUrl,
-      price,
+      ...product,
     };
     this.orderService.addOrderItem(orderItem);
   }

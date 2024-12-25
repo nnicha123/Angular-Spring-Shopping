@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { OrderItemFront } from '../../models/orderItem';
 
 @Component({
   selector: 'app-order-card',
@@ -6,7 +7,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
   styleUrls: ['./order-card.component.css'],
 })
 export class OrderCardComponent {
-  @Input() order: any;
+  @Input() orderItem!: OrderItemFront;
   @Output() quantity: EventEmitter<number> = new EventEmitter();
 
   minQuantity: number = 1;
@@ -18,10 +19,10 @@ export class OrderCardComponent {
 
   updateQuantity(instruction: string) {
     if (instruction === 'increment') {
-      this.order.quantity += 1;
+      this.orderItem.quantity += 1;
     } else {
-      this.order.quantity -= 1;
+      this.orderItem.quantity -= 1;
     }
-    this.quantity.emit(this.order.quantity);
+    this.quantity.emit(this.orderItem.quantity);
   }
 }

@@ -21,7 +21,16 @@ export class OrderService {
   }
 
   addOrderItem(orderItem: OrderItemFront): void {
-    const updatedOrderItems = [...this.orderItems$.getValue(), orderItem];
+    const currentItems = this.orderItems$.getValue();
+    let updatedOrderItems = [...this.orderItems$.getValue()];
+    const existingProductIndex = currentItems.findIndex(
+      (item) => item.productId === orderItem.productId
+    );
+    if (existingProductIndex === -1) {
+      updatedOrderItems = [...updatedOrderItems, orderItem];
+    } else {
+      updatedOrderItems[existingProductIndex].quantity += orderItem.quantity;
+    }
     this.orderItems$.next(updatedOrderItems);
     this.updateOrderFromOrderItems(updatedOrderItems);
   }

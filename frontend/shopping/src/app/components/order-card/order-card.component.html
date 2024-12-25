@@ -1,35 +1,36 @@
 <div class="img-container">
-  <img [src]="order.imageUrl" alt="" />
+  <img [src]="orderItem.imageUrl" alt="" />
 </div>
-<div>{{ order.name }}</div>
-<div>{{ order.price | currency : "USD" }}</div>
+<div>{{ orderItem.name }}</div>
+<div>{{ orderItem.price | currency : "USD" }}</div>
 <span class="quantity">
   <button
     (click)="updateQuantity('decrement')"
-    [disabled]="order.quantity == minQuantity"
+    [disabled]="orderItem.quantity == minQuantity"
   >
     -
   </button>
   <input
     type="number"
     style="width: 30px; height: 30px; text-align: center"
-    [(ngModel)]="order.quantity"
+    [(ngModel)]="orderItem.quantity"
     [max]="maxQuantity"
     [min]="minQuantity"
   />
   <button
-    [disabled]="order.quantity == maxQuantity"
+    [disabled]="orderItem.quantity == maxQuantity"
     (click)="updateQuantity('increment')"
   >
     +
   </button>
 </span>
-<!-- <div>{{ order.quantity }}</div> -->
 <div class="total-column">
   <span>
-    {{ order.price * order.quantity | currency : "USD" }}
+    {{ orderItem.price * orderItem.quantity | currency : "USD" }}
   </span>
   <span>
-    <button (click)="onDelete()"><i class="fa fa-trash" aria-hidden="true"></i></button>
+    <button (click)="onDelete()">
+      <i class="fa fa-trash" aria-hidden="true"></i>
+    </button>
   </span>
 </div>

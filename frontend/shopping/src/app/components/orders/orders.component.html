@@ -14,10 +14,10 @@
           <div>Quantity</div>
           <div>Total</div>
         </div>
-        <div *ngFor="let order of orderItems; let i = index">
+        <div *ngFor="let orderItem of orderItems; let i = index">
           <app-order-card
             class="order-card"
-            [order]="order"
+            [orderItem]="orderItem"
             (quantity)="quantityUpdate($event, i)"
           ></app-order-card>
         </div>
@@ -29,7 +29,8 @@
           <div>{{ order.totalPrice | currency : "USD" }}</div>
         </div>
       </div>
-      <div class="purchase-button">
+      <div class="center-buttons">
+        <button class="add-button" routerLink="/product">Add More Items</button>
         <button>Purchase Now!</button>
       </div>
     </div>

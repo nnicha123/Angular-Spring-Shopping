@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { Product } from '../models/product';
 import { URL } from '../utilities';
 
@@ -8,12 +8,20 @@ import { URL } from '../utilities';
   providedIn: 'root',
 })
 export class ProductsService {
+  products$ = new BehaviorSubject<Product[]>([]);
+
   url: string = URL + '/products';
   constructor(private httpClient: HttpClient) {}
 
-  getProductById(id: number): Observable<Product> {
-    const url: string = this.url + `/${id}`;
-    return this.httpClient.get<Product>(url);
+  setProducts(products: Product[]): void {
+    this.products$.next(products);
+  }
+
+  getProductById(id: number): Product {
+    const product: Product = this.products$
+      .getValue()
+      .find((product) => product.id === id)!;
+    return product;
   }
 
   getProducts(): Observable<Product[]> {
