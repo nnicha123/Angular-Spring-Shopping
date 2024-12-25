@@ -6,8 +6,8 @@ import com.nicha.shopping.dto.OrderDTO;
 import com.nicha.shopping.entity.Orders;
 
 public interface OrdersService {
-	List<Orders> getAllOrders();
-	List<Orders> findByCustomerId(Long customerId);
+	List<OrderDTO> getAllOrders();
+	List<OrderDTO> findByCustomerId(Long customerId);
 	void updateOrderById(Long orderId, Orders orders);
 	Long addOrder(OrderDTO orders);
 }

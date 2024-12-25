@@ -39,6 +39,7 @@ public class OrderItemsServiceImpl implements OrderItemsService {
 //		Add order items with the order Id
 		List<OrderItems> newOrderItems = orderItems.stream().map( itemDTO -> {
 			OrderItems item = new OrderItems();
+			item.setId(itemDTO.getId());
 			item.setOrderId(orderId);
 			item.setProductId(itemDTO.getProductId());
 			item.setQuantity(itemDTO.getQuantity());
