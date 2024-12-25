@@ -1,69 +1,142 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, of } from 'rxjs';
 import { Order } from '../models/order';
 import { URL } from '../utilities';
-import { OrderItem, OrderItemFront } from '../models/orderItem';
+import { OrderItemFront } from '../models/orderItem';
+import { ProductsService } from './products.service';
+import { Product } from '../models/product';
 
 @Injectable({
   providedIn: 'root',
 })
 export class OrderService {
-  orders$ = new BehaviorSubject<Order | null>(null);
-  orderItems$ = new BehaviorSubject<OrderItemFront[]>([]);
+  orders$ = new BehaviorSubject<Order[]>([]);
+
+  currentOrder$ = new BehaviorSubject<Order | null>(null);
+
+  apiCalled$ = new BehaviorSubject<boolean>(false);
 
   url: string = URL + '/orders';
 
-  constructor(private httpClient: HttpClient) {}
+  constructor(
+    private httpClient: HttpClient,
+    private productService: ProductsService
+  ) {}
 
-  setOrder(order: Order): void {
-    this.orders$.next(order);
+  markApiAsCalled(): void {
+    this.apiCalled$.next(true);
+  }
+
+  hasApiBeenCalled(): boolean {
+    return this.apiCalled$.getValue();
+  }
+
+  setOrders(orders: Order[]): void {
+    const ordersToSet = orders.map((order) => {
+      return {
+        ...order,
+        orderItems: order.orderItems.map((item) => {
+          return {
+            id: item.id,
+            productId: item.productId,
+            quantity: item.quantity,
+            ...this.getProductById(item.productId),
+          };
+        }),
+      };
+    });
+
+    this.orders$.next(ordersToSet);
+
+    // Setup current order -> Find status of 'PENDING'
+    const currentOrder: Order | undefined = this.orders$
+      .getValue()
+      .find((order) => order.status === 'PENDING');
+    if (currentOrder) {
+      this.setCurrentOrder(currentOrder);
+    }
+  }
+
+  getProductById(productId: number): {
+    name: string;
+    imageUrl: string;
+    price: number;
+  } {
+    const { name, imageUrl, price } =
+      this.productService.getProductById(productId);
+    return { name, imageUrl, price };
+  }
+
+  setCurrentOrder(order: Order): void {
+    this.currentOrder$.next(order);
   }
 
   addOrderItem(orderItem: OrderItemFront): void {
-    const currentItems = this.orderItems$.getValue();
-    let updatedOrderItems = [...this.orderItems$.getValue()];
-    const existingProductIndex = currentItems.findIndex(
-      (item) => item.productId === orderItem.productId
-    );
-    if (existingProductIndex === -1) {
-      updatedOrderItems = [...updatedOrderItems, orderItem];
+    let order = this.currentOrder$.getValue();
+    if (order) {
+      const currentItems = order.orderItems;
+      let updatedOrderItems = [...currentItems];
+      const existingProductIndex = currentItems.findIndex(
+        (item) => item.productId === orderItem.productId
+      );
+      if (existingProductIndex === -1) {
+        updatedOrderItems = [...updatedOrderItems, orderItem];
+      } else {
+        updatedOrderItems[existingProductIndex].quantity += orderItem.quantity;
+      }
+      order.orderItems = [...updatedOrderItems];
     } else {
-      updatedOrderItems[existingProductIndex].quantity += orderItem.quantity;
+      order = this.initializeOrder();
+      order.orderItems.push(orderItem);
     }
-    this.orderItems$.next(updatedOrderItems);
-    this.updateOrderFromOrderItems(updatedOrderItems);
+    this.updateOrderFromOrderItems(order);
+  }
+
+  initializeOrder(): Order {
+    const newOrder: Order = {
+      status: 'PENDING',
+      totalPrice: 0,
+      totalQuantity: 0,
+      customerId: 3, //temp customerId
+      orderItems: [],
+    };
+    return newOrder;
   }
 
   updateOrderItemQuantity(quantity: number, index: number) {
-    const orderItems = [...this.orderItems$.getValue()];
-    if (quantity === 0) {
-      orderItems.splice(index, 1);
-    } else {
-      orderItems[index].quantity = quantity;
+    const order = this.currentOrder$.getValue();
+    if (order) {
+      const orderItems = [...order.orderItems];
+      if (quantity === 0) {
+        orderItems.splice(index, 1);
+      } else {
+        orderItems[index].quantity = quantity;
+      }
+      order.orderItems = orderItems;
+      this.updateOrderFromOrderItems(order);
     }
-    this.orderItems$.next(orderItems);
-    this.updateOrderFromOrderItems(orderItems);
-  }
-
-  updateOrderFromOrderItems(updatedOrderItems: OrderItemFront[]) {
-    const { totalPrice, totalQuantity } = this.updateTotal(updatedOrderItems);
-
-    const order: Order = {
-      status: 'PENDING',
-      totalPrice,
-      totalQuantity,
-      customerId: 3, //temp customerId
-      orderItems: updatedOrderItems,
-    };
-
-    this.orders$.next(order);
   }
 
   removeOrderItem(itemId: number): void {
-    const orderItems = [...this.orderItems$.getValue()].splice(itemId, 1);
-    this.orderItems$.next(orderItems);
-    this.updateOrderFromOrderItems(orderItems);
+    const order = this.currentOrder$.getValue();
+    if (order) {
+      const orderItems = [...order.orderItems].splice(itemId, 1);
+      order.orderItems = orderItems;
+      this.updateOrderFromOrderItems(order);
+    }
+  }
+
+  updateOrderFromOrderItems(order: Order) {
+    const { totalPrice, totalQuantity } = this.updateTotal(order.orderItems);
+
+    const updatedOrder: Order = {
+      ...order,
+      totalPrice,
+      totalQuantity,
+    };
+
+    this.currentOrder$.next(updatedOrder);
   }
 
   updateTotal(orderItems: OrderItemFront[]) {
@@ -92,19 +165,20 @@ export class OrderService {
     return this.httpClient.put<void>(url, updatedOrder);
   }
 
-  addOrder(
-    orderItems: OrderItem[],
-    customerId: number,
-    totalPrice: number,
-    totalQuantity: number
-  ): Observable<void> {
-    const order: Order = {
-      customerId,
-      orderItems,
-      totalPrice,
-      totalQuantity,
-      status: 'PENDING',
-    };
-    return this.httpClient.post<void>(this.url, order);
+  saveOrder(): Observable<void> {
+    const order: Order | null = this.currentOrder$.getValue();
+    if (order) {
+      return this.httpClient.post<void>(this.url, order);
+    }
+    return of();
+  }
+
+  purchaseOrder(): Observable<void> {
+    let order: Order | null = this.currentOrder$.getValue();
+    if (order) {
+      order.status = 'PROCESSING';
+      return this.httpClient.post<void>(this.url, order);
+    }
+    return of();
   }
 }

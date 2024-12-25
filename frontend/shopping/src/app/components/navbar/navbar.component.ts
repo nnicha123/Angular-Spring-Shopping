@@ -9,7 +9,7 @@ export class NavbarComponent implements OnInit {
   activeIndex: number = 0;
   navBar: NavBar[] = [
     { name: 'Home', link: '/product', active: false },
-    { name: 'My Profile', link: '/profile', active: false },
+    { name: 'My Previous Orders', link: '/profile', active: false },
     { name: 'Orders', link: '/orders', active: false },
   ];
 

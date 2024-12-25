@@ -42,10 +42,13 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
   }
 
   addToBasket(product: Product) {
+    const { name, imageUrl, price } = product;
     const orderItem: OrderItemFront = {
       productId: this.id,
       quantity: this.quantity,
-      ...product,
+      name,
+      imageUrl,
+      price,
     };
     this.orderService.addOrderItem(orderItem);
   }
