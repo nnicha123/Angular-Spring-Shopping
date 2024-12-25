@@ -1,5 +1,5 @@
 package com.nicha.shopping.entity;
 
 public enum OrderStatus {
-	COMPLETED, PENDING, FAILED
+	COMPLETED, PENDING, FAILED, PROCESSING, CANCELLED
 }

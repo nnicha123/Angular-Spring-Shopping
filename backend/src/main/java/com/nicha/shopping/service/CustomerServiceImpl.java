@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.nicha.shopping.dao.CustomerRepository;
-import com.nicha.shopping.dto.ReviewCustomerDetails;
+import com.nicha.shopping.dto.ReviewCustomerDetailsDTO;
 import com.nicha.shopping.entity.Customer;
 
 @Service
@@ -30,9 +30,9 @@ public class CustomerServiceImpl implements CustomerService {
 	}
 
 	@Override
-	public ReviewCustomerDetails getReviewDetails(Long id) {
+	public ReviewCustomerDetailsDTO getReviewDetails(Long id) {
 		Customer customer = this.getCustomerById(id);
-		ReviewCustomerDetails details = new ReviewCustomerDetails();
+		ReviewCustomerDetailsDTO details = new ReviewCustomerDetailsDTO();
 		details.setName(customer.getFirstName() + " " + customer.getLastName());
 		details.setImageUrl(customer.getImageUrl());
 		return details;

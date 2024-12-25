@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.nicha.shopping.dto.ReviewCustomerDetails;
+import com.nicha.shopping.dto.ReviewCustomerDetailsDTO;
 import com.nicha.shopping.entity.Review;
 import com.nicha.shopping.service.ReviewService;
 
@@ -25,12 +25,12 @@ public class ReviewController {
 	}
 	
 	@GetMapping("/customer/{customerId}")
-	List<ReviewCustomerDetails> getReviewByCustomerId(@PathVariable Long customerId){
+	List<ReviewCustomerDetailsDTO> getReviewByCustomerId(@PathVariable Long customerId){
 		return this.reviewService.findByCustomerId(customerId);
 	}
 	
 	@GetMapping("/product/{productId}")
-	List<ReviewCustomerDetails> getReviewByProductId(@PathVariable Long productId){
+	List<ReviewCustomerDetailsDTO> getReviewByProductId(@PathVariable Long productId){
 		return this.reviewService.findByProductId(productId);
 	}
 	

@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.nicha.shopping.dao.CustomerRepository;
 import com.nicha.shopping.dao.ReviewRepository;
-import com.nicha.shopping.dto.ReviewCustomerDetails;
+import com.nicha.shopping.dto.ReviewCustomerDetailsDTO;
 import com.nicha.shopping.entity.Customer;
 import com.nicha.shopping.entity.Review;
 
@@ -23,26 +23,26 @@ public class ReviewServiceImpl implements ReviewService {
 	}
 
 	@Override
-	public List<ReviewCustomerDetails> findByCustomerId(Long customerId) {
+	public List<ReviewCustomerDetailsDTO> findByCustomerId(Long customerId) {
 		List<Review> reviews =  this.reviewRepository.findByCustomerId(customerId);
 		
-		List<ReviewCustomerDetails> reviewCustomerDetails = getReviewCustomerDetails(reviews);
+		List<ReviewCustomerDetailsDTO> reviewCustomerDetails = getReviewCustomerDetails(reviews);
 		return reviewCustomerDetails;
 	}
 
 	@Override
-	public List<ReviewCustomerDetails> findByProductId(Long productId) {
+	public List<ReviewCustomerDetailsDTO> findByProductId(Long productId) {
 		List<Review> reviews =  this.reviewRepository.findByProductId(productId);
-		List<ReviewCustomerDetails> reviewCustomerDetails = getReviewCustomerDetails(reviews);
+		List<ReviewCustomerDetailsDTO> reviewCustomerDetails = getReviewCustomerDetails(reviews);
 		return reviewCustomerDetails;
 
 	}
 	
-	public List<ReviewCustomerDetails> getReviewCustomerDetails(List<Review> reviews){
-		List<ReviewCustomerDetails> reviewCustomerDetails = new ArrayList<>();
+	public List<ReviewCustomerDetailsDTO> getReviewCustomerDetails(List<Review> reviews){
+		List<ReviewCustomerDetailsDTO> reviewCustomerDetails = new ArrayList<>();
 		
 		for(int i =0; i< reviews.size(); i++) {
-			ReviewCustomerDetails detail = new ReviewCustomerDetails();
+			ReviewCustomerDetailsDTO detail = new ReviewCustomerDetailsDTO();
 			Review review = reviews.get(i);
 			detail.setId(review.getId());
 			detail.setComment(review.getComment());

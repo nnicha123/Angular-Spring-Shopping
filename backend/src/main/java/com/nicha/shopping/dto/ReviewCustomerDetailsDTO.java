@@ -5,7 +5,7 @@ import java.util.Date;
 import lombok.Data;
 
 @Data
-public class ReviewCustomerDetails {
+public class ReviewCustomerDetailsDTO {
 	private Long id;
 	private String name;
 	private String imageUrl;
