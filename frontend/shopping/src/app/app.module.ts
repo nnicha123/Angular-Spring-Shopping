@@ -9,7 +9,7 @@ import { CustomerService } from './services/customer.service';
 import { OrderService } from './services/order.service';
 import { OrderItemService } from './services/order-item.service';
 import { ProductComponent } from './components/product/product.component';
-import { ProfileComponent } from './components/profile/profile.component';
+import { OrdersHistoryComponent } from './components/orders-history/orders-history.component';
 import { ProductCardComponent } from './components/product-card/product-card.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { OrdersComponent } from './components/orders/orders.component';
@@ -30,7 +30,7 @@ import { OrderStatusText } from './pipes/order-status-text.pipe';
   declarations: [
     AppComponent,
     ProductComponent,
-    ProfileComponent,
+    OrdersHistoryComponent,
     ProductCardComponent,
     NavbarComponent,
     OrdersComponent,

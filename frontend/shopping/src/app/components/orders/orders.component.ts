@@ -65,7 +65,7 @@ export class OrdersComponent implements OnInit, OnDestroy {
     this.justPurchased = true;
     setTimeout(() => {
       this.justPurchased = false;
-      this.router.navigateByUrl('/profile');
+      this.router.navigateByUrl('/orders-history');
     }, 2000);
   }
 
