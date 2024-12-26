@@ -26,6 +26,8 @@ import { OrderCardComponent } from './components/order-card/order-card.component
 import { OrderStatusPipe } from './pipes/order-status.pipe';
 import { OrderStatusText } from './pipes/order-status-text.pipe';
 import { BasketComponent } from './components/basket/basket.component';
+import { AuthGuard } from './guard/auth.guard';
+
 
 @NgModule({
   declarations: [
@@ -60,6 +62,7 @@ import { BasketComponent } from './components/basket/basket.component';
     OrderItemService,
     AuthService,
     ReviewService,
+    AuthGuard
   ],
   bootstrap: [AppComponent],
 })

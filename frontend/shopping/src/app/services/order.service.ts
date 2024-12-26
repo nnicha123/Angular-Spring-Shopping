@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, of } from 'rxjs';
+import { BehaviorSubject, Observable, of, Subject, takeUntil } from 'rxjs';
 import { Order } from '../models/order';
 import { URL } from '../utilities';
 import { OrderItemFront } from '../models/orderItem';
@@ -184,6 +184,21 @@ export class OrderService {
 
   getOrders(): Observable<Order[]> {
     return this.httpClient.get<Order[]>(this.url);
+  }
+
+  getOrdersForComponents(destroySubject$:Subject<void>){
+        if (!this.hasApiBeenCalled()) {
+          const customerId = localStorage.getItem('customerId');
+          if (customerId) {
+            this
+              .getOrdersByCustomerId(+customerId)
+              .pipe(takeUntil(destroySubject$))
+              .subscribe((orders) => {
+                this.markApiAsCalled();
+                this.setOrders(orders);
+              });
+          }
+        }
   }
 
   getOrdersByCustomerId(customerId: number): Observable<Order[]> {

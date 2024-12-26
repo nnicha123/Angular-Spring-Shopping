@@ -19,7 +19,9 @@ export class BasketComponent {
     this.currentOrder$ = this.orderService.currentOrder$;
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.orderService.getOrdersForComponents(this.destroy$);
+  }
 
   quantityUpdate(quantity: number, index: number) {
     this.orderService.updateOrderItemQuantity(quantity, index);

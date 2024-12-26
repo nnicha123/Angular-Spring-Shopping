@@ -6,16 +6,25 @@ import { OrdersHistoryComponent } from './components/orders-history/orders-histo
 import { OrdersComponent } from './components/orders/orders.component';
 import { LoginComponent } from './components/login/login.component';
 import { BasketComponent } from './components/basket/basket.component';
+import { AuthGuard } from './guard/auth.guard';
 
 const routes: Routes = [
   {
     path: 'product',
     component: ProductComponent,
   },
-  { path: 'details/:id', component: ProductDetailsComponent },
-  { path: 'orders-history', component: OrdersHistoryComponent },
+  {
+    path: 'details/:id',
+    component: ProductDetailsComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'orders-history',
+    component: OrdersHistoryComponent,
+    canActivate: [AuthGuard],
+  },
   { path: 'login', component: LoginComponent },
-  { path: 'basket', component: BasketComponent },
+  { path: 'basket', component: BasketComponent, canActivate: [AuthGuard] },
   { path: '**', redirectTo: 'product', pathMatch: 'full' },
 ];
 

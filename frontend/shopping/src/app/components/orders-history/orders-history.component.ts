@@ -20,7 +20,9 @@ export class OrdersHistoryComponent {
     this.processingOrders$ = this.orderService.processingOrders$;
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.orderService.getOrdersForComponents(this.destroy$);
+  }
 
   showOrderStatusMessage() {
     this.justPurchased = true;
@@ -29,9 +31,7 @@ export class OrdersHistoryComponent {
     }, 2000);
   }
 
-  cancelOrder(){
-    
-  }
+  cancelOrder() {}
 
   ngOnDestroy(): void {
     this.destroy$.next();

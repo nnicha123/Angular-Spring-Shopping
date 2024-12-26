@@ -38,7 +38,8 @@ export class LoginComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe((customer) => {
         // Log customer -> At this stage, can store customer in store
-        console.log(customer);
+        localStorage.setItem('customerId', '' + customer.id);
+        this.authService.setLoggedIn(true);
         // Then navigate
         this.router.navigateByUrl('/product');
       });

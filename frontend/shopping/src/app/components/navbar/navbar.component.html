@@ -3,12 +3,11 @@
     <a
       *ngFor="let nav of navBar; let i = index"
       [routerLink]="nav.link"
-      (click)="setActive(i)"
       [ngClass]="{ active: nav.active }"
       >{{ nav.name }}</a
     >
   </div>
   <div class="navbar-right">
-    <a routerLink="/login">Logout</a>
+    <a routerLink="/login" (click)="logout()">Logout</a>
   </div>
 </div>
