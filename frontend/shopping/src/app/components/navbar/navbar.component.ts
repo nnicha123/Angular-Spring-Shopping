@@ -59,8 +59,10 @@ export class NavbarComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe((loggedIn) => {
         if (loggedIn) {
+          this.loggedIn = true;
           this.navBar = this.navBarLoggedIn;
         } else {
+          this.loggedIn = false;
           this.navBar = this.navBarLoggedOut;
         }
       });
