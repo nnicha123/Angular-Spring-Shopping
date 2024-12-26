@@ -10,7 +10,7 @@ export class NavbarComponent implements OnInit {
   navBar: NavBar[] = [
     { name: 'Home', link: '/product', active: false },
     { name: 'My Previous Orders', link: '/orders-history', active: false },
-    { name: 'Orders', link: '/orders', active: false },
+    { name: 'Basket', link: '/basket', active: false },
   ];
 
   ngOnInit(): void {

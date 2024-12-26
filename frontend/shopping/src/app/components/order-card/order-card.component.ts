@@ -8,6 +8,7 @@ import { OrderItemFront } from '../../models/orderItem';
 })
 export class OrderCardComponent {
   @Input() orderItem!: OrderItemFront;
+  @Input() readOnly: boolean = false;
   @Output() quantity: EventEmitter<number> = new EventEmitter();
 
   minQuantity: number = 1;

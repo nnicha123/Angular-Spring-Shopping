@@ -14,6 +14,9 @@ export class OrderService {
   orders$ = new BehaviorSubject<Order[]>([]);
 
   currentOrder$ = new BehaviorSubject<Order | null>(null);
+  processingOrders$ = new BehaviorSubject<Order[]>([]);
+  completedOrders$ = new BehaviorSubject<Order[]>([]);
+  cancelledOrders$ = new BehaviorSubject<Order[]>([]);
 
   apiCalled$ = new BehaviorSubject<boolean>(false);
 
@@ -50,12 +53,28 @@ export class OrderService {
     this.orders$.next(ordersToSet);
 
     // Setup current order -> Find status of 'PENDING'
-    const currentOrder: Order | undefined = this.orders$
-      .getValue()
-      .find((order) => order.status === 'PENDING');
+
+    const allOrders: Order[] = this.orders$.getValue();
+
+    const currentOrder: Order | undefined = allOrders.find(
+      (order) => order.status == 'PENDING'
+    );
+    const completedOrders: Order[] = allOrders.filter(
+      (order) => order.status == 'COMPLETED'
+    );
+    const processingOrders: Order[] = allOrders.filter(
+      (order) => order.status == 'PROCESSING'
+    );
+    const cancelledOrders: Order[] = allOrders.filter(
+      (order) => order.status == 'CANCELLED'
+    );
+
     if (currentOrder) {
       this.setCurrentOrder(currentOrder);
     }
+    this.setProcessingOrders(processingOrders);
+    this.setCancelledOrders(cancelledOrders);
+    this.setCompletedOrders(completedOrders);
   }
 
   getProductById(productId: number): {
@@ -70,6 +89,18 @@ export class OrderService {
 
   setCurrentOrder(order: Order): void {
     this.currentOrder$.next(order);
+  }
+
+  setProcessingOrders(orders: Order[]): void {
+    this.processingOrders$.next(orders);
+  }
+
+  setCancelledOrders(orders: Order[]): void {
+    this.cancelledOrders$.next(orders);
+  }
+
+  setCompletedOrders(orders: Order[]): void {
+    this.completedOrders$.next(orders);
   }
 
   addOrderItem(orderItem: OrderItemFront): void {

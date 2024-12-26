@@ -5,6 +5,7 @@ import { ProductDetailsComponent } from './components/product-details/product-de
 import { OrdersHistoryComponent } from './components/orders-history/orders-history.component';
 import { OrdersComponent } from './components/orders/orders.component';
 import { LoginComponent } from './components/login/login.component';
+import { BasketComponent } from './components/basket/basket.component';
 
 const routes: Routes = [
   {
@@ -14,7 +15,7 @@ const routes: Routes = [
   { path: 'details/:id', component: ProductDetailsComponent },
   { path: 'orders-history', component: OrdersHistoryComponent },
   { path: 'login', component: LoginComponent },
-  { path: 'orders', component: OrdersComponent },
+  { path: 'basket', component: BasketComponent },
   { path: '**', redirectTo: 'product', pathMatch: 'full' },
 ];
 

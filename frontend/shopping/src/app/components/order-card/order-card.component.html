@@ -5,12 +5,14 @@
 <div>{{ orderItem.price | currency : "USD" }}</div>
 <span class="quantity">
   <button
+    *ngIf="!readOnly"
     (click)="updateQuantity('decrement')"
     [disabled]="orderItem.quantity == minQuantity"
   >
     -
   </button>
   <input
+    [disabled]="readOnly"
     type="number"
     style="width: 30px; height: 30px; text-align: center"
     [(ngModel)]="orderItem.quantity"
@@ -18,6 +20,7 @@
     [min]="minQuantity"
   />
   <button
+    *ngIf="!readOnly"
     [disabled]="orderItem.quantity == maxQuantity"
     (click)="updateQuantity('increment')"
   >
@@ -29,7 +32,7 @@
     {{ orderItem.price * orderItem.quantity | currency : "USD" }}
   </span>
   <span>
-    <button (click)="onDelete()">
+    <button (click)="onDelete()" *ngIf="!readOnly">
       <i class="fa fa-trash" aria-hidden="true"></i>
     </button>
   </span>

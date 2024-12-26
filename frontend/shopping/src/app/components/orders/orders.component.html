@@ -1,42 +1,33 @@
-<div *ngIf="currentOrder$ | async as order">
-  <div
-    class="purchase-status-banner"
-    [ngClass]="order.status | status"
-    *ngIf="justPurchased"
-  >
-    {{ order.status | statusText }}
-  </div>
-  <!-- <div *ngIf="orderItems$ | async as orderItems"> -->
-  <div class="outer-container" *ngIf="order.orderItems.length > 0">
-    <h2 style="margin-bottom: 50px; margin-left: 20px">Orders</h2>
-    <div class="orders-container">
-      <div class="order-header">
-        <div>Image</div>
-        <div>Name</div>
-        <div>Price</div>
-        <div>Quantity</div>
-        <div>Total</div>
-      </div>
-      <div *ngFor="let orderItem of order.orderItems; let i = index">
-        <app-order-card
-          class="order-card"
-          [orderItem]="orderItem"
-          (quantity)="quantityUpdate($event, i)"
-        ></app-order-card>
-      </div>
-      <div class="order-card">
-        <div>Total</div>
-        <div></div>
-        <div></div>
-        <div style="padding-left: 35px">{{ order.totalQuantity }}</div>
-        <div>{{ order.totalPrice | currency : "USD" }}</div>
-      </div>
+<div class="outer-container" *ngIf="order.orderItems.length > 0">
+  <div class="orders-container">
+    <div class="order-header">
+      <div>Image</div>
+      <div>Name</div>
+      <div>Price</div>
+      <div>Quantity</div>
+      <div>Total</div>
     </div>
-    <div class="center-buttons">
-      <button class="add-button" routerLink="/product">Add More Items</button>
-      <button (click)="saveOrder()">Save Order</button>
-      <button (click)="purchaseOrder()">Purchase Now!</button>
+    <div *ngFor="let orderItem of order.orderItems; let i = index">
+      <app-order-card
+        class="order-card"
+        [readOnly]="readOnly"
+        [orderItem]="orderItem"
+        (quantity)="quantityUpdate($event, i)"
+      ></app-order-card>
+    </div>
+    <div class="order-card">
+      <div>Total</div>
+      <div></div>
+      <div></div>
+      <div
+        [ngClass]="{
+          'pad-readOnly': readOnly,
+          pad: !readOnly
+        }"
+      >
+        {{ order.totalQuantity }}
+      </div>
+      <div>{{ order.totalPrice | currency : "USD" }}</div>
     </div>
   </div>
 </div>
-<!-- </div> -->

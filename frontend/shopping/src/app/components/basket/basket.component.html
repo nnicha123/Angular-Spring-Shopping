@@ -1,0 +1,16 @@
+<h2 style="margin-bottom: 50px; margin-left: 20px">Basket</h2>
+<div *ngIf="currentOrder$ | async as order">
+  <div
+    class="purchase-status-banner"
+    [ngClass]="order.status | status"
+    *ngIf="justPurchased"
+  >
+    {{ order.status | statusText }}
+  </div>
+  <app-orders [order]="order"></app-orders>
+  <div class="center-buttons">
+    <button class="add-button" routerLink="/product">Add More Items</button>
+    <button (click)="saveOrder()">Save Order</button>
+    <button (click)="purchaseOrder()">Purchase Now!</button>
+  </div>
+</div>

@@ -25,6 +25,7 @@ import { AddProductComponent } from './components/add-product/add-product.compon
 import { OrderCardComponent } from './components/order-card/order-card.component';
 import { OrderStatusPipe } from './pipes/order-status.pipe';
 import { OrderStatusText } from './pipes/order-status-text.pipe';
+import { BasketComponent } from './components/basket/basket.component';
 
 @NgModule({
   declarations: [
@@ -43,6 +44,7 @@ import { OrderStatusText } from './pipes/order-status-text.pipe';
     OrderStatusText,
     AddProductComponent,
     OrderCardComponent,
+    BasketComponent,
   ],
   imports: [
     BrowserModule,

@@ -1,1 +1,14 @@
-<div>orders history component!</div>
+<h2 style="margin-bottom: 50px; margin-left: 20px">Order History</h2>
+<div *ngIf="processingOrders$ | async as orders">
+  <div *ngFor="let order of orders">
+    <h3 style="margin: 40px 20px 20px">{{ "Order ID: " + order.id }}</h3>
+    <app-orders [order]="order"></app-orders>
+    <div class="center-buttons">
+      <button (click)="cancelOrder()">Cancel Order</button>
+    </div>
+  </div>
+</div>
+<div class="center-buttons">
+  <button class="add-button" routerLink="/product">See Products</button>
+  <button class="add-button" routerLink="/basket">Go To Basket</button>
+</div>

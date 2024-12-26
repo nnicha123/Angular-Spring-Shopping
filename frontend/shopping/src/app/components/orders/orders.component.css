@@ -21,68 +21,14 @@
     align-items: center;
 }
 
-
-.center-buttons {
-    text-align: center;
-    margin-top: 50px;
-}
-
-button {
-    background-color: rgb(222, 178, 214);
-    border: none;
-    padding: 10px 20px;
-    color: rgb(255, 249, 249);
-    font-weight: bold;
-    font-size: 20px;
-    border: 3px solid  rgb(222, 178, 214);
-    margin: 10px;
-
-}
-
-button:hover{
-    background-color: rgb(191, 133, 180);
-    cursor: pointer;
-}
-
-.add-button {
-    background-color: rgb(255, 249, 249);
-    color:rgb(222, 178, 214);
-    border: 3px solid  rgb(222, 178, 214);
-}
-
-.add-button:hover {
-    background-color: rgb(237, 233, 236);
-}
-
-button:disabled {
-    background-color: grey;
-    cursor: unset;
-}
-
-.purchase-status-banner {
-    width: 100%;
-    box-shadow: 0px 5px 5px 0px rgba(0, 0, 0, 0.2);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: white;
-    font-weight: bold;
-    font-size: 30px;
-    padding: 20px;
-}
-
-.purchase-status-banner.success{
-    background-color: rgb(48, 144, 48);
-}
-
-.purchase-status-banner.fail{
-    background-color: rgb(172, 96, 45);
-}
-
-.purchase-status-banner.saved{
-    background-color: rgb(197, 167, 84);
-}
-
 .outer-container {
     margin: 40px 20px 20px;
+}
+
+.pad {
+    padding-left: 35px
+}
+
+.pad-readOnly {
+    padding-left: 12px;
 }

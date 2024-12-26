@@ -3,7 +3,6 @@
     margin-top: 50px;
 }
 
-
 button {
     background-color: rgb(222, 178, 214);
     border: none;
@@ -50,4 +49,12 @@ button:disabled {
 
 .purchase-status-banner.success{
     background-color: rgb(48, 144, 48);
+}
+
+.purchase-status-banner.fail{
+    background-color: rgb(172, 96, 45);
+}
+
+.purchase-status-banner.saved{
+    background-color: rgb(197, 167, 84);
 }
