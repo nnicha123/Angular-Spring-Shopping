@@ -23,6 +23,8 @@ import { RatingComponent } from './components/rating/rating.component';
 import { TruncatePipe } from './pipes/truncate.pipe';
 import { AddProductComponent } from './components/add-product/add-product.component';
 import { OrderCardComponent } from './components/order-card/order-card.component';
+import { OrderStatusPipe } from './pipes/order-status.pipe';
+import { OrderStatusText } from './pipes/order-status-text.pipe';
 
 @NgModule({
   declarations: [
@@ -37,6 +39,8 @@ import { OrderCardComponent } from './components/order-card/order-card.component
     ReviewComponent,
     RatingComponent,
     TruncatePipe,
+    OrderStatusPipe,
+    OrderStatusText,
     AddProductComponent,
     OrderCardComponent,
   ],

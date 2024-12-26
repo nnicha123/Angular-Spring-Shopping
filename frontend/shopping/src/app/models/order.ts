@@ -11,4 +11,4 @@ export interface Order {
   updatedAt?: Date;
 }
 
-type Status = 'PENDING' | 'PROCESSING' | 'COMPLETED' | 'CANCELLED' | 'FAILED';
+export type Status = 'PENDING' | 'PROCESSING' | 'COMPLETED' | 'CANCELLED' | 'FAILED';

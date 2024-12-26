@@ -4,6 +4,7 @@ import { OrderItemFront } from '../../models/orderItem';
 import { OrderService } from '../../services/order.service';
 import { Observable, of, Subject, takeUntil } from 'rxjs';
 import { Order } from '../../models/order';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-orders',
@@ -22,7 +23,7 @@ export class OrdersComponent implements OnInit, OnDestroy {
   orderItems$: Observable<OrderItemFront[]> = of([]);
   currentOrder$: Observable<Order | null> = of(null);
 
-  constructor(private orderService: OrderService) {
+  constructor(private orderService: OrderService, private router: Router) {
     this.currentOrder$ = this.orderService.currentOrder$;
   }
 
@@ -45,14 +46,34 @@ export class OrdersComponent implements OnInit, OnDestroy {
   }
 
   saveOrder() {
-    this.orderService.saveOrder().pipe(takeUntil(this.destroy$)).subscribe();
+    this.orderService
+      .saveOrder()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(() => this.showOrderStatusMessage());
   }
 
   purchaseOrder() {
     this.orderService
       .purchaseOrder()
       .pipe(takeUntil(this.destroy$))
-      .subscribe();
+      .subscribe(() => {
+        this.purchaseResponse();
+      });
+  }
+
+  purchaseResponse() {
+    this.justPurchased = true;
+    setTimeout(() => {
+      this.justPurchased = false;
+      this.router.navigateByUrl('/profile');
+    }, 2000);
+  }
+
+  showOrderStatusMessage() {
+    this.justPurchased = true;
+    setTimeout(() => {
+      this.justPurchased = false;
+    }, 2000);
   }
 
   ngOnDestroy(): void {

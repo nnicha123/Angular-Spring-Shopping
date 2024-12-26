@@ -1,9 +1,12 @@
-<div class="purchase-status-banner success" *ngIf="justPurchased">
-  <!-- Purchase Failed! Please contact us. -->
-  Purchase Successful!
-</div>
-<!-- <div *ngIf="orderItems$ | async as orderItems"> -->
 <div *ngIf="currentOrder$ | async as order">
+  <div
+    class="purchase-status-banner"
+    [ngClass]="order.status | status"
+    *ngIf="justPurchased"
+  >
+    {{ order.status | statusText }}
+  </div>
+  <!-- <div *ngIf="orderItems$ | async as orderItems"> -->
   <div class="outer-container" *ngIf="order.orderItems.length > 0">
     <h2 style="margin-bottom: 50px; margin-left: 20px">Orders</h2>
     <div class="orders-container">
