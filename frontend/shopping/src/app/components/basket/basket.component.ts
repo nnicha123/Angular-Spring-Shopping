@@ -13,7 +13,7 @@ export class BasketComponent {
   justPurchased: boolean = false;
 
   destroy$: Subject<void> = new Subject<void>();
-  currentOrder$: Observable<Order | null> = of(null);
+  currentOrder$: Observable<Order | undefined> = of(undefined);
 
   constructor(private orderService: OrderService, private router: Router) {
     this.currentOrder$ = this.orderService.currentOrder$;
@@ -47,6 +47,7 @@ export class BasketComponent {
     this.justPurchased = true;
     setTimeout(() => {
       this.justPurchased = false;
+      this.orderService.getOrdersForComponents(this.destroy$);
       this.router.navigateByUrl('/orders-history');
     }, 2000);
   }
