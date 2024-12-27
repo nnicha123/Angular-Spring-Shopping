@@ -2,6 +2,7 @@ package com.nicha.shopping.dto;
 
 import java.util.List;
 
+import com.nicha.shopping.entity.OrderItems;
 import com.nicha.shopping.entity.OrderStatus;
 
 import lombok.Data;
@@ -13,5 +14,6 @@ public class OrderDTO {
 	private Integer totalQuantity;
 	private Long customerId;
 	private OrderStatus status;
-	private List<OrderItemDTO> orderItems; 
+	private List<OrderItemDTO> orderItems;
+
 }

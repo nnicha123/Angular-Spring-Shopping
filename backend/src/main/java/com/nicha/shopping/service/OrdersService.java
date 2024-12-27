@@ -9,5 +9,5 @@ public interface OrdersService {
 	List<OrderDTO> getAllOrders();
 	List<OrderDTO> findByCustomerId(Long customerId);
 	void updateOrderById(Long orderId, Orders orders);
-	Long addOrder(OrderDTO orders);
+	OrderDTO addOrder(OrderDTO orders);
 }

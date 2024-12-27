@@ -27,7 +27,7 @@ import { OrderStatusPipe } from './pipes/order-status.pipe';
 import { OrderStatusText } from './pipes/order-status-text.pipe';
 import { BasketComponent } from './components/basket/basket.component';
 import { AuthGuard } from './guard/auth.guard';
-
+import { StatusIconPipe } from './pipes/order-status-icon.pipe';
 
 @NgModule({
   declarations: [
@@ -43,6 +43,7 @@ import { AuthGuard } from './guard/auth.guard';
     RatingComponent,
     TruncatePipe,
     OrderStatusPipe,
+    StatusIconPipe,
     OrderStatusText,
     AddProductComponent,
     OrderCardComponent,
@@ -62,7 +63,7 @@ import { AuthGuard } from './guard/auth.guard';
     OrderItemService,
     AuthService,
     ReviewService,
-    AuthGuard
+    AuthGuard,
   ],
   bootstrap: [AppComponent],
 })

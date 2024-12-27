@@ -48,7 +48,7 @@ public class OrdersServiceImpl implements OrdersService {
 	}
 
 	@Override
-	public Long addOrder(OrderDTO orders) {
+	public OrderDTO addOrder(OrderDTO orders) {
 		Orders newOrder = new Orders();
 
 //		For update case
@@ -63,9 +63,9 @@ public class OrdersServiceImpl implements OrdersService {
 		newOrder.setTotalQuantity(orders.getTotalQuantity());
 		Orders savedOrder = this.ordersRepository.save(newOrder);
 		
-//		Get order Id
-		Long savedOrderId = savedOrder.getId();
-		return savedOrderId;
+//		Set id to original order before returning
+		orders.setId(savedOrder.getId());
+		return orders;
 		
 	}
 	

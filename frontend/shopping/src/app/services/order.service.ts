@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, of, Subject, takeUntil, tap } from 'rxjs';
 import { Order } from '../models/order';
 import { URL } from '../utilities';
-import { OrderItemFront } from '../models/orderItem';
+import { OrderItem, OrderItemFront } from '../models/orderItem';
 import { ProductsService } from './products.service';
 import { Product } from '../models/product';
 
@@ -39,18 +39,22 @@ export class OrderService {
     return this.apiCalled$.getValue();
   }
 
+  mapOrderItemsFront(orderItems: OrderItem[]): OrderItemFront[] {
+    return orderItems.map((item) => {
+      return {
+        id: item.id,
+        productId: item.productId,
+        quantity: item.quantity,
+        ...this.getProductById(item.productId),
+      };
+    });
+  }
+
   setOrders(orders: Order[]): void {
     const ordersToSet = orders.map((order) => {
       return {
         ...order,
-        orderItems: order.orderItems.map((item) => {
-          return {
-            id: item.id,
-            productId: item.productId,
-            quantity: item.quantity,
-            ...this.getProductById(item.productId),
-          };
-        }),
+        orderItems: this.mapOrderItemsFront(order.orderItems),
       };
     });
 
@@ -212,19 +216,27 @@ export class OrderService {
     return this.httpClient.put<void>(url, updatedOrder);
   }
 
-  saveOrder(): Observable<void> {
+  saveOrder(): Observable<Order | null> {
     const order: Order | undefined = this.currentOrder$.getValue();
     if (order) {
-      return this.httpClient.post<void>(this.url, order);
+      return this.httpClient.post<Order>(this.url, order).pipe(
+        tap((order: Order) => {
+          const returnedOrder = {
+            ...order,
+            orderItems: this.mapOrderItemsFront(order.orderItems),
+          };
+          this.setCurrentOrder(returnedOrder);
+        })
+      );
     }
-    return of();
+    return of(null);
   }
 
-  purchaseOrder(): Observable<void> {
+  purchaseOrder(): Observable<number> {
     let order: Order | undefined = this.currentOrder$.getValue();
     if (order) {
       order.status = 'PROCESSING';
-      return this.httpClient.post<void>(this.url, order).pipe(
+      return this.httpClient.post<number>(this.url, order).pipe(
         tap(() => {
           this.markApiCalledFalse();
         })

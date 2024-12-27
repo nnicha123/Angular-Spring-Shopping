@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.nicha.shopping.dto.OrderDTO;
+import com.nicha.shopping.dto.OrderItemDTO;
+import com.nicha.shopping.entity.OrderItems;
 import com.nicha.shopping.entity.Orders;
 import com.nicha.shopping.service.OrderItemsService;
 import com.nicha.shopping.service.OrdersService;
@@ -41,9 +43,11 @@ public class OrdersController {
 	}
 	
 	@PostMapping
-	void addOrder(@RequestBody OrderDTO orders) {
-		Long orderId = this.ordersService.addOrder(orders);
-		this.orderItemsService.addOrderItems(orders.getOrderItems(), orderId);
+	OrderDTO addOrder(@RequestBody OrderDTO orders) {
+		OrderDTO orderDTO = this.ordersService.addOrder(orders);
+		List<OrderItemDTO> savedOrderItems =  this.orderItemsService.addOrderItems(orders.getOrderItems(), orderDTO.getId());
+		orderDTO.setOrderItems(savedOrderItems);
+		return orderDTO;
 	}
 	
 	@PutMapping("/{orderId}")

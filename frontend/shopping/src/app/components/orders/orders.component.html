@@ -3,7 +3,7 @@
     <span class="header-status" *ngIf="order.status !== 'PENDING'">
       <h3>{{ "Ref #" + order.id }}</h3>
       <span class="status-banner" [ngClass]="order.status.toLocaleLowerCase()">
-        <i class="fa-regular fa-clock"></i>
+        <i [ngClass]="order.status | statusIcon"></i>
         <span style="margin-left: 10px">{{ order.status }}</span>
       </span>
     </span>

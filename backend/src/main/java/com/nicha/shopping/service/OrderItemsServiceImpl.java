@@ -35,7 +35,7 @@ public class OrderItemsServiceImpl implements OrderItemsService {
 
 
 	@Override
-	public void addOrderItems(List<OrderItemDTO> orderItems, Long orderId) {
+	public List<OrderItemDTO> addOrderItems(List<OrderItemDTO> orderItems, Long orderId) {
 //		Add order items with the order Id
 		List<OrderItems> newOrderItems = orderItems.stream().map( itemDTO -> {
 			OrderItems item = new OrderItems();
@@ -46,7 +46,17 @@ public class OrderItemsServiceImpl implements OrderItemsService {
 			return item;
 		}).collect(Collectors.toList());
 		
-		this.orderItemsRepository.saveAll(newOrderItems);
+		List<OrderItems> savedOrderItems =  this.orderItemsRepository.saveAll(newOrderItems);
+		
+	    List<OrderItemDTO> savedOrderItemDTOs = savedOrderItems.stream().map(item -> {
+	        OrderItemDTO itemDTO = new OrderItemDTO();
+	        itemDTO.setId(item.getId()); // Use the generated ID
+	        itemDTO.setProductId(item.getProductId());
+	        itemDTO.setQuantity(item.getQuantity());
+	        return itemDTO;
+	    }).collect(Collectors.toList());
+	    
+	    return savedOrderItemDTOs;
 	}
 	
 	

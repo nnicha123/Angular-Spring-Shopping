@@ -8,5 +8,5 @@ import com.nicha.shopping.entity.OrderItems;
 public interface OrderItemsService {
 	List<OrderItems> getAllOrderItems();
 	List<OrderItems> getOrderItemsByOrderId(Long orderId);
-	void addOrderItems(List<OrderItemDTO> orderItems, Long orderId);
+	List<OrderItemDTO> addOrderItems(List<OrderItemDTO> orderItems, Long orderId);
 }
