@@ -59,3 +59,21 @@ button:disabled {
 .empty-container {
     text-align: center;
 }
+
+select {
+    margin-left: 15px;
+    padding: 10px;
+    color: grey;
+}
+
+select option:checked {
+    background-color: pink;
+}
+
+select option:hover {
+    background-color: white;
+}
+
+select:focus {
+    outline: none;
+}

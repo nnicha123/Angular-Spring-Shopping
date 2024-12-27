@@ -1,5 +1,15 @@
 <div class="outer-container">
-  <h2 style="margin-bottom: 50px; margin-left: 20px">Order History</h2>
+  <h2 style="margin-bottom: 50px; margin-left: 20px">
+    <span>Order History </span>
+    <span>
+      <select (change)="onChange($event)">
+        <option value="ALL">ALL</option>
+        <option value="COMPLETED">COMPLETED</option>
+        <option value="PROCESSING">PROCESSING</option>
+        <option value="CANCELLED">CANCELLED</option>
+      </select>
+    </span>
+  </h2>
   <div *ngIf="orders$ | async as orders">
     <div *ngIf="orders.length > 0; else noHistory">
       <div *ngFor="let order of orders">

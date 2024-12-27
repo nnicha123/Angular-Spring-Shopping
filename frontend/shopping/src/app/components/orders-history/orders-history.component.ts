@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Observable, of, Subject } from 'rxjs';
-import { Order } from '../../models/order';
+import { Order, Status } from '../../models/order';
 import { OrderService } from '../../services/order.service';
 
 @Component({
@@ -31,6 +31,19 @@ export class OrdersHistoryComponent {
   }
 
   cancelOrder() {}
+
+  onChange(event: any) {
+    const status: Status = event.target.value;
+    if (status === 'COMPLETED') {
+      this.orders$ = this.orderService.completedOrders$;
+    } else if (status === 'CANCELLED') {
+      this.orders$ = this.orderService.cancelledOrders$;
+    } else if (status === 'PROCESSING') {
+      this.orders$ = this.orderService.processingOrders$;
+    } else {
+      this.orders$ = this.orderService.pastOrders$;
+    }
+  }
 
   ngOnDestroy(): void {
     this.destroy$.next();
