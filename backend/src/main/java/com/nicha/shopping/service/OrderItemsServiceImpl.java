@@ -1,6 +1,7 @@
 package com.nicha.shopping.service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,10 +33,32 @@ public class OrderItemsServiceImpl implements OrderItemsService {
 	public List<OrderItems> getOrderItemsByOrderId(Long orderId) {
 		return this.orderItemsRepository.findByOrderId(orderId);
 	}
+	
+	@Override
+	public List<OrderItemDTO> modifyOrderItems(List<OrderItemDTO> orderItems, Long orderId){
+//		Remove existing orderItems if it is not in the arguments provided
+		List<OrderItems> existingOrderItems = this.orderItemsRepository.findByOrderId(orderId);
+		
+	    // Convert new order item DTOs to a map for quick lookup by ID
+	    Map<Long, OrderItemDTO> newOrderItemMap = orderItems.stream()
+	        .filter(item -> item.getId() != null) // Filter out items without an ID
+	        .collect(Collectors.toMap(OrderItemDTO::getId, item -> item));
+
+	    // Find existing items that are not in the new list and delete them
+	    List<OrderItems> itemsToDelete = existingOrderItems.stream()
+	        .filter(existingItem -> !newOrderItemMap.containsKey(existingItem.getId()))
+	        .collect(Collectors.toList());
+	    this.orderItemsRepository.deleteAll(itemsToDelete);
+	    
+	    List<OrderItemDTO> savedOrderItemDTOs = addOrderItems(orderItems, orderId);
+	    return savedOrderItemDTOs;
+
+	}
 
 
 	@Override
 	public List<OrderItemDTO> addOrderItems(List<OrderItemDTO> orderItems, Long orderId) {
+		
 //		Add order items with the order Id
 		List<OrderItems> newOrderItems = orderItems.stream().map( itemDTO -> {
 			OrderItems item = new OrderItems();

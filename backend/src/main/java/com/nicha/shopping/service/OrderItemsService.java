@@ -9,4 +9,5 @@ public interface OrderItemsService {
 	List<OrderItems> getAllOrderItems();
 	List<OrderItems> getOrderItemsByOrderId(Long orderId);
 	List<OrderItemDTO> addOrderItems(List<OrderItemDTO> orderItems, Long orderId);
+	List<OrderItemDTO> modifyOrderItems(List<OrderItemDTO> orderItems, Long orderId);
 }

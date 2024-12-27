@@ -1,5 +1,6 @@
 package com.nicha.shopping.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,7 +46,13 @@ public class OrdersController {
 	@PostMapping
 	OrderDTO addOrder(@RequestBody OrderDTO orders) {
 		OrderDTO orderDTO = this.ordersService.addOrder(orders);
-		List<OrderItemDTO> savedOrderItems =  this.orderItemsService.addOrderItems(orders.getOrderItems(), orderDTO.getId());
+//		List<OrderItemDTO> savedOrderItems = new ArrayList<>();
+//		List<OrderItemDTO> orderItems = orders.getOrderItems();
+//		if(orderItems != null && !orderItems.isEmpty() && orderItems.get(0).getId() != null) {
+		List<OrderItemDTO>	savedOrderItems =  this.orderItemsService.modifyOrderItems(orders.getOrderItems(), orderDTO.getId());
+//		} else {
+//			savedOrderItems =  this.orderItemsService.addOrderItems(orders.getOrderItems(), orderDTO.getId());
+//		}
 		orderDTO.setOrderItems(savedOrderItems);
 		return orderDTO;
 	}
