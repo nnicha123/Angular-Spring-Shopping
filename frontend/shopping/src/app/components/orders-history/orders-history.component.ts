@@ -1,8 +1,7 @@
 import { Component } from '@angular/core';
-import { Observable, of, Subject, takeUntil } from 'rxjs';
+import { Observable, of, Subject } from 'rxjs';
 import { Order } from '../../models/order';
 import { OrderService } from '../../services/order.service';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-orders-history',
@@ -10,14 +9,14 @@ import { Router } from '@angular/router';
   styleUrls: ['./orders-history.component.css'],
 })
 export class OrdersHistoryComponent {
-  processingOrders$: Observable<Order[]> = of([]);
+  orders$: Observable<Order[]> = of([]);
 
   justPurchased: boolean = false;
 
   destroy$: Subject<void> = new Subject<void>();
 
-  constructor(private orderService: OrderService, private router: Router) {
-    this.processingOrders$ = this.orderService.processingOrders$;
+  constructor(private orderService: OrderService) {
+    this.orders$ = this.orderService.pastOrders$;
   }
 
   ngOnInit(): void {

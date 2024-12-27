@@ -13,6 +13,9 @@ export class OrderService {
   orders$ = new BehaviorSubject<Order[]>([]);
 
   currentOrder$ = new BehaviorSubject<Order | undefined>(undefined);
+
+  pastOrders$ = new BehaviorSubject<Order[]>([]);
+
   processingOrders$ = new BehaviorSubject<Order[]>([]);
   completedOrders$ = new BehaviorSubject<Order[]>([]);
   cancelledOrders$ = new BehaviorSubject<Order[]>([]);
@@ -80,7 +83,12 @@ export class OrderService {
       (order) => order.status == 'CANCELLED'
     );
 
+    const pastOrders: Order[] = allOrders.filter(
+      (order) => order.status !== 'PENDING'
+    );
+
     this.setCurrentOrder(currentOrder);
+    this.setPastOrders(pastOrders);
     this.setProcessingOrders(processingOrders);
     this.setCancelledOrders(cancelledOrders);
     this.setCompletedOrders(completedOrders);
@@ -98,6 +106,10 @@ export class OrderService {
 
   setCurrentOrder(order: Order | undefined): void {
     this.currentOrder$.next(order);
+  }
+
+  setPastOrders(orders: Order[]): void {
+    this.pastOrders$.next(orders);
   }
 
   setProcessingOrders(orders: Order[]): void {
