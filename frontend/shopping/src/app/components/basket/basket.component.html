@@ -2,7 +2,7 @@
   <div *ngIf="currentOrder$ | async as order; else emptyBasket">
     <div
       class="purchase-status-banner"
-      [ngClass]="order.status | status"
+      [ngClass]="order.status.toLocaleLowerCase()"
       *ngIf="justPurchased; else showHeader"
     >
       {{ order.status | statusText }}

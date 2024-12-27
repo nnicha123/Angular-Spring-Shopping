@@ -32,3 +32,51 @@
 .pad-readOnly {
     padding-left: 12px;
 }
+
+.header-status {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.header-status .status-banner {
+    border-left: 3px solid grey;
+    background-color: rgb(243, 243, 243);
+    color: rgb(136, 135, 135);
+    padding: 10px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+}
+
+.header-status .status-banner.completed{
+    border-color: rgb(20, 117, 7);
+    background-color: rgb(223, 237, 221);
+    color: rgb(20, 117, 7);
+
+}
+
+.header-status .status-banner.processing {
+    border-color: rgb(255, 196, 0);
+    background-color: rgb(253, 251, 246);
+    color: rgb(255, 196, 0);
+}
+
+.header-status .status-banner.cancelled{
+    border-color: rgb(148, 8, 8);
+    background-color: rgb(239, 226, 226);
+    color: rgb(148, 8, 8);
+
+}
+    /* return orderStatus === 'PENDING'
+      ? 'saved'
+      : orderStatus === 'PROCESSING'
+      ? 'success'
+      : orderStatus === 'COMPLETED'
+      ? 'completed'
+      : orderStatus === 'CANCELLED'
+      ? 'cancelled'
+      : 'unknown'; */
+i {
+    font-weight: bold;
+}

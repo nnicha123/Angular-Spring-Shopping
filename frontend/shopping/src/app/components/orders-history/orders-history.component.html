@@ -3,7 +3,6 @@
   <div *ngIf="processingOrders$ | async as orders">
     <div *ngIf="orders.length > 0; else noHistory">
       <div *ngFor="let order of orders">
-        <h3 style="margin: 40px 20px 20px">{{ "Order ID: " + order.id }}</h3>
         <app-orders [order]="order"></app-orders>
         <div class="center-buttons">
           <button (click)="cancelOrder()">Cancel Order</button>

@@ -10,8 +10,10 @@ export class OrderStatusPipe implements PipeTransform {
       ? 'saved'
       : orderStatus === 'PROCESSING'
       ? 'success'
+      : orderStatus === 'COMPLETED'
+      ? 'completed'
       : orderStatus === 'CANCELLED'
       ? 'cancelled'
-      : 'failed';
+      : 'unknown';
   }
 }

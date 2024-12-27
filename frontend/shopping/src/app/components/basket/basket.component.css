@@ -51,15 +51,15 @@ button:disabled {
     padding: 20px;
 }
 
-.purchase-status-banner.success{
+.purchase-status-banner.processing{
     background-color: rgb(48, 144, 48);
 }
 
-.purchase-status-banner.fail{
+.purchase-status-banner.failed{
     background-color: rgb(172, 96, 45);
 }
 
-.purchase-status-banner.saved{
+.purchase-status-banner.pending{
     background-color: rgb(197, 167, 84);
 }
 
