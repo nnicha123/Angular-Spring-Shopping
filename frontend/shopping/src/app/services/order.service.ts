@@ -40,14 +40,16 @@ export class OrderService {
   }
 
   mapOrderItemsFront(orderItems: OrderItem[]): OrderItemFront[] {
-    return orderItems.map((item) => {
-      return {
-        id: item.id,
-        productId: item.productId,
-        quantity: item.quantity,
-        ...this.getProductById(item.productId),
-      };
-    });
+    return orderItems
+      ? orderItems.map((item) => {
+          return {
+            id: item.id,
+            productId: item.productId,
+            quantity: item.quantity,
+            ...this.getProductById(item.productId),
+          };
+        })
+      : [];
   }
 
   setOrders(orders: Order[]): void {
