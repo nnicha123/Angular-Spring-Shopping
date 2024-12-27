@@ -5,7 +5,6 @@ import { Order } from '../models/order';
 import { URL } from '../utilities';
 import { OrderItem, OrderItemFront } from '../models/orderItem';
 import { ProductsService } from './products.service';
-import { Product } from '../models/product';
 
 @Injectable({
   providedIn: 'root',
@@ -19,6 +18,8 @@ export class OrderService {
   cancelledOrders$ = new BehaviorSubject<Order[]>([]);
 
   apiCalled$ = new BehaviorSubject<boolean>(false);
+
+  customerId: number = 0;
 
   url: string = URL + '/orders';
 
@@ -137,7 +138,7 @@ export class OrderService {
       status: 'PENDING',
       totalPrice: 0,
       totalQuantity: 0,
-      customerId: 3, //temp customerId
+      customerId: +(localStorage.getItem('customerId') || 0),
       orderItems: [],
     };
     return newOrder;

@@ -3,6 +3,7 @@ import { ReviewService } from '../../services/review.service';
 import { Observable, of, Subject, takeUntil } from 'rxjs';
 import { Review } from '../../models/review';
 import { ReviewCustomerDetails } from '../../models/review-customer-details';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-review',
@@ -19,13 +20,19 @@ export class ReviewComponent implements OnInit, OnDestroy {
   comment: string = '';
   touchedRating: boolean = false;
 
+  customerId: number = 0;
+
   destroy$: Subject<void> = new Subject<void>();
 
-  constructor(private reviewService: ReviewService) {}
+  constructor(
+    private reviewService: ReviewService,
+    private authService: AuthService
+  ) {}
 
   ngOnInit(): void {
     this.reviews$ = this.reviewService.getReviewsByProduct(this.productId);
     this.starsArray[0] = true;
+    this.customerId = this.authService.getCustomerId();
   }
 
   changeRating(index: number) {
@@ -47,7 +54,7 @@ export class ReviewComponent implements OnInit, OnDestroy {
       rating: this.rating,
       comment: this.comment,
       productId: this.productId,
-      customerId: 3, //default for now but later take from customerInfo (maybe in facade later on),
+      customerId: this.customerId, //default for now but later take from customerInfo (maybe in facade later on),
     };
     if (confirm('Are You sure you want to add this review?')) {
       return this.reviewService

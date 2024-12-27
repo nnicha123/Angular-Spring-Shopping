@@ -6,7 +6,12 @@
 
   <div class="products" [ngClass]="{ 'adding-product': addingProduct }">
     <div class="header">
-      <span class="header-label">Checkout Our Products!</span>
+      <span class="header-label" style="display: flex">
+        <h2 *ngIf="customer$ | async as customer" style="margin-right: 10px">
+          {{ "Hello " + customer.firstName + ", " }}
+        </h2>
+        <h2>Checkout Our Products!</h2>
+      </span>
       <button class="header-label" (click)="addingProduct = true">Add +</button>
     </div>
 

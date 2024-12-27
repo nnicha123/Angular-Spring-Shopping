@@ -8,6 +8,7 @@ import {
 import { AuthService } from '../../services/auth.service';
 import { Subject, takeUntil } from 'rxjs';
 import { Router } from '@angular/router';
+import { OrderService } from '../../services/order.service';
 
 @Component({
   selector: './app-login',
@@ -20,6 +21,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
+    private orderService: OrderService,
     private router: Router
   ) {}
 
@@ -40,6 +42,8 @@ export class LoginComponent implements OnInit, OnDestroy {
         // Log customer -> At this stage, can store customer in store
         localStorage.setItem('customerId', '' + customer.id);
         this.authService.setLoggedIn(true);
+        this.authService.setCustomer(customer);
+        this.orderService.markApiCalledFalse();
         // Then navigate
         this.router.navigateByUrl('/product');
       });

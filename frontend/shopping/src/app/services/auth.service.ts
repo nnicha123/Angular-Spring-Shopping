@@ -10,8 +10,14 @@ import { Login } from '../models/login';
 })
 export class AuthService {
   loggedIn$ = new BehaviorSubject<boolean>(false);
+  customer$ = new BehaviorSubject<Customer | null>(null);
+
   url: string = URL + '/auth';
   constructor(private httpClient: HttpClient) {}
+
+  setCustomer(customer: Customer | null) {
+    this.customer$.next(customer);
+  }
 
   setLoggedIn(value: boolean) {
     this.loggedIn$.next(value);
@@ -21,6 +27,10 @@ export class AuthService {
     return localStorage.getItem('customerId') ? true : false;
   }
 
+  getCustomerId(): number {
+    return +(localStorage.getItem('customerId') || 0);
+  }
+
   login(login: Login): Observable<Customer> {
     return this.httpClient.post<Customer>(this.url, login);
   }
@@ -28,5 +38,10 @@ export class AuthService {
   logout() {
     localStorage.removeItem('customerId');
     this.setLoggedIn(false);
+    this.setCustomer(null);
+  }
+
+  getCustomer(): Customer | null {
+    return this.customer$.getValue();
   }
 }

@@ -1,5 +1,5 @@
 <div [ngClass]="{ 'outer-container': !justPurchased }">
-  <div *ngIf="currentOrder$ | async as order">
+  <div *ngIf="currentOrder$ | async as order; else emptyBasket">
     <div *ngIf="order.orderItems.length > 0; else emptyBasket">
       <div
         class="purchase-status-banner"

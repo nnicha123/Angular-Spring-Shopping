@@ -21,22 +21,6 @@ export class OrdersComponent implements OnInit, OnDestroy {
     this.readOnly = this.order.status !== 'PENDING';
   }
 
-  // getOrders() {
-  //   console.log('hello?');
-  //   // Temp customerid
-  //   if (!this.orderService.hasApiBeenCalled()) {
-  //     console.log('in here');
-  //     const tempCustomerId = 3;
-  //     this.orderService
-  //       .getOrdersByCustomerId(tempCustomerId)
-  //       .pipe(takeUntil(this.destroy$))
-  //       .subscribe((orders) => {
-  //         this.orderService.markApiAsCalled();
-  //         this.orderService.setOrders(orders);
-  //       });
-  //   }
-  // }
-
   quantityUpdate(quantity: number, index: number) {
     this.orderService.updateOrderItemQuantity(quantity, index);
   }
