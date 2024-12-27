@@ -1,3 +1,7 @@
+.outer-container {
+    margin: 40px 20px 20px;
+}
+
 .center-buttons {
     text-align: center;
     margin-top: 50px;
@@ -57,4 +61,8 @@ button:disabled {
 
 .purchase-status-banner.saved{
     background-color: rgb(197, 167, 84);
+}
+
+.empty-container {
+    text-align: center;
 }
