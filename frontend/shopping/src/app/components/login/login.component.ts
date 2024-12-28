@@ -17,6 +17,10 @@ import { OrderService } from '../../services/order.service';
 })
 export class LoginComponent implements OnInit, OnDestroy {
   loginForm!: FormGroup;
+  inputFocused: { username: boolean; password: boolean } = {
+    username: false,
+    password: false,
+  };
   destroy$: Subject<void> = new Subject<void>();
   constructor(
     private fb: FormBuilder,
@@ -32,21 +36,23 @@ export class LoginComponent implements OnInit, OnDestroy {
     });
   }
 
+  toggleBlur(input: string) {
+    if (!this.loginForm.get(input)?.value) {
+      if (input == 'username') {
+        this.inputFocused.username = false;
+      } else {
+        this.inputFocused.password = false;
+      }
+    }
+  }
+
   onSubmit() {
     const username = this.loginForm.get('username')?.value;
     const password = this.loginForm.get('password')?.value;
     this.authService
       .login({ username, password })
       .pipe(takeUntil(this.destroy$))
-      .subscribe((customer) => {
-        // Log customer -> At this stage, can store customer in store
-        localStorage.setItem('customerId', '' + customer.id);
-        this.authService.setLoggedIn(true);
-        this.authService.setCustomer(customer);
-        this.orderService.markApiCalledFalse();
-        // Then navigate
-        this.router.navigateByUrl('/product');
-      });
+      .subscribe();
   }
 
   ngOnDestroy(): void {

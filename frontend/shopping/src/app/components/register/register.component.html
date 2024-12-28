@@ -1,0 +1,110 @@
+<div class="login-container">
+  <div class="outer-container">
+    <div class="title-container">
+      <h2 style="font-size: 50px">Register</h2>
+    </div>
+    <form class="login-form" [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+      <div class="input-container">
+        <label
+          class="placeholder"
+          *ngIf="!inputFocused.firstName"
+          for="firstName"
+        >
+          <i class="fa-solid fa-user"></i>
+          <span>Firstname</span>
+        </label>
+        <input
+          id="firstName"
+          type="text"
+          formControlName="firstName"
+          (focus)="inputFocused.firstName = true"
+          (blur)="toggleBlur('firstName')"
+        />
+      </div>
+      <div class="input-container">
+        <label
+          class="placeholder"
+          *ngIf="!inputFocused.lastName"
+          for="lastName"
+        >
+          <i class="fa-solid fa-id-card"></i>
+          <span>Lastname</span>
+        </label>
+        <input
+          id="lastName"
+          type="text"
+          formControlName="lastName"
+          (focus)="inputFocused.lastName = true"
+          (blur)="toggleBlur('lastName')"
+        />
+      </div>
+      <div class="input-container">
+        <label class="placeholder" *ngIf="!inputFocused.address" for="address">
+          <i class="fa-solid fa-address-book"></i>
+          <span>Address</span>
+        </label>
+        <textarea
+          id="address"
+          type="text"
+          formControlName="address"
+          (focus)="inputFocused.address = true"
+          (blur)="toggleBlur('address')"
+        ></textarea>
+      </div>
+      <div class="input-container">
+        <label
+          class="placeholder"
+          *ngIf="!inputFocused.imageUrl"
+          for="imageUrl"
+        >
+          <i class="fa-solid fa-image"></i>
+          <span>Image</span>
+        </label>
+        <input
+          id="imageUrl"
+          type="text"
+          formControlName="imageUrl"
+          (focus)="inputFocused.imageUrl = true"
+          (blur)="toggleBlur('imageUrl')"
+        />
+      </div>
+      <div class="input-container" style="margin-top: 20px">
+        <label
+          class="placeholder"
+          *ngIf="!inputFocused.username"
+          for="username"
+        >
+          <i class="fa-solid fa-user"></i>
+          <span>Username</span>
+        </label>
+        <input
+          id="username"
+          type="text"
+          formControlName="username"
+          (focus)="inputFocused.username = true"
+          (blur)="toggleBlur('username')"
+        />
+      </div>
+      <div class="input-container">
+        <label
+          class="placeholder"
+          *ngIf="!inputFocused.password"
+          for="password"
+        >
+          <i class="fa-solid fa-lock"></i>
+          <span>Password</span>
+        </label>
+        <input
+          id="password"
+          type="text"
+          formControlName="password"
+          (focus)="inputFocused.password = true"
+          (blur)="toggleBlur('password')"
+        />
+      </div>
+      <div class="button-container">
+        <button type="submit">Submit</button>
+      </div>
+    </form>
+  </div>
+</div>

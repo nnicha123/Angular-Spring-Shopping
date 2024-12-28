@@ -1,11 +1,3 @@
-/* .navbar-container span {
-    height: 70px; 
-    background-color: rgb(193, 163, 199);
-    height: max-content;
-    display: flex;
-    /* justify-content: space-between; 
-
-} */
 
 .navbar-container {
     display: flex;
@@ -36,6 +28,10 @@ a:hover {
     text-decoration: none;
     color: white;
 
+}
+
+.navbar-right {
+    background-color: red;
 }
 
 /* .navbar-left a {

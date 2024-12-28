@@ -46,13 +46,17 @@ h2 {
 
 }
 
-input {
+input, textarea {
     width: 300px;
     height: 2rem;
     font-size: 20px;
     border: none;
     border-radius: 5px;
     background-color: rgb(238, 224, 235);
+}
+
+textarea {
+    height: 4rem;
 }
 
 
@@ -67,6 +71,8 @@ input {
 
 .placeholder span {
     margin-left: 10px;
+    line-height: 0;
+    user-select: none; 
 }
 
 button {

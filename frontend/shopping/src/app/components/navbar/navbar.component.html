@@ -10,5 +10,6 @@
   <div class="navbar-right">
     <a *ngIf="loggedIn" routerLink="/login" (click)="logout()">Logout</a>
     <a *ngIf="!loggedIn" routerLink="/login">Login</a>
+    <a *ngIf="!loggedIn" routerLink="/register">Register</a>
   </div>
 </div>

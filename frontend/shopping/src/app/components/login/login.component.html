@@ -1,15 +1,46 @@
 <div class="login-container">
-  <form [formGroup]="loginForm" class="login-form" (ngSubmit)="onSubmit()">
-    <div class="input-container">
-      <label>Username</label>
-      <input type="text" formControlName="username" />
+  <div class="outer-container">
+    <div class="title-container">
+      <h2 style="font-size: 50px">Login</h2>
     </div>
-    <div class="input-container">
-      <label>Password</label>
-      <input type="text" formControlName="password" />
-    </div>
-    <div class="button-container">
-      <button type="submit">Submit</button>
-    </div>
-  </form>
+    <form class="login-form" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <div class="input-container">
+        <label
+          class="placeholder"
+          *ngIf="!inputFocused.username"
+          for="username"
+        >
+          <i class="fa-solid fa-user"></i>
+          <span>Username</span>
+        </label>
+        <input
+          id="username"
+          type="text"
+          formControlName="username"
+          (focus)="inputFocused.username = true"
+          (blur)="toggleBlur('username')"
+        />
+      </div>
+      <div class="input-container">
+        <label
+          class="placeholder"
+          *ngIf="!inputFocused.password"
+          for="password"
+        >
+          <i class="fa-solid fa-lock"></i>
+          <span>Password</span>
+        </label>
+        <input
+          id="password"
+          type="text"
+          formControlName="password"
+          (focus)="inputFocused.password = true"
+          (blur)="toggleBlur('password')"
+        />
+      </div>
+      <div class="button-container">
+        <button type="submit">Submit</button>
+      </div>
+    </form>
+  </div>
 </div>

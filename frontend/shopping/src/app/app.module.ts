@@ -28,6 +28,7 @@ import { OrderStatusText } from './pipes/order-status-text.pipe';
 import { BasketComponent } from './components/basket/basket.component';
 import { AuthGuard } from './guard/auth.guard';
 import { StatusIconPipe } from './pipes/order-status-icon.pipe';
+import { RegisterComponent } from './components/register/register.component';
 
 @NgModule({
   declarations: [
@@ -48,6 +49,7 @@ import { StatusIconPipe } from './pipes/order-status-icon.pipe';
     AddProductComponent,
     OrderCardComponent,
     BasketComponent,
+    RegisterComponent,
   ],
   imports: [
     BrowserModule,
