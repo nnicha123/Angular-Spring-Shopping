@@ -12,9 +12,9 @@ import { AuthService } from '../../services/auth.service';
 })
 export class ReviewComponent implements OnInit, OnDestroy {
   @Input() productId: number = 0;
-  reviews$: Observable<ReviewCustomerDetails[]> = of([]);
+  reviews$: Observable<ReviewCustomerDetails[] | undefined> = of([]);
 
-  @Input() rating: number = 0;
+  @Input() rating: number = 1;
   @Input() fontSize: number = 20;
   starsArray = Array(5).fill(false);
   comment: string = '';
@@ -30,7 +30,13 @@ export class ReviewComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.reviews$ = this.reviewService.getReviewsByProduct(this.productId);
+    if (!this.reviewService.reviewsAvailableForProduct(this.productId)) {
+      this.reviews$ = this.reviewService.getReviewsByProduct(this.productId);
+    } else {
+      this.reviews$ = this.reviewService.getCachedReviewByProduct(
+        this.productId
+      );
+    }
     this.starsArray[0] = true;
     this.customerId = this.authService.getCustomerId();
   }
@@ -45,7 +51,7 @@ export class ReviewComponent implements OnInit, OnDestroy {
       this.starsArray[i] = false;
     }
     this.touchedRating = true;
-    this.rating = index;
+    this.rating = index + 1;
   }
 
   addReview() {
@@ -60,7 +66,7 @@ export class ReviewComponent implements OnInit, OnDestroy {
       return this.reviewService
         .addReview(review)
         .pipe(takeUntil(this.destroy$))
-        .subscribe();
+        .subscribe(() => window.location.reload());
     }
     return;
   }

@@ -9,3 +9,8 @@ export interface ReviewCustomerDetails {
   createdAt?: Date;
   updatedAt?: Date;
 }
+
+export interface ReviewByProduct {
+  productId: number;
+  reviews: ReviewCustomerDetails[];
+}

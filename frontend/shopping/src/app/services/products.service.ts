@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, find, map, Observable, tap } from 'rxjs';
 import { Product } from '../models/product';
 import { URL } from '../utilities';
 
@@ -22,6 +22,13 @@ export class ProductsService {
       .getValue()
       .find((product) => product.id === id)!;
     return product;
+  }
+
+  getProduct$(id: number): Observable<Product | undefined> {
+    const product$: Observable<Product | undefined> = this.products$.pipe(
+      map((products) => products.find((product) => product.id == id))
+    );
+    return product$;
   }
 
   getProducts(): Observable<Product[]> {

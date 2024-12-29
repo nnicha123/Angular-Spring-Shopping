@@ -11,7 +11,7 @@
       (click)="changeRating(i)"
     ></i>
   </ng-container>
-  <span class="rating-text">{{ "( " + (rating + 1) + " Stars )" }} </span>
+  <span class="rating-text">{{ "( " + rating + " Stars )" }} </span>
 </div>
 <textarea [(ngModel)]="comment"></textarea>
 <button class="button-basket" [disabled]="buttonDisabled" (click)="addReview()">

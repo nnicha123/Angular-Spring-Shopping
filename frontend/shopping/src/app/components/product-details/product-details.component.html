@@ -1,5 +1,5 @@
 <div class="outer-container">
-  <div class="product-container" *ngIf="product">
+  <div class="product-container" *ngIf="product$ | async as product">
     <div class="product-info">
       <div class="product-img">
         <img [src]="product.imageUrl" alt="" />
