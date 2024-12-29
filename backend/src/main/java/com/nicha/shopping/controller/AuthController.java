@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.nicha.shopping.dto.LoginDTO;
 import com.nicha.shopping.dto.RegisterDTO;
 import com.nicha.shopping.entity.Auth;
-import com.nicha.shopping.entity.Customer;
+import com.nicha.shopping.entity.User;
 import com.nicha.shopping.service.AuthService;
 
 @CrossOrigin("http://localhost:4200")
@@ -32,12 +32,12 @@ public class AuthController {
 	}
 	
 	@PostMapping("/login")
-	Customer checkAuth(@RequestBody LoginDTO login) {
+	User checkAuth(@RequestBody LoginDTO login) {
 		return this.authService.checkAuth(login);
 	}
 	
 	@PostMapping("/register")
-	Customer registerUser(@RequestBody RegisterDTO register) {
+	User registerUser(@RequestBody RegisterDTO register) {
 		return this.authService.registerUser(register);
 	}
 }

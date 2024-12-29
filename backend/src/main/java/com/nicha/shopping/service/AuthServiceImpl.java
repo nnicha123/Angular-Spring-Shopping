@@ -6,26 +6,26 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 import com.nicha.shopping.dao.AuthRepository;
-import com.nicha.shopping.dao.CustomerRepository;
+import com.nicha.shopping.dao.UserRepository;
 import com.nicha.shopping.dto.LoginDTO;
 import com.nicha.shopping.dto.RegisterDTO;
 import com.nicha.shopping.entity.Auth;
-import com.nicha.shopping.entity.Customer;
+import com.nicha.shopping.entity.User;
 import com.nicha.shopping.entity.Role;
 
 @Service
 public class AuthServiceImpl implements AuthService {
 	
 	private AuthRepository authRepository;
-	private CustomerRepository customerRepository;
+	private UserRepository userRepository;
 	
-	public AuthServiceImpl(AuthRepository authRepository, CustomerRepository customerRepository) {
+	public AuthServiceImpl(AuthRepository authRepository, UserRepository userRepository) {
 		this.authRepository = authRepository;
-		this.customerRepository = customerRepository;
+		this.userRepository = userRepository;
 	}
 
 	@Override
-    public Customer checkAuth(LoginDTO login) {
+    public User checkAuth(LoginDTO login) {
 		String username = login.getUsername();
 		String password = login.getPassword();
         // Find the auth entity by username
@@ -41,19 +41,19 @@ public class AuthServiceImpl implements AuthService {
             throw new IllegalArgumentException("Invalid password: Authentication failed.");
         }
 
-        // Retrieve the customer associated with the auth entity
-        Optional<Customer> optionalCustomer = this.customerRepository.findById(auth.getCustomerId());
+        // Retrieve the User associated with the auth entity
+        Optional<User> optionalUser = this.userRepository.findById(auth.getUserId());
         
-        // Check if the customer exists
-        if (optionalCustomer.isEmpty()) {
-            throw new IllegalArgumentException("Customer not found for the given credentials.");
+        // Check if the User exists
+        if (optionalUser.isEmpty()) {
+            throw new IllegalArgumentException("User not found for the given credentials.");
         }
 
-        return optionalCustomer.get();
+        return optionalUser.get();
     }
 
 	@Override
-	public Customer registerUser(RegisterDTO register) {
+	public User registerUser(RegisterDTO register) {
 		String username = register.getUsername();
 		String password = register.getPassword();
 		String firstName = register.getFirstName();
@@ -67,23 +67,23 @@ public class AuthServiceImpl implements AuthService {
             throw new IllegalArgumentException("Username already used");
 		}
 				
-		Customer newCustomer = new Customer();
-		newCustomer.setFirstName(firstName);
-		newCustomer.setLastName(lastName);
-		newCustomer.setAddress(address);
-		newCustomer.setImageUrl(imageUrl);
-		newCustomer.setRole(Role.CUSTOMER);
+		User newUser = new User();
+		newUser.setFirstName(firstName);
+		newUser.setLastName(lastName);
+		newUser.setAddress(address);
+		newUser.setImageUrl(imageUrl);
+		newUser.setRole(Role.CUSTOMER);
 		
-		Customer savedCustomer = this.customerRepository.save(newCustomer);
+		User savedUser = this.userRepository.save(newUser);
 		
 		Auth newAuth = new Auth();
 		newAuth.setPassword(password);
 		newAuth.setUsername(username);
-		newAuth.setCustomerId(savedCustomer.getId());
+		newAuth.setUserId(savedUser.getId());
 		
 		this.authRepository.save(newAuth);
 		
-		return savedCustomer;
+		return savedUser;
 	}
 	
 

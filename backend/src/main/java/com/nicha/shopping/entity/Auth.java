@@ -18,6 +18,6 @@ public class Auth {
 	@Column(name = "password")
 	private String password;
 	
-	@Column(name = "customer_id")
-	private Long customerId;
+	@Column(name = "user_id")
+	private Long userId;
 }

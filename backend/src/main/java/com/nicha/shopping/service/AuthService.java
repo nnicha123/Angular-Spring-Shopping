@@ -5,10 +5,10 @@ import java.util.List;
 import com.nicha.shopping.dto.LoginDTO;
 import com.nicha.shopping.dto.RegisterDTO;
 import com.nicha.shopping.entity.Auth;
-import com.nicha.shopping.entity.Customer;
+import com.nicha.shopping.entity.User;
 
 public interface AuthService {
-	Customer checkAuth(LoginDTO login);
-	Customer registerUser(RegisterDTO register);
+	User checkAuth(LoginDTO login);
+	User registerUser(RegisterDTO register);
 	List<Auth> findAll();
 }

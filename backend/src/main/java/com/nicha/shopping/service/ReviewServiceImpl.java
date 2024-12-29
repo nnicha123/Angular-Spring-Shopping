@@ -5,21 +5,21 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.nicha.shopping.dao.CustomerRepository;
+import com.nicha.shopping.dao.UserRepository;
 import com.nicha.shopping.dao.ReviewRepository;
 import com.nicha.shopping.dto.ReviewCustomerDetailsDTO;
-import com.nicha.shopping.entity.Customer;
+import com.nicha.shopping.entity.User;
 import com.nicha.shopping.entity.Review;
 
 @Service
 public class ReviewServiceImpl implements ReviewService {
 	
 	private ReviewRepository reviewRepository;
-	private CustomerRepository customerRepository;
+	private UserRepository userRepository;
 	
-	public ReviewServiceImpl(ReviewRepository reviewRepository, CustomerRepository customerRepository) {
+	public ReviewServiceImpl(ReviewRepository reviewRepository, UserRepository userRepository) {
 		this.reviewRepository = reviewRepository;
-		this.customerRepository = customerRepository;
+		this.userRepository = userRepository;
 	}
 
 	@Override
@@ -51,10 +51,10 @@ public class ReviewServiceImpl implements ReviewService {
 			detail.setCustomerId(review.getCustomerId());
 			detail.setProductId(review.getProductId());
 			detail.setRating(review.getRating());
-			Customer customer = this.customerRepository.getById(review.getCustomerId());
+			User user = this.userRepository.getById(review.getCustomerId());
 			detail.setCustomerId(review.getCustomerId());
-			detail.setImageUrl(customer.getImageUrl());
-			detail.setName(customer.getFirstName() + " "+ customer.getLastName());
+			detail.setImageUrl(user.getImageUrl());
+			detail.setName(user.getFirstName() + " "+ user.getLastName());
 			
 			reviewCustomerDetails.add(detail);
 		}
