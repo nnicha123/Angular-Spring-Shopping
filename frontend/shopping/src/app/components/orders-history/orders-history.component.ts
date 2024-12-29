@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Observable, of, Subject } from 'rxjs';
+import { Observable, of, Subject, takeUntil } from 'rxjs';
 import { Order, Status } from '../../models/order';
 import { OrderService } from '../../services/order.service';
 
@@ -30,7 +30,18 @@ export class OrdersHistoryComponent {
     }, 2000);
   }
 
-  cancelOrder() {}
+  cancelOrder(id: number) {
+    if (
+      confirm(
+        'Are you sure you want to cancel order? This action cannot be undone.'
+      )
+    ) {
+      this.orderService
+        .cancelOrder(id)
+        .pipe(takeUntil(this.destroy$))
+        .subscribe();
+    }
+  }
 
   onChange(event: any) {
     const status: Status = event.target.value;

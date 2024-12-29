@@ -94,6 +94,13 @@ export class OrderService {
     this.setCompletedOrders(completedOrders);
   }
 
+  getOrderById(id: number): Order {
+    const order: Order = this.orders$
+      .getValue()
+      .find((order) => order.id === id)!;
+    return order;
+  }
+
   getProductById(productId: number): {
     name: string;
     imageUrl: string;
@@ -247,11 +254,24 @@ export class OrderService {
     return of(null);
   }
 
-  purchaseOrder(): Observable<number> {
+  purchaseOrder(): Observable<Order | null> {
     let order: Order | undefined = this.currentOrder$.getValue();
     if (order) {
       order.status = 'PROCESSING';
-      return this.httpClient.post<number>(this.url, order).pipe(
+      return this.httpClient.post<Order>(this.url, order).pipe(
+        tap(() => {
+          this.markApiCalledFalse();
+        })
+      );
+    }
+    return of();
+  }
+
+  cancelOrder(id: number): Observable<Order | null> {
+    let order: Order | undefined = this.getOrderById(id);
+    if (order) {
+      order.status = 'CANCELLED';
+      return this.httpClient.post<Order>(this.url, order).pipe(
         tap(() => {
           this.markApiCalledFalse();
         })
