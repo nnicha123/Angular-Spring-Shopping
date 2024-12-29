@@ -85,7 +85,6 @@ export class ReviewService {
   getCachedReviewByProduct(
     productId: number
   ): Observable<ReviewCustomerDetails[] | undefined> {
-    console.log(this.reviewsByProduct$.getValue());
     return this.reviewsByProduct$.pipe(
       map((reviews) => {
         return reviews.find((review) => review.productId === productId)

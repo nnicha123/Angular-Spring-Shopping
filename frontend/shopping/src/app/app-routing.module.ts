@@ -24,6 +24,11 @@ const routes: Routes = [
     component: OrdersHistoryComponent,
     canActivate: [AuthGuard],
   },
+  {
+    path: 'orders-processing',
+    component: OrdersHistoryComponent,
+    canActivate: [AuthGuard],
+  },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'basket', component: BasketComponent, canActivate: [AuthGuard] },

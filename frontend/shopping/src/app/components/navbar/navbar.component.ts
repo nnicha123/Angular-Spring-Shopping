@@ -24,6 +24,16 @@ export class NavbarComponent implements OnInit, OnDestroy {
     { name: 'Basket', link: '/basket', active: false },
   ];
 
+  navBarAdmin: NavBar[] = [
+    { name: 'Home', link: '/product', active: false },
+    {
+      name: 'Previous Orders',
+      link: '/orders-history',
+      active: false,
+    },
+    { name: 'Processing Orders', link: '/orders-processing', active: false },
+  ];
+
   navBarLoggedOut: NavBar[] = [
     { name: 'Home', link: '/product', active: false },
   ];
@@ -55,12 +65,16 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
 
   watchAuth() {
-    this.authService.loggedIn$
+    this.authService.customer$
       .pipe(takeUntil(this.destroy$))
-      .subscribe((loggedIn) => {
-        if (loggedIn) {
+      .subscribe((customer) => {
+        if (customer) {
           this.loggedIn = true;
-          this.navBar = this.navBarLoggedIn;
+          if (customer?.role === 'CUSTOMER') {
+            this.navBar = this.navBarLoggedIn;
+          } else {
+            this.navBar = this.navBarAdmin;
+          }
         } else {
           this.loggedIn = false;
           this.navBar = this.navBarLoggedOut;

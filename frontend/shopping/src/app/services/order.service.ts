@@ -13,16 +13,17 @@ export class OrderService {
   orders$ = new BehaviorSubject<Order[]>([]);
 
   currentOrder$ = new BehaviorSubject<Order | undefined>(undefined);
-
   pastOrders$ = new BehaviorSubject<Order[]>([]);
 
   processingOrders$ = new BehaviorSubject<Order[]>([]);
   completedOrders$ = new BehaviorSubject<Order[]>([]);
   cancelledOrders$ = new BehaviorSubject<Order[]>([]);
 
-  apiCalled$ = new BehaviorSubject<boolean>(false);
+  adminOrders$ = new BehaviorSubject<Order[]>([]);
+  adminProcessingOrders$ = new BehaviorSubject<Order[]>([]);
+  adminFinishedOrders$ = new BehaviorSubject<Order[]>([]);
 
-  customerId: number = 0;
+  apiCalled$ = new BehaviorSubject<boolean>(false);
 
   url: string = URL + '/orders';
 
@@ -54,6 +55,25 @@ export class OrderService {
           };
         })
       : [];
+  }
+
+  setOrdersForAdmin(orders: Order[]): void {
+    const ordersToSet = orders.map((order) => {
+      return {
+        ...order,
+        orderItems: this.mapOrderItemsFront(order.orderItems),
+      };
+    });
+
+    const processingOrders = ordersToSet.filter(
+      (order) => order.status === 'PROCESSING'
+    );
+    const finishedOrders = ordersToSet.filter(
+      (order) => order.status != 'PROCESSING' && order.status != 'PENDING'
+    );
+
+    this.setAdminProcessingOrders(processingOrders);
+    this.setAdminFinishedOrders(finishedOrders);
   }
 
   setOrders(orders: Order[]): void {
@@ -109,6 +129,14 @@ export class OrderService {
     const { name, imageUrl, price } =
       this.productService.getProductById(productId);
     return { name, imageUrl, price };
+  }
+
+  setAdminProcessingOrders(orders: Order[]): void {
+    this.adminProcessingOrders$.next(orders);
+  }
+
+  setAdminFinishedOrders(orders: Order[]): void {
+    this.adminFinishedOrders$.next(orders);
   }
 
   setCurrentOrder(order: Order | undefined): void {
@@ -226,6 +254,21 @@ export class OrderService {
           });
       }
     }
+  }
+
+  getOrdersAdminForComponents(destroySubject$: Subject<void>) {
+    if (!this.hasApiBeenCalled()) {
+      this.getAllOrders()
+        .pipe(takeUntil(destroySubject$))
+        .subscribe((orders) => {
+          this.markApiAsCalled();
+          this.setOrdersForAdmin(orders);
+        });
+    }
+  }
+
+  getAllOrders(): Observable<Order[]> {
+    return this.httpClient.get<Order[]>(this.url);
   }
 
   getOrdersByCustomerId(customerId: number): Observable<Order[]> {

@@ -50,7 +50,10 @@ export class AddProductComponent implements OnInit, OnDestroy {
     this.productsService
       .addProduct(newProduct)
       .pipe(takeUntil(this.destroy$))
-      .subscribe(() => this.onClose());
+      .subscribe(() => {
+        this.onClose();
+        window.location.reload();
+      });
   }
 
   onClose() {

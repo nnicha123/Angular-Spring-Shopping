@@ -5,15 +5,29 @@
   ></app-add-product>
 
   <div class="products" [ngClass]="{ 'adding-product': addingProduct }">
-    <div class="header">
+    <div
+      class="header"
+      *ngIf="customer$ | async as customer; else emptyCustomer"
+    >
       <span class="header-label" style="display: flex">
-        <h2 *ngIf="customer$ | async as customer" style="margin-right: 10px">
+        <h2 style="margin-right: 10px">
           {{ "Hello " + customer.firstName + ", " }}
         </h2>
         <h2>Checkout Our Products!</h2>
       </span>
-      <button class="header-label" (click)="addingProduct = true">Add +</button>
+      <button
+        class="header-label"
+        (click)="addingProduct = true"
+        *ngIf="customer.role === 'ADMIN'"
+      >
+        Add +
+      </button>
     </div>
+    <ng-template #emptyCustomer>
+      <span class="header header-label">
+        <h2>Please Login to be able to purchase products</h2>
+      </span>
+    </ng-template>
 
     <div class="product-container">
       <div *ngFor="let product of products$ | async">

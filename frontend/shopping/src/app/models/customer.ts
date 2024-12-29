@@ -7,4 +7,4 @@ export interface Customer {
   imageUrl: string;
 }
 
-type Role = 'CUSTOMER' | 'ADMIN';
+export type Role = 'CUSTOMER' | 'ADMIN';

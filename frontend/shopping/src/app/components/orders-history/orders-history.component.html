@@ -1,7 +1,7 @@
 <div class="outer-container">
   <h2 style="margin-bottom: 50px; margin-left: 20px">
     <span>Order History </span>
-    <span>
+    <span *ngIf="role === 'CUSTOMER'">
       <select (change)="onChange($event)">
         <option value="ALL">ALL</option>
         <option value="COMPLETED">COMPLETED</option>
@@ -14,7 +14,7 @@
     <div *ngIf="orders.length > 0; else noHistory">
       <div *ngFor="let order of orders">
         <app-orders [order]="order"></app-orders>
-        <div class="center-buttons">
+        <div class="center-buttons" *ngIf="order.status === 'PROCESSING'">
           <button (click)="cancelOrder(order.id || 0)">Cancel Order</button>
         </div>
       </div>
@@ -27,6 +27,15 @@
   </ng-template>
   <div class="center-buttons">
     <button class="add-button" routerLink="/product">See Products</button>
-    <button class="add-button" routerLink="/basket">Go To Basket</button>
+    <button class="add-button" routerLink="/basket" *ngIf="role === 'CUSTOMER'">
+      Go To Basket
+    </button>
+    <button
+      class="add-button"
+      [routerLink]="routerLink"
+      *ngIf="role === 'ADMIN'"
+    >
+      {{ textToDisplay }}
+    </button>
   </div>
 </div>

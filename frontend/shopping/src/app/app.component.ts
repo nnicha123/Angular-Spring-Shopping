@@ -35,7 +35,9 @@ export class AppComponent implements OnInit, OnDestroy {
     this.customerService
       .getCustomerById(customerId)
       .pipe(takeUntil(this.destroy$))
-      .subscribe((customer) => this.authService.setCustomer(customer));
+      .subscribe((customer) => {
+        this.authService.setCustomer(customer);
+      });
   }
 
   getProducts() {
