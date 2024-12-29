@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.nicha.shopping.dto.LoginDTO;
+import com.nicha.shopping.dto.RegisterDTO;
 import com.nicha.shopping.entity.Auth;
 import com.nicha.shopping.entity.Customer;
 import com.nicha.shopping.service.AuthService;
@@ -30,8 +31,13 @@ public class AuthController {
 		return this.authService.findAll();
 	}
 	
-	@PostMapping
+	@PostMapping("/login")
 	Customer checkAuth(@RequestBody LoginDTO login) {
 		return this.authService.checkAuth(login);
+	}
+	
+	@PostMapping("/register")
+	Customer registerUser(@RequestBody RegisterDTO register) {
+		return this.authService.registerUser(register);
 	}
 }

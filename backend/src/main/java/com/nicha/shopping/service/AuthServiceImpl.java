@@ -8,8 +8,10 @@ import org.springframework.stereotype.Service;
 import com.nicha.shopping.dao.AuthRepository;
 import com.nicha.shopping.dao.CustomerRepository;
 import com.nicha.shopping.dto.LoginDTO;
+import com.nicha.shopping.dto.RegisterDTO;
 import com.nicha.shopping.entity.Auth;
 import com.nicha.shopping.entity.Customer;
+import com.nicha.shopping.entity.Role;
 
 @Service
 public class AuthServiceImpl implements AuthService {
@@ -51,8 +53,44 @@ public class AuthServiceImpl implements AuthService {
     }
 
 	@Override
+	public Customer registerUser(RegisterDTO register) {
+		String username = register.getUsername();
+		String password = register.getPassword();
+		String firstName = register.getFirstName();
+		String lastName = register.getLastName();
+		String address = register.getAddress();
+		String imageUrl = register.getImageUrl();
+		
+		Auth auth = this.authRepository.findByUsername(username);
+		
+		if(auth != null) {
+            throw new IllegalArgumentException("Username already used");
+		}
+				
+		Customer newCustomer = new Customer();
+		newCustomer.setFirstName(firstName);
+		newCustomer.setLastName(lastName);
+		newCustomer.setAddress(address);
+		newCustomer.setImageUrl(imageUrl);
+		newCustomer.setRole(Role.CUSTOMER);
+		
+		Customer savedCustomer = this.customerRepository.save(newCustomer);
+		
+		Auth newAuth = new Auth();
+		newAuth.setPassword(password);
+		newAuth.setUsername(username);
+		newAuth.setCustomerId(savedCustomer.getId());
+		
+		this.authRepository.save(newAuth);
+		
+		return savedCustomer;
+	}
+	
+
+	@Override
 	public List<Auth> findAll() {
 		return this.authRepository.findAll();
 	}
+
 
 }

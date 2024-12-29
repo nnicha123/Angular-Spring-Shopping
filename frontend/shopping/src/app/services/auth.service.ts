@@ -39,8 +39,9 @@ export class AuthService {
   }
 
   login(login: Login): Observable<Customer> {
+    const url = this.url + '/login';
     return this.httpClient
-      .post<Customer>(this.url, login)
+      .post<Customer>(url, login)
       .pipe(tap((customer) => this.setupBrowser(customer)));
   }
 
