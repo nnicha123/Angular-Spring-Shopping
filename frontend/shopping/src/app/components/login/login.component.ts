@@ -6,9 +6,9 @@ import {
   Validators,
 } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
-import { Subject, takeUntil } from 'rxjs';
+import { Subject } from 'rxjs';
 import { Router } from '@angular/router';
-import { OrderService } from '../../services/order.service';
+import { ModuleFacade } from '../../store/module.facade';
 
 @Component({
   selector: './app-login',
@@ -22,12 +22,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     password: false,
   };
   destroy$: Subject<void> = new Subject<void>();
-  constructor(
-    private fb: FormBuilder,
-    private authService: AuthService,
-    private orderService: OrderService,
-    private router: Router
-  ) {}
+  constructor(private fb: FormBuilder, private moduleFacade: ModuleFacade) {}
 
   ngOnInit(): void {
     this.loginForm = this.fb.group({
@@ -49,10 +44,12 @@ export class LoginComponent implements OnInit, OnDestroy {
   onSubmit() {
     const username = this.loginForm.get('username')?.value;
     const password = this.loginForm.get('password')?.value;
-    this.authService
-      .login({ username, password })
-      .pipe(takeUntil(this.destroy$))
-      .subscribe();
+
+    this.moduleFacade.loginUser({ username, password });
+    // this.authService
+    //   .login({ username, password })
+    //   .pipe(takeUntil(this.destroy$))
+    //   .subscribe();
   }
 
   ngOnDestroy(): void {

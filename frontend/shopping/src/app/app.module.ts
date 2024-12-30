@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { isDevMode, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -29,6 +29,21 @@ import { BasketComponent } from './components/basket/basket.component';
 import { AuthGuard } from './guard/auth.guard';
 import { StatusIconPipe } from './pipes/order-status-icon.pipe';
 import { RegisterComponent } from './components/register/register.component';
+import { StoreModule } from '@ngrx/store';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { EffectsModule } from '@ngrx/effects';
+import * as fromStore from './store';
+import { ModuleFacade } from './store/module.facade';
+
+const NGRX_MODULES = [
+  StoreModule.forRoot({ module: fromStore.moduleReducer }),
+  EffectsModule.forRoot(fromStore.effects),
+  StoreDevtoolsModule.instrument({
+    maxAge: 25,
+    name: 'Shopping Project Dev Tool',
+    logOnly: !isDevMode(),
+  }),
+];
 
 @NgModule({
   declarations: [
@@ -57,6 +72,7 @@ import { RegisterComponent } from './components/register/register.component';
     HttpClientModule,
     ReactiveFormsModule,
     FormsModule,
+    ...NGRX_MODULES,
   ],
   providers: [
     ProductsService,
@@ -66,6 +82,7 @@ import { RegisterComponent } from './components/register/register.component';
     AuthService,
     ReviewService,
     AuthGuard,
+    ModuleFacade,
   ],
   bootstrap: [AppComponent],
 })
