@@ -1,8 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ProductsService } from './services/products.service';
-import { Subject, takeUntil } from 'rxjs';
+import { Subject, takeUntil, tap } from 'rxjs';
 import { AuthService } from './services/auth.service';
 import { CustomerService } from './services/customer.service';
+import { OrderService } from './services/order.service';
+import { Customer } from './models/customer';
 
 @Component({
   selector: 'app-root',
@@ -15,7 +17,8 @@ export class AppComponent implements OnInit, OnDestroy {
   constructor(
     private authService: AuthService,
     private customerService: CustomerService,
-    private productsService: ProductsService
+    private productsService: ProductsService,
+    private orderService: OrderService
   ) {}
 
   title = 'shopping';
@@ -37,7 +40,34 @@ export class AppComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe((customer) => {
         this.authService.setCustomer(customer);
+        this.getOrders(customer);
       });
+  }
+
+  getOrders(customer: Customer) {
+    console.log(this.orderService.hasApiBeenCalled());
+    if (!this.orderService.hasApiBeenCalled()) {
+      if (customer.role === 'CUSTOMER' && customer.id) {
+        this.orderService
+          .getOrdersByCustomerId(customer.id)
+          .pipe(
+            takeUntil(this.destroy$),
+            tap((orders) => {
+              this.orderService.markApiAsCalled();
+              this.orderService.setOrders(orders);
+            })
+          )
+          .subscribe();
+      } else {
+        this.orderService.getAllOrders().pipe(
+          takeUntil(this.destroy$),
+          tap((orders) => {
+            this.orderService.setOrdersForAdmin(orders);
+            this.orderService.markApiAsCalled();
+          })
+        );
+      }
+    }
   }
 
   getProducts() {

@@ -5,6 +5,7 @@ import { Product } from '../../models/product';
 import { ActivatedRoute } from '@angular/router';
 import { OrderService } from '../../services/order.service';
 import { OrderItemFront } from '../../models/orderItem';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-product-details',
@@ -18,11 +19,13 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
   maxQuantity: number = 10;
   minQuantity: number = 1;
   product$!: Observable<Product | undefined>;
+  isAdmin: boolean = false;
 
   constructor(
     private productService: ProductsService,
     private orderService: OrderService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private authService: AuthService
   ) {}
 
   ngOnInit(): void {
@@ -30,6 +33,10 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
       this.id = +(params.get('id') || 0);
       this.product$ = this.productService.getProduct$(this.id);
     });
+
+    this.authService.customer$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((customer) => (this.isAdmin = customer?.role === 'ADMIN'));
   }
 
   updateQuantity(instruction: string) {

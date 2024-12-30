@@ -183,7 +183,6 @@ export class OrderService {
       order = this.initializeOrder();
       order.orderItems.push(orderItem);
     }
-    this.markApiAsCalled();
     this.updateOrderFromOrderItems(order);
   }
 
@@ -229,7 +228,8 @@ export class OrderService {
       totalPrice,
       totalQuantity,
     };
-
+    console.log({ updatedOrder });
+    console.log(this.orders$.getValue());
     this.currentOrder$.next(updatedOrder);
   }
 
@@ -280,6 +280,7 @@ export class OrderService {
 
   getOrdersByCustomerId(customerId: number): Observable<Order[]> {
     const url = this.url + `/customer/${customerId}`;
+    this.markApiAsCalled();
     return this.httpClient.get<Order[]>(url);
   }
 
@@ -317,7 +318,7 @@ export class OrderService {
     return of();
   }
 
-  cancelOrder(id: number, isAdmin:boolean): Observable<Order | null> {
+  cancelOrder(id: number, isAdmin: boolean): Observable<Order | null> {
     let order: Order | undefined = this.getOrderById(id, isAdmin);
     if (order) {
       order.status = 'CANCELLED';

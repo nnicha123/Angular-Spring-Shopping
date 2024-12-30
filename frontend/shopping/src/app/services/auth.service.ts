@@ -1,8 +1,8 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 import { URL } from '../utilities';
 import { Customer } from '../models/customer';
-import { BehaviorSubject, Observable, tap } from 'rxjs';
+import { BehaviorSubject, Observable, Subject, takeUntil, tap } from 'rxjs';
 import { Login } from '../models/login';
 import { Register } from '../models/register';
 import { OrderService } from './order.service';
@@ -11,7 +11,9 @@ import { Router } from '@angular/router';
 @Injectable({
   providedIn: 'root',
 })
-export class AuthService {
+export class AuthService implements OnDestroy {
+  destroy$: Subject<void> = new Subject<void>();
+
   loggedIn$ = new BehaviorSubject<boolean>(false);
   customer$ = new BehaviorSubject<Customer | null>(null);
 
@@ -56,7 +58,19 @@ export class AuthService {
     localStorage.setItem('customerId', '' + customer.id);
     this.setLoggedIn(true);
     this.setCustomer(customer);
-    this.orderService.markApiCalledFalse();
+    if (customer.role === 'CUSTOMER') {
+      this.orderService
+        .getOrdersByCustomerId(customer.id || 0)
+        .pipe(
+          takeUntil(this.destroy$),
+          tap((orders) => {
+            this.orderService.markApiAsCalled();
+            this.orderService.setOrders(orders);
+          })
+        )
+        .subscribe();
+    }
+
     // Then navigate
     this.router.navigateByUrl('/product');
   }
@@ -69,5 +83,10 @@ export class AuthService {
 
   getCustomer(): Customer | null {
     return this.customer$.getValue();
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { OrderService } from '../../services/order.service';
 import { Router } from '@angular/router';
-import { Observable, of, Subject, takeUntil } from 'rxjs';
+import { Observable, of, Subject, takeUntil, tap } from 'rxjs';
 import { Order } from '../../models/order';
 
 @Component({

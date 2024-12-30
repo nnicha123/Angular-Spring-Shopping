@@ -19,7 +19,7 @@
         <span class="quantity">
           <button
             (click)="updateQuantity('decrement')"
-            [disabled]="this.quantity == minQuantity"
+            [disabled]="this.quantity == minQuantity || isAdmin"
           >
             -
           </button>
@@ -31,7 +31,7 @@
             [min]="minQuantity"
           />
           <button
-            [disabled]="this.quantity == maxQuantity"
+            [disabled]="this.quantity == maxQuantity || isAdmin"
             (click)="updateQuantity('increment')"
           >
             +
@@ -41,6 +41,7 @@
           style="margin-left: 20px"
           class="button-basket"
           (click)="addToBasket(product)"
+          [disabled]="isAdmin"
           routerLink="/basket"
         >
           Add to Basket {{ "(" + this.quantity + ")" }}
