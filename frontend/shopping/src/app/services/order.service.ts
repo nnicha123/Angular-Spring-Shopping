@@ -72,6 +72,8 @@ export class OrderService {
       (order) => order.status != 'PROCESSING' && order.status != 'PENDING'
     );
 
+    this.adminOrders$.next(orders);
+
     this.setAdminProcessingOrders(processingOrders);
     this.setAdminFinishedOrders(finishedOrders);
   }
@@ -114,8 +116,12 @@ export class OrderService {
     this.setCompletedOrders(completedOrders);
   }
 
-  getOrderById(id: number): Order {
-    const order: Order = this.orders$
+  getOrderById(id: number, isAdmin: boolean = false): Order {
+    let ordersToGet$ = this.orders$;
+    if (isAdmin) {
+      ordersToGet$ = this.adminOrders$;
+    }
+    const order: Order = ordersToGet$
       .getValue()
       .find((order) => order.id === id)!;
     return order;
@@ -177,6 +183,7 @@ export class OrderService {
       order = this.initializeOrder();
       order.orderItems.push(orderItem);
     }
+    this.markApiAsCalled();
     this.updateOrderFromOrderItems(order);
   }
 
@@ -310,10 +317,22 @@ export class OrderService {
     return of();
   }
 
-  cancelOrder(id: number): Observable<Order | null> {
-    let order: Order | undefined = this.getOrderById(id);
+  cancelOrder(id: number, isAdmin:boolean): Observable<Order | null> {
+    let order: Order | undefined = this.getOrderById(id, isAdmin);
     if (order) {
       order.status = 'CANCELLED';
+      return this.httpClient.post<Order>(this.url, order).pipe(
+        tap(() => {
+          this.markApiCalledFalse();
+        })
+      );
+    }
+    return of();
+  }
+  approveOrder(id: number): Observable<Order | null> {
+    let order: Order | undefined = this.getOrderById(id, true);
+    if (order) {
+      order.status = 'COMPLETED';
       return this.httpClient.post<Order>(this.url, order).pipe(
         tap(() => {
           this.markApiCalledFalse();

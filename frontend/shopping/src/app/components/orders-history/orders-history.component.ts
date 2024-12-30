@@ -14,8 +14,6 @@ import { Router } from '@angular/router';
 export class OrdersHistoryComponent {
   orders$: Observable<Order[]> = of([]);
 
-  justPurchased: boolean = false;
-
   cancellable: boolean = true;
 
   TO_PROCESS = 'Orders To Process';
@@ -37,7 +35,6 @@ export class OrdersHistoryComponent {
     const customer = this.authService.getCustomer();
     const url = this.router.url;
     this.role = customer?.role || 'CUSTOMER';
-
     if (this.role === 'CUSTOMER') {
       this.orderService.getOrdersForComponents(this.destroy$);
       this.orders$ = this.orderService.pastOrders$;
@@ -55,23 +52,37 @@ export class OrdersHistoryComponent {
     }
   }
 
-  showOrderStatusMessage() {
-    this.justPurchased = true;
-    setTimeout(() => {
-      this.justPurchased = false;
-    }, 2000);
+  showOrderStatusMessage(isAdmin: boolean) {
+    if (isAdmin) {
+      this.orderService.getOrdersAdminForComponents(this.destroy$);
+      this.router.navigateByUrl('/orders-history');
+    }
   }
 
   cancelOrder(id: number) {
+    const isAdmin = this.role === 'ADMIN';
     if (
       confirm(
         'Are you sure you want to cancel order? This action cannot be undone.'
       )
     ) {
       this.orderService
-        .cancelOrder(id)
+        .cancelOrder(id, isAdmin)
         .pipe(takeUntil(this.destroy$))
-        .subscribe();
+        .subscribe(() => {
+          this.showOrderStatusMessage(isAdmin);
+        });
+    }
+  }
+
+  approveOrder(id: number) {
+    if (confirm('Are you sure you want to approve order?')) {
+      this.orderService
+        .approveOrder(id)
+        .pipe(takeUntil(this.destroy$))
+        .subscribe(() => {
+          this.showOrderStatusMessage(true);
+        });
     }
   }
 

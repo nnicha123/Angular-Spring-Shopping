@@ -15,6 +15,13 @@
       <div *ngFor="let order of orders">
         <app-orders [order]="order"></app-orders>
         <div class="center-buttons" *ngIf="order.status === 'PROCESSING'">
+          <button
+            *ngIf="role === 'ADMIN'"
+            (click)="approveOrder(order.id || 0)"
+            class="add-button"
+          >
+            Approve Order
+          </button>
           <button (click)="cancelOrder(order.id || 0)">Cancel Order</button>
         </div>
       </div>
