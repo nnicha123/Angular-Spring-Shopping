@@ -40,34 +40,8 @@ export class AppComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe((customer) => {
         this.authService.setCustomer(customer);
-        this.getOrders(customer);
+        this.orderService.getAndSetupOrders(customer, this.destroy$);
       });
-  }
-
-  getOrders(customer: Customer) {
-    console.log(this.orderService.hasApiBeenCalled());
-    if (!this.orderService.hasApiBeenCalled()) {
-      if (customer.role === 'CUSTOMER' && customer.id) {
-        this.orderService
-          .getOrdersByCustomerId(customer.id)
-          .pipe(
-            takeUntil(this.destroy$),
-            tap((orders) => {
-              this.orderService.markApiAsCalled();
-              this.orderService.setOrders(orders);
-            })
-          )
-          .subscribe();
-      } else {
-        this.orderService.getAllOrders().pipe(
-          takeUntil(this.destroy$),
-          tap((orders) => {
-            this.orderService.setOrdersForAdmin(orders);
-            this.orderService.markApiAsCalled();
-          })
-        );
-      }
-    }
   }
 
   getProducts() {

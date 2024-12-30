@@ -58,18 +58,31 @@ export class AuthService implements OnDestroy {
     localStorage.setItem('customerId', '' + customer.id);
     this.setLoggedIn(true);
     this.setCustomer(customer);
-    if (customer.role === 'CUSTOMER') {
-      this.orderService
-        .getOrdersByCustomerId(customer.id || 0)
-        .pipe(
-          takeUntil(this.destroy$),
-          tap((orders) => {
-            this.orderService.markApiAsCalled();
-            this.orderService.setOrders(orders);
-          })
-        )
-        .subscribe();
-    }
+    this.orderService.markApiCalledFalse();
+    this.orderService.getAndSetupOrders(customer, this.destroy$);
+    // if (customer.role === 'CUSTOMER') {
+    //   this.orderService
+    //     .getOrdersByCustomerId(customer.id || 0)
+    //     .pipe(
+    //       takeUntil(this.destroy$),
+    //       tap((orders) => {
+    //         this.orderService.markApiAsCalled();
+    //         this.orderService.setOrders(orders);
+    //       })
+    //     )
+    //     .subscribe();
+    // } else {
+    //   this.orderService
+    //     .getAllOrders()
+    //     .pipe(
+    //       takeUntil(this.destroy$),
+    //       tap((orders) => {
+    //         this.orderService.markApiAsCalled();
+    //         this.orderService.setOrdersForAdmin(orders);
+    //       })
+    //     )
+    //     .subscribe();
+    // }
 
     // Then navigate
     this.router.navigateByUrl('/product');

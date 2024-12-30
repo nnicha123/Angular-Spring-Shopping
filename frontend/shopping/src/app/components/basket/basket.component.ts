@@ -3,6 +3,8 @@ import { OrderService } from '../../services/order.service';
 import { Router } from '@angular/router';
 import { Observable, of, Subject, takeUntil, tap } from 'rxjs';
 import { Order } from '../../models/order';
+import { AuthService } from '../../services/auth.service';
+import { Customer } from '../../models/customer';
 
 @Component({
   selector: 'app-basket',
@@ -15,12 +17,22 @@ export class BasketComponent {
   destroy$: Subject<void> = new Subject<void>();
   currentOrder$: Observable<Order | undefined> = of(undefined);
 
-  constructor(private orderService: OrderService, private router: Router) {
+  customer: Customer | undefined;
+
+  constructor(
+    private orderService: OrderService,
+    private authService: AuthService,
+    private router: Router
+  ) {
     this.currentOrder$ = this.orderService.currentOrder$;
   }
 
   ngOnInit(): void {
-    this.orderService.getOrdersForComponents(this.destroy$);
+    const customer = this.authService.getCustomer();
+    if (customer) {
+      this.customer = customer;
+      this.orderService.getAndSetupOrders(customer, this.destroy$);
+    }
   }
 
   quantityUpdate(quantity: number, index: number) {
@@ -47,8 +59,10 @@ export class BasketComponent {
     this.justPurchased = true;
     setTimeout(() => {
       this.justPurchased = false;
-      this.orderService.getOrdersForComponents(this.destroy$);
-      this.router.navigateByUrl('/orders-history');
+      if (this.customer) {
+        this.orderService.purchased();
+        this.router.navigateByUrl('/orders-history');
+      }
     }, 2000);
   }
 

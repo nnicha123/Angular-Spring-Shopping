@@ -3,7 +3,7 @@ import { Observable, of, Subject, takeUntil } from 'rxjs';
 import { Order, Status } from '../../models/order';
 import { OrderService } from '../../services/order.service';
 import { AuthService } from '../../services/auth.service';
-import { Role } from '../../models/customer';
+import { Customer, Role } from '../../models/customer';
 import { Router } from '@angular/router';
 
 @Component({
@@ -24,6 +24,7 @@ export class OrdersHistoryComponent {
   destroy$: Subject<void> = new Subject<void>();
 
   role: Role = 'CUSTOMER';
+  customer: Customer | undefined;
 
   constructor(
     private orderService: OrderService,
@@ -35,26 +36,28 @@ export class OrdersHistoryComponent {
     const customer = this.authService.getCustomer();
     const url = this.router.url;
     this.role = customer?.role || 'CUSTOMER';
-    if (this.role === 'CUSTOMER') {
-      this.orderService.getOrdersForComponents(this.destroy$);
-      this.orders$ = this.orderService.pastOrders$;
-    } else {
-      this.orderService.getOrdersAdminForComponents(this.destroy$);
-      if (url.includes('history')) {
-        this.orders$ = this.orderService.adminFinishedOrders$;
-        this.textToDisplay = this.TO_PROCESS;
-        this.routerLink = '/orders-processing';
+    if (customer) {
+      this.customer = customer;
+      this.orderService.getAndSetupOrders(customer, this.destroy$);
+      if (customer.role === 'CUSTOMER') {
+        this.orders$ = this.orderService.pastOrders$;
       } else {
-        this.orders$ = this.orderService.adminProcessingOrders$;
-        this.textToDisplay = this.PROCESSED_ORDERS;
-        this.routerLink = '/orders-history';
+        if (url.includes('history')) {
+          this.orders$ = this.orderService.adminFinishedOrders$;
+          this.textToDisplay = this.TO_PROCESS;
+          this.routerLink = '/orders-processing';
+        } else {
+          this.orders$ = this.orderService.adminProcessingOrders$;
+          this.textToDisplay = this.PROCESSED_ORDERS;
+          this.routerLink = '/orders-history';
+        }
       }
     }
   }
 
-  showOrderStatusMessage(isAdmin: boolean) {
-    if (isAdmin) {
-      this.orderService.getOrdersAdminForComponents(this.destroy$);
+  showOrderStatusMessage(orderId: number, isAdmin: boolean) {
+    if (isAdmin && this.customer) {
+      this.orderService.approvedOrCancelledOrder(orderId);
       this.router.navigateByUrl('/orders-history');
     }
   }
@@ -70,7 +73,7 @@ export class OrdersHistoryComponent {
         .cancelOrder(id, isAdmin)
         .pipe(takeUntil(this.destroy$))
         .subscribe(() => {
-          this.showOrderStatusMessage(isAdmin);
+          this.showOrderStatusMessage(id, isAdmin);
         });
     }
   }
@@ -81,7 +84,7 @@ export class OrdersHistoryComponent {
         .approveOrder(id)
         .pipe(takeUntil(this.destroy$))
         .subscribe(() => {
-          this.showOrderStatusMessage(true);
+          this.showOrderStatusMessage(id, true);
         });
     }
   }

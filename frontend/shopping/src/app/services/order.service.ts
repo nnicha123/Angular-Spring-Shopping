@@ -5,6 +5,7 @@ import { Order } from '../models/order';
 import { URL } from '../utilities';
 import { OrderItem, OrderItemFront } from '../models/orderItem';
 import { ProductsService } from './products.service';
+import { Customer } from '../models/customer';
 
 @Injectable({
   providedIn: 'root',
@@ -114,6 +115,31 @@ export class OrderService {
     this.setProcessingOrders(processingOrders);
     this.setCancelledOrders(cancelledOrders);
     this.setCompletedOrders(completedOrders);
+  }
+
+  purchased() {
+    const currentOrder = this.currentOrder$.getValue();
+    if (currentOrder) {
+      const updatedPastOrders = [...this.pastOrders$.getValue(), currentOrder];
+      this.setPastOrders(updatedPastOrders);
+      this.setCurrentOrder(undefined);
+    }
+  }
+
+  approvedOrCancelledOrder(orderId: number) {
+    const adminOrders = this.adminOrders$.getValue();
+    const pastOrders = this.adminFinishedOrders$.getValue();
+    const processingOrders = this.adminProcessingOrders$.getValue();
+    if (adminOrders) {
+      const finishedOrder = adminOrders.filter((order) => order.id === orderId);
+      const updatedProcessingOrders = processingOrders.filter(
+        (order) => order.id !== orderId
+      );
+      const updatedPastOrders = [...pastOrders, ...finishedOrder];
+
+      this.setAdminFinishedOrders(updatedPastOrders);
+      this.setAdminProcessingOrders(updatedProcessingOrders);
+    }
   }
 
   getOrderById(id: number, isAdmin: boolean = false): Order {
@@ -228,8 +254,6 @@ export class OrderService {
       totalPrice,
       totalQuantity,
     };
-    console.log({ updatedOrder });
-    console.log(this.orders$.getValue());
     this.currentOrder$.next(updatedOrder);
   }
 
@@ -249,32 +273,34 @@ export class OrderService {
     return this.httpClient.get<Order[]>(this.url);
   }
 
-  getOrdersForComponents(destroySubject$: Subject<void>) {
+  getAndSetupOrders(customer: Customer, destroy$: Subject<void>) {
     if (!this.hasApiBeenCalled()) {
-      const customerId = localStorage.getItem('customerId');
-      if (customerId) {
-        this.getOrdersByCustomerId(+customerId)
-          .pipe(takeUntil(destroySubject$))
-          .subscribe((orders) => {
-            this.markApiAsCalled();
-            this.setOrders(orders);
-          });
+      if (customer.role === 'CUSTOMER' && customer.id) {
+        this.getOrdersByCustomerId(customer.id)
+          .pipe(
+            takeUntil(destroy$),
+            tap((orders) => {
+              this.markApiAsCalled();
+              this.setOrders(orders);
+              return orders;
+            })
+          )
+          .subscribe();
+      } else {
+        this.getAllOrders()
+          .pipe(
+            tap((orders) => {
+              this.setOrdersForAdmin(orders);
+              this.markApiAsCalled();
+            })
+          )
+          .subscribe();
       }
     }
   }
 
-  getOrdersAdminForComponents(destroySubject$: Subject<void>) {
-    if (!this.hasApiBeenCalled()) {
-      this.getAllOrders()
-        .pipe(takeUntil(destroySubject$))
-        .subscribe((orders) => {
-          this.markApiAsCalled();
-          this.setOrdersForAdmin(orders);
-        });
-    }
-  }
-
   getAllOrders(): Observable<Order[]> {
+    this.markApiAsCalled();
     return this.httpClient.get<Order[]>(this.url);
   }
 
@@ -309,11 +335,8 @@ export class OrderService {
     let order: Order | undefined = this.currentOrder$.getValue();
     if (order) {
       order.status = 'PROCESSING';
-      return this.httpClient.post<Order>(this.url, order).pipe(
-        tap(() => {
-          this.markApiCalledFalse();
-        })
-      );
+      this.markApiCalledFalse();
+      return this.httpClient.post<Order>(this.url, order);
     }
     return of();
   }
