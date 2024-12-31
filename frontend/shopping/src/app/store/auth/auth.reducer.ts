@@ -8,23 +8,14 @@ import { getData } from '../utils';
 
 export function authReducer(): ReducerTypes<ModuleEntityState, any>[] {
   return [
-    on(fromActions.loginUser, (state, action) => {
+    on(fromActions.loginUser, fromActions.loadUser, (state, action) => {
       return {
-        ...moduleEntityAdapter.addOne(
+        ...moduleEntityAdapter.updateOne(
           {
-            data: {
-              id: 0,
-              customer: {
-                firstName: '',
-                lastName: '',
-                role: 'CUSTOMER',
-                address: '',
-                imageUrl: '',
-              },
-              orders: [],
+            id: state.selectedId || 0,
+            changes: {
+              status: 'loading',
             },
-            isLoggedIn: false,
-            status: 'loading',
           },
           state
         ),

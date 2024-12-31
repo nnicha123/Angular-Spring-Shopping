@@ -1,8 +1,10 @@
+import { Product } from '../../models/product';
 import { ModuleData, ModuleStatus } from './module.definition';
 import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 
 export interface ModuleEntity {
   data: ModuleData;
+  products: Product[];
   status: ModuleStatus;
   isLoggedIn: boolean;
 }

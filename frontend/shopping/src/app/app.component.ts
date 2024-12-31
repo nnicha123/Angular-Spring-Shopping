@@ -4,7 +4,7 @@ import { Subject, takeUntil, tap } from 'rxjs';
 import { AuthService } from './services/auth.service';
 import { CustomerService } from './services/customer.service';
 import { OrderService } from './services/order.service';
-import { Customer } from './models/customer';
+import { ModuleFacade } from './store/module.facade';
 
 @Component({
   selector: 'app-root',
@@ -18,7 +18,8 @@ export class AppComponent implements OnInit, OnDestroy {
     private authService: AuthService,
     private customerService: CustomerService,
     private productsService: ProductsService,
-    private orderService: OrderService
+    private orderService: OrderService,
+    private moduleFacade: ModuleFacade
   ) {}
 
   title = 'shopping';
@@ -31,6 +32,13 @@ export class AppComponent implements OnInit, OnDestroy {
     if (this.authService.userLoggedIn()) {
       this.authService.setLoggedIn(true);
       this.getCustomer(this.authService.getCustomerId());
+    }
+
+    this.moduleFacade.loadProducts();
+
+    const customerId = localStorage.getItem('customerId');
+    if (customerId) {
+      this.moduleFacade.loadUser(+customerId);
     }
   }
 

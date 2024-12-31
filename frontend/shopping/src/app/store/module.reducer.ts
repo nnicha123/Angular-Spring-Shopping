@@ -4,6 +4,8 @@ import {
   ModuleEntityState,
 } from './definitions/store.definitions';
 import { authReducer } from './auth/auth.reducer';
+import { productsReducer } from './products/products.reducer';
+import { ordersReducer } from './orders/orders.reducer';
 
 export const initialState: ModuleEntityState =
   moduleEntityAdapter.getInitialState({ selectedId: null });
@@ -13,7 +15,12 @@ const { selectIds, selectEntities, selectAll } =
 
 export const selectAllEntities = selectAll;
 
-const _reducer = createReducer(initialState, ...authReducer());
+const _reducer = createReducer(
+  initialState,
+  ...authReducer(),
+  ...productsReducer(),
+  ...ordersReducer()
+);
 
 export function moduleReducer(
   state: ModuleEntityState | undefined,

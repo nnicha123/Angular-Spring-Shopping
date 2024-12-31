@@ -1,0 +1,20 @@
+import { createAction, props } from '@ngrx/store';
+import { Product } from '../../models/product';
+
+enum ProductsActions {
+  LOAD_PRODUCTS = '[Products] Load Products',
+  LOAD_PRODUCTS_SUCCESS = '[Products] Load Products Success',
+  LOAD_PRODUCTS_ERROR = '[Products] Load Products Error',
+}
+
+export const loadProducts = createAction(ProductsActions.LOAD_PRODUCTS);
+
+export const loadProductsSuccess = createAction(
+  ProductsActions.LOAD_PRODUCTS_SUCCESS,
+  props<{ products: Product[] }>()
+);
+
+export const loadProductsError = createAction(
+  ProductsActions.LOAD_PRODUCTS_ERROR,
+  props<{ error: any }>()
+);

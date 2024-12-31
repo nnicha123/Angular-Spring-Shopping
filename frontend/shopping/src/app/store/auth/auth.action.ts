@@ -3,10 +3,16 @@ import { Login } from '../../models/login';
 import { Customer } from '../../models/customer';
 
 enum AuthActions {
+  LOAD_USER = '[User] Load User',
   LOGIN_USER = '[User] Login User',
   LOGIN_USER_SUCCESS = '[User] Login User Success',
   LOGIN_USER_ERROR = '[User] Login User Error',
 }
+
+export const loadUser = createAction(
+  AuthActions.LOAD_USER,
+  props<{ customerId: number }>()
+);
 
 export const loginUser = createAction(
   AuthActions.LOGIN_USER,
