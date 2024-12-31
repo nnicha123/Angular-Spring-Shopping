@@ -12,9 +12,9 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
-import { ProductsService } from '../../services/products.service';
+import { Subject } from 'rxjs';
+import { ModuleFacade } from '../../store/module.facade';
 import { Product } from '../../models/product';
-import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-add-product',
@@ -27,10 +27,7 @@ export class AddProductComponent implements OnInit, OnDestroy {
   destroy$: Subject<void> = new Subject();
   addForm!: FormGroup;
 
-  constructor(
-    private fb: FormBuilder,
-    private productsService: ProductsService
-  ) {}
+  constructor(private fb: FormBuilder, private moduleFacade: ModuleFacade) {}
 
   ngOnInit(): void {
     this.addForm = this.fb.group({
@@ -47,13 +44,8 @@ export class AddProductComponent implements OnInit, OnDestroy {
       id: 0, //default,
       ...this.addForm.value,
     };
-    this.productsService
-      .addProduct(newProduct)
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(() => {
-        this.onClose();
-        window.location.reload();
-      });
+    this.moduleFacade.addProduct(newProduct);
+    this.onClose();
   }
 
   onClose() {

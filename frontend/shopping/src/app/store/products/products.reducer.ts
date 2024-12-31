@@ -4,7 +4,7 @@ import {
   ModuleEntityState,
 } from '../definitions/store.definitions';
 import * as fromActions from './products.action';
-import { getData } from '../utils';
+import { getData, getProducts } from '../utils';
 
 export function productsReducer(): ReducerTypes<ModuleEntityState, any>[] {
   return [
@@ -43,6 +43,34 @@ export function productsReducer(): ReducerTypes<ModuleEntityState, any>[] {
               },
               status: 'ready',
               products: [...action.products],
+            },
+          },
+          state
+        ),
+      };
+    }),
+    on(fromActions.addProduct, (state, action) => {
+      return {
+        ...moduleEntityAdapter.updateOne(
+          {
+            id: state.selectedId || 0,
+            changes: {
+              status: 'loading',
+            },
+          },
+          state
+        ),
+      };
+    }),
+    on(fromActions.addProductSuccess, (state, action) => {
+      const products = getProducts(state);
+      return {
+        ...moduleEntityAdapter.updateOne(
+          {
+            id: state.selectedId || 0,
+            changes: {
+              products: [...products, action.product],
+              status: 'ready',
             },
           },
           state

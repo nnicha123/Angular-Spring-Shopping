@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { ProductsService } from '../../services/products.service';
 import { Product } from '../../models/product';
 import { Observable, of } from 'rxjs';
 import { Customer } from '../../models/customer';
-import { AuthService } from '../../services/auth.service';
+import { ModuleFacade } from '../../store/module.facade';
 
 @Component({
   selector: 'app-product',
@@ -15,14 +14,11 @@ export class ProductComponent implements OnInit {
   customer$: Observable<Customer | null> = of(null);
   addingProduct: boolean = false;
 
-  constructor(
-    private authService: AuthService,
-    private productService: ProductsService
-  ) {}
+  constructor(private moduleFacade: ModuleFacade) {}
 
   ngOnInit(): void {
-    this.products$ = this.productService.products$;
-    this.customer$ = this.authService.customer$;
+    this.products$ = this.moduleFacade.products$;
+    this.customer$ = this.moduleFacade.user$;
   }
 
   onClose() {
