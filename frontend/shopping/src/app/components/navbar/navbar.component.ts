@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { AuthService } from '../../services/auth.service';
 import { Subject, takeUntil } from 'rxjs';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
+import { ModuleFacade } from '../../store/module.facade';
 
 @Component({
   selector: 'app-navbar',
@@ -40,10 +40,10 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   navBar: NavBar[] = this.navBarLoggedOut;
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(private router: Router, private moduleFacade: ModuleFacade) {}
 
   ngOnInit(): void {
-    this.watchAuth();
+    this.watchUser();
     this.watchRoute();
   }
 
@@ -64,26 +64,24 @@ export class NavbarComponent implements OnInit, OnDestroy {
     });
   }
 
-  watchAuth() {
-    this.authService.customer$
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((customer) => {
-        if (customer) {
-          this.loggedIn = true;
-          if (customer?.role === 'CUSTOMER') {
-            this.navBar = this.navBarLoggedIn;
-          } else {
-            this.navBar = this.navBarAdmin;
-          }
+  watchUser() {
+    this.moduleFacade.user$.pipe(takeUntil(this.destroy$)).subscribe((user) => {
+      if (user && user.id) {
+        this.loggedIn = true;
+        if (user?.role === 'CUSTOMER') {
+          this.navBar = this.navBarLoggedIn;
         } else {
-          this.loggedIn = false;
-          this.navBar = this.navBarLoggedOut;
+          this.navBar = this.navBarAdmin;
         }
-      });
+      } else {
+        this.loggedIn = false;
+        this.navBar = this.navBarLoggedOut;
+      }
+    });
   }
 
   logout() {
-    this.authService.logout();
+    this.moduleFacade.logout();
   }
 
   ngOnDestroy(): void {

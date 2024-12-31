@@ -1,11 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ProductsService } from '../../services/products.service';
 import { Observable, Subject, takeUntil } from 'rxjs';
 import { Product } from '../../models/product';
 import { ActivatedRoute } from '@angular/router';
 import { OrderService } from '../../services/order.service';
 import { OrderItemFront } from '../../models/orderItem';
-import { AuthService } from '../../services/auth.service';
+import { ModuleFacade } from '../../store/module.facade';
 
 @Component({
   selector: 'app-product-details',
@@ -22,21 +21,22 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
   isAdmin: boolean = false;
 
   constructor(
-    private productService: ProductsService,
     private orderService: OrderService,
     private route: ActivatedRoute,
-    private authService: AuthService
+    private moduleFacade: ModuleFacade
   ) {}
 
   ngOnInit(): void {
     this.route.paramMap.pipe(takeUntil(this.destroy$)).subscribe((params) => {
       this.id = +(params.get('id') || 0);
-      this.product$ = this.productService.getProduct$(this.id);
+      this.product$ = this.moduleFacade.selectProductWithId(this.id);
     });
 
-    this.authService.customer$
+    this.moduleFacade.userRole$
       .pipe(takeUntil(this.destroy$))
-      .subscribe((customer) => (this.isAdmin = customer?.role === 'ADMIN'));
+      .subscribe((role) => {
+        this.isAdmin = role === 'ADMIN';
+      });
   }
 
   updateQuantity(instruction: string) {

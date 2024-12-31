@@ -49,6 +49,18 @@ export class AuthEffect {
     )
   );
 
+  logout$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(fromActions.logoutUser),
+        switchMap(() => {
+          localStorage.removeItem('customerId');
+          return [];
+        })
+      ),
+    { dispatch: false }
+  );
+
   loginUserSuccess$ = createEffect(() =>
     this.actions$.pipe(
       ofType(fromActions.loginUserSuccess),

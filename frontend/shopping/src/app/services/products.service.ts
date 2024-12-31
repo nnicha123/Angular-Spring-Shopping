@@ -17,13 +17,6 @@ export class ProductsService {
     this.products$.next(products);
   }
 
-  getProductById(id: number): Product {
-    const product: Product = this.products$
-      .getValue()
-      .find((product) => product.id === id)!;
-    return product;
-  }
-
   getProduct$(id: number): Observable<Product | undefined> {
     const product$: Observable<Product | undefined> = this.products$.pipe(
       map((products) => products.find((product) => product.id == id))

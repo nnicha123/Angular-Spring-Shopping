@@ -5,6 +5,7 @@ import { Customer } from '../../models/customer';
 enum AuthActions {
   LOAD_USER = '[User] Load User',
   LOGIN_USER = '[User] Login User',
+  LOGOUT_USER = '[User] Logout User',
   LOGIN_USER_SUCCESS = '[User] Login User Success',
   LOGIN_USER_ERROR = '[User] Login User Error',
 }
@@ -28,3 +29,5 @@ export const loginUserError = createAction(
   AuthActions.LOGIN_USER_ERROR,
   props<{ error: any }>()
 );
+
+export const logoutUser = createAction(AuthActions.LOGOUT_USER);

@@ -15,3 +15,15 @@ export function getProducts(state: ModuleEntityState): Product[] {
     cloneDeep(state.entities[state.selectedId || 0]?.products) || [];
   return products;
 }
+
+export const initialModuleData: ModuleData = {
+  id: 0,
+  customer: {
+    firstName: '',
+    lastName: '',
+    role: 'CUSTOMER',
+    address: '',
+    imageUrl: '',
+  },
+  orders: [],
+};

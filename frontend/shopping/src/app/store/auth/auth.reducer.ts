@@ -4,10 +4,23 @@ import {
   ModuleEntityState,
 } from '../definitions/store.definitions';
 import * as fromActions from './auth.action';
-import { getData } from '../utils';
+import { getData, initialModuleData } from '../utils';
 
 export function authReducer(): ReducerTypes<ModuleEntityState, any>[] {
   return [
+    on(fromActions.logoutUser, (state, action) => {
+      return {
+        ...moduleEntityAdapter.updateOne(
+          {
+            id: state.selectedId || 0,
+            changes: {
+              data: { ...initialModuleData },
+            },
+          },
+          state
+        ),
+      };
+    }),
     on(fromActions.loginUser, fromActions.loadUser, (state, action) => {
       return {
         ...moduleEntityAdapter.updateOne(

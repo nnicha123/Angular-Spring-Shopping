@@ -1,10 +1,9 @@
 import { Component } from '@angular/core';
-import { OrderService } from '../../services/order.service';
 import { Router } from '@angular/router';
-import { Observable, of, Subject, takeUntil, tap } from 'rxjs';
+import { Observable, of, Subject } from 'rxjs';
 import { Order } from '../../models/order';
-import { AuthService } from '../../services/auth.service';
 import { Customer } from '../../models/customer';
+import { ModuleFacade } from '../../store/module.facade';
 
 @Component({
   selector: 'app-basket',
@@ -19,48 +18,39 @@ export class BasketComponent {
 
   customer: Customer | undefined;
 
-  constructor(
-    private orderService: OrderService,
-    private authService: AuthService,
-    private router: Router
-  ) {
-    this.currentOrder$ = this.orderService.currentOrder$;
-  }
+  constructor(private router: Router, private moduleFacade: ModuleFacade) {}
 
   ngOnInit(): void {
-    const customer = this.authService.getCustomer();
-    if (customer) {
-      this.customer = customer;
-      this.orderService.getAndSetupOrders(customer, this.destroy$);
-    }
+    this.currentOrder$ = this.moduleFacade.currentOrder$;
   }
 
-  quantityUpdate(quantity: number, index: number) {
-    this.orderService.updateOrderItemQuantity(quantity, index);
-  }
+  // quantityUpdate(quantity: number, index: number) {
+  //   this.orderService.updateOrderItemQuantity(quantity, index);
+  // }
 
   saveOrder() {
-    this.orderService
-      .saveOrder()
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(() => this.showOrderStatusMessage());
+    this.moduleFacade.saveOrder();
   }
 
   purchaseOrder() {
-    this.orderService
-      .purchaseOrder()
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(() => {
-        this.purchaseResponse();
-      });
+    this.moduleFacade.purchaseOrder();
   }
+
+  // purchaseOrder() {
+  //   this.orderService
+  //     .purchaseOrder()
+  //     .pipe(takeUntil(this.destroy$))
+  //     .subscribe(() => {
+  //       this.purchaseResponse();
+  //     });
+  // }
 
   purchaseResponse() {
     this.justPurchased = true;
     setTimeout(() => {
       this.justPurchased = false;
       if (this.customer) {
-        this.orderService.purchased();
+        // this.orderService.purchased();
         this.router.navigateByUrl('/orders-history');
       }
     }, 2000);

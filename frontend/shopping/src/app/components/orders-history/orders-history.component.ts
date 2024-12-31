@@ -1,10 +1,9 @@
 import { Component } from '@angular/core';
 import { Observable, of, Subject, takeUntil } from 'rxjs';
 import { Order, Status } from '../../models/order';
-import { OrderService } from '../../services/order.service';
-import { AuthService } from '../../services/auth.service';
 import { Customer, Role } from '../../models/customer';
 import { Router } from '@angular/router';
+import { ModuleFacade } from '../../store/module.facade';
 
 @Component({
   selector: 'app-orders-history',
@@ -13,8 +12,6 @@ import { Router } from '@angular/router';
 })
 export class OrdersHistoryComponent {
   orders$: Observable<Order[]> = of([]);
-
-  cancellable: boolean = true;
 
   TO_PROCESS = 'Orders To Process';
   PROCESSED_ORDERS = 'Processed Orders';
@@ -26,79 +23,65 @@ export class OrdersHistoryComponent {
   role: Role = 'CUSTOMER';
   customer: Customer | undefined;
 
-  constructor(
-    private orderService: OrderService,
-    private authService: AuthService,
-    private router: Router
-  ) {}
+  constructor(private router: Router, private moduleFacade: ModuleFacade) {}
 
   ngOnInit(): void {
-    const customer = this.authService.getCustomer();
     const url = this.router.url;
-    this.role = customer?.role || 'CUSTOMER';
-    if (customer) {
-      this.customer = customer;
-      this.orderService.getAndSetupOrders(customer, this.destroy$);
-      if (customer.role === 'CUSTOMER') {
-        this.orders$ = this.orderService.pastOrders$;
-      } else {
-        if (url.includes('history')) {
-          this.orders$ = this.orderService.adminFinishedOrders$;
-          this.textToDisplay = this.TO_PROCESS;
-          this.routerLink = '/orders-processing';
+
+    this.moduleFacade.userRole$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((role) => {
+        this.role = role;
+        if (role === 'CUSTOMER') {
+          this.orders$ = this.moduleFacade.pastOrdersCustomer$;
         } else {
-          this.orders$ = this.orderService.adminProcessingOrders$;
-          this.textToDisplay = this.PROCESSED_ORDERS;
-          this.routerLink = '/orders-history';
+          if (url.includes('history')) {
+            this.orders$ = this.moduleFacade.pastOrdersAdmin$;
+            this.textToDisplay = this.TO_PROCESS;
+            this.routerLink = '/orders-processing';
+          } else {
+            this.orders$ =
+              this.moduleFacade.selectOrdersWithStatus('PROCESSING');
+            this.textToDisplay = this.PROCESSED_ORDERS;
+            this.routerLink = '/orders-history';
+          }
         }
-      }
-    }
+      });
   }
 
-  showOrderStatusMessage(orderId: number, isAdmin: boolean) {
+  showOrderStatusMessage(isAdmin: boolean) {
     if (isAdmin && this.customer) {
-      this.orderService.approvedOrCancelledOrder(orderId);
+      // this.orderService.approvedOrCancelledOrder(orderId);
       this.router.navigateByUrl('/orders-history');
     }
   }
 
   cancelOrder(id: number) {
-    const isAdmin = this.role === 'ADMIN';
     if (
       confirm(
         'Are you sure you want to cancel order? This action cannot be undone.'
       )
     ) {
-      this.orderService
-        .cancelOrder(id, isAdmin)
-        .pipe(takeUntil(this.destroy$))
-        .subscribe(() => {
-          this.showOrderStatusMessage(id, isAdmin);
-        });
+      this.moduleFacade.cancelOrder(id);
     }
   }
 
   approveOrder(id: number) {
     if (confirm('Are you sure you want to approve order?')) {
-      this.orderService
-        .approveOrder(id)
-        .pipe(takeUntil(this.destroy$))
-        .subscribe(() => {
-          this.showOrderStatusMessage(id, true);
-        });
+      this.moduleFacade.approveOrder(id);
     }
   }
 
   onChange(event: any) {
     const status: Status = event.target.value;
     if (status === 'COMPLETED') {
-      this.orders$ = this.orderService.completedOrders$;
+      this.orders$ = this.moduleFacade.selectOrdersWithStatus('COMPLETED');
     } else if (status === 'CANCELLED') {
-      this.orders$ = this.orderService.cancelledOrders$;
+      this.orders$ = this.moduleFacade.selectOrdersWithStatus('CANCELLED');
     } else if (status === 'PROCESSING') {
-      this.orders$ = this.orderService.processingOrders$;
+      this.orders$ = this.moduleFacade.selectOrdersWithStatus('PROCESSING');
     } else {
-      this.orders$ = this.orderService.pastOrders$;
+      this.orders$ = this.moduleFacade.selectOrdersWithStatus('FAILED');
     }
   }
 

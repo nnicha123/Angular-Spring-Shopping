@@ -11,9 +11,7 @@ import { Subject, takeUntil } from 'rxjs';
 export class OrdersComponent implements OnInit, OnDestroy {
   private destroy$: Subject<void> = new Subject<void>();
 
-  constructor(private orderService: OrderService) {
-    // this.getOrders();
-  }
+  constructor(private orderService: OrderService) {}
 
   @Input() order!: Order;
   readOnly: boolean = false;
@@ -22,7 +20,7 @@ export class OrdersComponent implements OnInit, OnDestroy {
   }
 
   quantityUpdate(quantity: number, index: number) {
-    this.orderService.updateOrderItemQuantity(quantity, index);
+    // this.orderService.updateOrderItemQuantity(quantity, index);
   }
 
   ngOnDestroy(): void {

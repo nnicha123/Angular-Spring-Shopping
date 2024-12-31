@@ -4,7 +4,7 @@ import {
   ModuleEntityState,
 } from '../definitions/store.definitions';
 import * as fromActions from './products.action';
-import { getData, getProducts } from '../utils';
+import { getData, getProducts, initialModuleData } from '../utils';
 
 export function productsReducer(): ReducerTypes<ModuleEntityState, any>[] {
   return [
@@ -13,15 +13,7 @@ export function productsReducer(): ReducerTypes<ModuleEntityState, any>[] {
         ...moduleEntityAdapter.addOne(
           {
             data: {
-              id: 0,
-              customer: {
-                firstName: '',
-                lastName: '',
-                role: 'CUSTOMER',
-                address: '',
-                imageUrl: '',
-              },
-              orders: [],
+              ...initialModuleData,
             },
             isLoggedIn: false,
             status: 'loading',

@@ -6,6 +6,12 @@ import {
 import { AuthEffect } from './auth/auth.effect';
 import { moduleReducer } from './module.reducer';
 import {
+  approveOrder,
+  approveOrderError,
+  approveOrderSuccess,
+  cancelOrder,
+  cancelOrderError,
+  cancelOrderSuccess,
   loadOrdersError,
   loadOrdersForAdmin,
   loadOrdersForCustomer,
@@ -30,6 +36,12 @@ const actions = {
   loadOrdersForCustomer: loadOrdersForCustomer,
   loadOrdersSuccess: loadOrdersSuccess,
   loadOrdersError: loadOrdersError,
+  cancelOrder: cancelOrder,
+  cancelOrderSuccess: cancelOrderSuccess,
+  cancelOrderError: cancelOrderError,
+  approveOrder: approveOrder,
+  approveOrderSuccess: approveOrderSuccess,
+  approveOrderError: approveOrderError,
 };
 
 const effects: any[] = [AuthEffect, ProductsEffect, OrdersEffect];

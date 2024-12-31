@@ -3,11 +3,13 @@ import { ModuleEntityState } from './definitions/store.definitions';
 import { Login } from '../models/login';
 import * as fromAuthActions from './auth/auth.action';
 import * as fromProductsActions from './products/products.action';
+import * as fromOrderActions from './orders/orders.action';
 import { Injectable } from '@angular/core';
 import { Product } from '../models/product';
 import { Observable } from 'rxjs';
-import { Customer } from '../models/customer';
+import { Customer, Role } from '../models/customer';
 import * as fromSelectors from './module.selector';
+import { Order, Status } from '../models/order';
 
 @Injectable()
 export class ModuleFacade {
@@ -29,11 +31,57 @@ export class ModuleFacade {
     this.store.dispatch(fromAuthActions.loginUser({ login }));
   }
 
+  logout(): void {
+    this.store.dispatch(fromAuthActions.logoutUser());
+  }
+
+  cancelOrder(id: number): void {
+    this.store.dispatch(fromOrderActions.cancelOrder({ id }));
+  }
+
+  approveOrder(id: number): void {
+    this.store.dispatch(fromOrderActions.approveOrder({ id }));
+  }
+
+  saveOrder(): void {
+    this.store.dispatch(fromOrderActions.saveOrder());
+  }
+
+  purchaseOrder(): void {
+    this.store.dispatch(fromOrderActions.purchaseOrder());
+  }
+
+  selectOrdersWithStatus(status: Status): Observable<Order[]> {
+    return this.store.pipe(
+      select(fromSelectors.selectOrdersWithStatus(status))
+    );
+  }
+
+  selectProductWithId(id: number): Observable<Product | undefined> {
+    return this.store.pipe(select(fromSelectors.selectProductsWithId(id)));
+  }
+
   get user$(): Observable<Customer> {
     return this.store.pipe(select(fromSelectors.selectUser));
   }
 
+  get userRole$(): Observable<Role> {
+    return this.store.pipe(select(fromSelectors.selectRole));
+  }
+
   get products$(): Observable<Product[]> {
     return this.store.pipe(select(fromSelectors.selectProducts));
+  }
+
+  get pastOrdersCustomer$(): Observable<Order[]> {
+    return this.store.pipe(select(fromSelectors.selectPastOrdersForCustomer));
+  }
+
+  get pastOrdersAdmin$(): Observable<Order[]> {
+    return this.store.pipe(select(fromSelectors.selectPastOrdersForAdmin));
+  }
+
+  get currentOrder$(): Observable<Order | undefined> {
+    return this.store.pipe(select(fromSelectors.selectCurrentOrder));
   }
 }
