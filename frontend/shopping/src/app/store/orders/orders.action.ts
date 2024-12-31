@@ -1,5 +1,6 @@
 import { createAction, props } from '@ngrx/store';
 import { Order } from '../../models/order';
+import { OrderItemFront } from '../../models/orderItem';
 
 enum OrderActions {
   LOAD_ORDERS_FOR_ADMIN = '[Orders] Load Orders for Admin',
@@ -18,6 +19,12 @@ enum OrderActions {
   PURCHASE_ORDER = '[Orders] Purchase Order',
   PURCHASE_ORDER_SUCCESS = '[Orders] Purchase Order Success',
   PURCHASE_ORDER_ERROR = '[Orders] Purchase Order Error',
+  UPDATE_ORDER_ITEMS = '[Orders] Update Order Items',
+  UPDATE_ORDER_ITEMS_SUCCESS = '[Orders] Update Order Items Success',
+  UPDATE_ORDER_ITEMS_ERROR = '[Orders] Update Order Items Error',
+  ADD_ORDER_ITEM = '[ORders] Add Order Item',
+  ADD_ORDER_ITEM_SUCCESS = '[ORders] Add Order Item Success',
+  ADD_ORDER_ITEM_ERROR = '[ORders] Add Order Item Error',
 }
 
 export const loadOrdersForAdmin = createAction(
@@ -90,5 +97,35 @@ export const purchaseOrderSuccess = createAction(
 
 export const purchaseOrderError = createAction(
   OrderActions.PURCHASE_ORDER_ERROR,
+  props<{ errors: any }>()
+);
+
+export const updateOrderItems = createAction(
+  OrderActions.UPDATE_ORDER_ITEMS,
+  props<{ quantity: number; index: number }>()
+);
+
+export const updateOrderItemsSuccess = createAction(
+  OrderActions.UPDATE_ORDER_ITEMS_SUCCESS,
+  props<{ order: Order }>()
+);
+
+export const updateOrderItemsError = createAction(
+  OrderActions.UPDATE_ORDER_ITEMS_ERROR,
+  props<{ errors: any }>()
+);
+
+export const addOrderItems = createAction(
+  OrderActions.ADD_ORDER_ITEM,
+  props<{ orderItem: OrderItemFront }>()
+);
+
+export const addOrderItemsSuccess = createAction(
+  OrderActions.ADD_ORDER_ITEM_SUCCESS,
+  props<{ order: Order }>()
+);
+
+export const addOrderItemsError = createAction(
+  OrderActions.ADD_ORDER_ITEM_ERROR,
   props<{ errors: any }>()
 );

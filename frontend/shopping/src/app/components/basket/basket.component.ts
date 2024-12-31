@@ -24,9 +24,9 @@ export class BasketComponent {
     this.currentOrder$ = this.moduleFacade.currentOrder$;
   }
 
-  // quantityUpdate(quantity: number, index: number) {
-  //   this.orderService.updateOrderItemQuantity(quantity, index);
-  // }
+  quantityUpdate(quantity: number, index: number) {
+    this.moduleFacade.updateOrderItems(quantity, index);
+  }
 
   saveOrder() {
     this.moduleFacade.saveOrder();

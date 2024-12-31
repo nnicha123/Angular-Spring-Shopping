@@ -2,6 +2,7 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { OrderService } from '../../services/order.service';
 import { Order, Status } from '../../models/order';
 import { Subject, takeUntil } from 'rxjs';
+import { ModuleFacade } from '../../store/module.facade';
 
 @Component({
   selector: 'app-orders',
@@ -11,7 +12,7 @@ import { Subject, takeUntil } from 'rxjs';
 export class OrdersComponent implements OnInit, OnDestroy {
   private destroy$: Subject<void> = new Subject<void>();
 
-  constructor(private orderService: OrderService) {}
+  constructor(private moduleFacade: ModuleFacade) {}
 
   @Input() order!: Order;
   readOnly: boolean = false;
@@ -21,6 +22,7 @@ export class OrdersComponent implements OnInit, OnDestroy {
 
   quantityUpdate(quantity: number, index: number) {
     // this.orderService.updateOrderItemQuantity(quantity, index);
+    this.moduleFacade.updateOrderItems(quantity, index);
   }
 
   ngOnDestroy(): void {

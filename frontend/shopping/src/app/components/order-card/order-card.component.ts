@@ -19,11 +19,12 @@ export class OrderCardComponent {
   }
 
   updateQuantity(instruction: string) {
+    let currentQuantity = this.orderItem.quantity;
     if (instruction === 'increment') {
-      this.orderItem.quantity += 1;
+      currentQuantity += 1;
     } else {
-      this.orderItem.quantity -= 1;
+      currentQuantity -= 1;
     }
-    this.quantity.emit(this.orderItem.quantity);
+    this.quantity.emit(currentQuantity);
   }
 }

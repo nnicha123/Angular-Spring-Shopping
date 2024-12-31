@@ -2,7 +2,6 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Observable, Subject, takeUntil } from 'rxjs';
 import { Product } from '../../models/product';
 import { ActivatedRoute } from '@angular/router';
-import { OrderService } from '../../services/order.service';
 import { OrderItemFront } from '../../models/orderItem';
 import { ModuleFacade } from '../../store/module.facade';
 
@@ -21,7 +20,6 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
   isAdmin: boolean = false;
 
   constructor(
-    private orderService: OrderService,
     private route: ActivatedRoute,
     private moduleFacade: ModuleFacade
   ) {}
@@ -56,7 +54,7 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
       imageUrl,
       price,
     };
-    this.orderService.addOrderItem(orderItem);
+    this.moduleFacade.addOrderItem(orderItem);
   }
 
   ngOnDestroy(): void {

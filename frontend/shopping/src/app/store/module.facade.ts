@@ -10,6 +10,7 @@ import { Observable } from 'rxjs';
 import { Customer, Role } from '../models/customer';
 import * as fromSelectors from './module.selector';
 import { Order, Status } from '../models/order';
+import { OrderItemFront } from '../models/orderItem';
 
 @Injectable()
 export class ModuleFacade {
@@ -49,6 +50,14 @@ export class ModuleFacade {
 
   purchaseOrder(): void {
     this.store.dispatch(fromOrderActions.purchaseOrder());
+  }
+
+  updateOrderItems(quantity: number, index: number): void {
+    this.store.dispatch(fromOrderActions.updateOrderItems({ quantity, index }));
+  }
+
+  addOrderItem(orderItem: OrderItemFront) {
+    this.store.dispatch(fromOrderActions.addOrderItems({ orderItem }));
   }
 
   selectOrdersWithStatus(status: Status): Observable<Order[]> {

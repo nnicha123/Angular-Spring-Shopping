@@ -8,6 +8,7 @@ import { select, Store } from '@ngrx/store';
 import { ModuleEntityState } from '../definitions/store.definitions';
 import * as fromSelectors from '../module.selector';
 import { Router } from '@angular/router';
+import { OrderItemFront } from '../../models/orderItem';
 
 @Injectable()
 export class OrdersEffect {
@@ -77,6 +78,7 @@ export class OrdersEffect {
       })
     )
   );
+
   toHistory$ = createEffect(
     () =>
       this.actions$.pipe(
@@ -128,4 +130,88 @@ export class OrdersEffect {
       })
     )
   );
+
+  updateOrderItems$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(fromActions.updateOrderItems),
+      withLatestFrom(this.store.pipe(select(fromSelectors.selectCurrentOrder))),
+      switchMap(([{ quantity, index }, currentOrder]) => {
+        if (currentOrder) {
+          let orderItems = [...currentOrder.orderItems];
+          if (quantity === 0) {
+            orderItems.splice(index, 1);
+          } else {
+            orderItems[index] = {
+              ...orderItems[index],
+              quantity,
+            };
+          }
+          currentOrder = {
+            ...currentOrder,
+            orderItems,
+            ...updateTotal(orderItems),
+          };
+        }
+        return [fromActions.updateOrderItemsSuccess({ order: currentOrder })];
+      })
+    )
+  );
+
+  addOrderItem$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(fromActions.addOrderItems),
+      withLatestFrom(this.store.pipe(select(fromSelectors.selectCurrentOrder))),
+      switchMap(([{ orderItem }, currentOrder]) => {
+        if (currentOrder) {
+          let updatedOrderItems = [...currentOrder.orderItems];
+          const existingProductIndex = currentOrder.orderItems.findIndex(
+            (item) => item.productId === orderItem.productId
+          );
+          if (existingProductIndex === -1) {
+            updatedOrderItems = [...updatedOrderItems, orderItem];
+          } else {
+            updatedOrderItems[existingProductIndex] = {
+              ...updatedOrderItems[existingProductIndex],
+              quantity:
+                updatedOrderItems[existingProductIndex].quantity +
+                orderItem.quantity,
+            };
+          }
+          currentOrder = {
+            ...currentOrder,
+            orderItems: [...updatedOrderItems],
+            ...updateTotal(updatedOrderItems),
+          };
+        } else {
+          currentOrder = initializeOrder();
+          currentOrder.orderItems.push(orderItem);
+        }
+
+        return [fromActions.addOrderItemsSuccess({ order: currentOrder })];
+      })
+    )
+  );
+}
+
+function updateTotal(orderItems: OrderItemFront[]) {
+  const totalPrice = orderItems.reduce(
+    (total, item) => total + item.quantity * item.price,
+    0
+  );
+  const totalQuantity = orderItems.reduce(
+    (total, item) => total + item.quantity,
+    0
+  );
+  return { totalPrice, totalQuantity };
+}
+
+function initializeOrder(): Order {
+  const newOrder: Order = {
+    status: 'PENDING',
+    totalPrice: 0,
+    totalQuantity: 0,
+    customerId: +(localStorage.getItem('customerId') || 0),
+    orderItems: [],
+  };
+  return newOrder;
 }

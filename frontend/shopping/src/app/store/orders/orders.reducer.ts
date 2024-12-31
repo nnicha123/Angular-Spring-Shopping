@@ -49,19 +49,25 @@ export function ordersReducer(): ReducerTypes<ModuleEntityState, any>[] {
         ),
       };
     }),
-    on(fromActions.cancelOrder, fromActions.approveOrder, (state, action) => {
-      return {
-        ...moduleEntityAdapter.updateOne(
-          {
-            id: state.selectedId || 0,
-            changes: {
-              status: 'loading',
+    on(
+      fromActions.cancelOrder,
+      fromActions.approveOrder,
+      fromActions.updateOrderItems,
+      fromActions.addOrderItems,
+      (state, action) => {
+        return {
+          ...moduleEntityAdapter.updateOne(
+            {
+              id: state.selectedId || 0,
+              changes: {
+                status: 'loading',
+              },
             },
-          },
-          state
-        ),
-      };
-    }),
+            state
+          ),
+        };
+      }
+    ),
     on(fromActions.cancelOrderSuccess, (state, action) => {
       const data = getData(state);
       const cancelledId = action.id;
@@ -182,6 +188,66 @@ export function ordersReducer(): ReducerTypes<ModuleEntityState, any>[] {
                 orders: [...updatedOrders],
               },
               status: 'ready',
+            },
+          },
+          state
+        ),
+      };
+    }),
+    on(fromActions.updateOrderItemsSuccess, (state, action) => {
+      const data = getData(state);
+      const products = getProducts(state);
+
+      let updatedOrders = data.orders.map((order) => {
+        if (order.status === 'PENDING') {
+          return action.order;
+        } else {
+          return order;
+        }
+      });
+
+      updatedOrders = mapOrders(updatedOrders, products);
+
+      return {
+        ...moduleEntityAdapter.updateOne(
+          {
+            id: state.selectedId || 0,
+            changes: {
+              data: {
+                ...data,
+                orders: [...updatedOrders],
+              },
+              status: 'loading',
+            },
+          },
+          state
+        ),
+      };
+    }),
+    on(fromActions.addOrderItemsSuccess, (state, action) => {
+      const data = getData(state);
+      const products = getProducts(state);
+
+      let updatedOrders = data.orders.map((order) => {
+        if (order.status === 'PENDING') {
+          return action.order;
+        } else {
+          return order;
+        }
+      });
+
+      updatedOrders = mapOrders(updatedOrders, products);
+
+      return {
+        ...moduleEntityAdapter.updateOne(
+          {
+            id: state.selectedId || 0,
+            changes: {
+              data: {
+                ...data,
+                orders: [...updatedOrders],
+              },
+              status: 'loading',
             },
           },
           state
