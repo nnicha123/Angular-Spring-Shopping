@@ -185,6 +185,10 @@ export class OrdersEffect {
         } else {
           currentOrder = initializeOrder();
           currentOrder.orderItems.push(orderItem);
+          currentOrder = {
+            ...currentOrder,
+            ...updateTotal(currentOrder.orderItems),
+          };
         }
 
         return [fromActions.addOrderItemsSuccess({ order: currentOrder })];

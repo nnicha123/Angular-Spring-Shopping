@@ -227,16 +227,20 @@ export function ordersReducer(): ReducerTypes<ModuleEntityState, any>[] {
     on(fromActions.addOrderItemsSuccess, (state, action) => {
       const data = getData(state);
       const products = getProducts(state);
-
+      let pendingOrderPresent = false;
       let updatedOrders = data.orders.map((order) => {
         if (order.status === 'PENDING') {
+          pendingOrderPresent = true;
           return action.order;
         } else {
           return order;
         }
       });
-
-      updatedOrders = mapOrders(updatedOrders, products);
+      if (pendingOrderPresent) {
+        updatedOrders = mapOrders(updatedOrders, products);
+      } else {
+        updatedOrders = mapOrders([...updatedOrders, action.order], products);
+      }
 
       return {
         ...moduleEntityAdapter.updateOne(
