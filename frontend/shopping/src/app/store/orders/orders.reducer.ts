@@ -169,7 +169,7 @@ export function ordersReducer(): ReducerTypes<ModuleEntityState, any>[] {
       const products = getProducts(state);
 
       let updatedOrders = data.orders.map((order) => {
-        if (order.id === action.order.id) {
+        if (order.status === 'PENDING') {
           return action.order;
         } else {
           return order;
