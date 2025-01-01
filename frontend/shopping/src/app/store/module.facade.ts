@@ -4,6 +4,7 @@ import { Login } from '../models/login';
 import * as fromAuthActions from './auth/auth.action';
 import * as fromProductsActions from './products/products.action';
 import * as fromOrderActions from './orders/orders.action';
+import * as fromReviewActions from './review/review.action';
 import { Injectable } from '@angular/core';
 import { Product } from '../models/product';
 import { Observable } from 'rxjs';
@@ -12,6 +13,8 @@ import * as fromSelectors from './module.selector';
 import { Order, Status } from '../models/order';
 import { OrderItemFront } from '../models/orderItem';
 import { Register } from '../models/register';
+import { Review } from '../models/review';
+import { ReviewCustomerDetails } from '../models/review-customer-details';
 
 @Injectable()
 export class ModuleFacade {
@@ -65,6 +68,14 @@ export class ModuleFacade {
     this.store.dispatch(fromOrderActions.addOrderItems({ orderItem }));
   }
 
+  loadReviewForProduct(productId: number) {
+    this.store.dispatch(fromReviewActions.loadReviews({ productId }));
+  }
+
+  addReview(review: Review) {
+    this.store.dispatch(fromReviewActions.addReview({ review }));
+  }
+
   selectOrdersWithStatus(status: Status): Observable<Order[]> {
     return this.store.pipe(
       select(fromSelectors.selectOrdersWithStatus(status))
@@ -73,6 +84,12 @@ export class ModuleFacade {
 
   selectProductWithId(id: number): Observable<Product | undefined> {
     return this.store.pipe(select(fromSelectors.selectProductsWithId(id)));
+  }
+
+  selectReviewsForProductId(productId: number): Observable<ReviewCustomerDetails[]> {
+    return this.store.pipe(
+      select(fromSelectors.selectReviewsForProductId(productId))
+    );
   }
 
   get user$(): Observable<Customer> {

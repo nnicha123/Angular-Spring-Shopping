@@ -6,6 +6,7 @@ import {
 import { authReducer } from './auth/auth.reducer';
 import { productsReducer } from './products/products.reducer';
 import { ordersReducer } from './orders/orders.reducer';
+import { reviewReducer } from './review/review.reducer';
 
 export const initialState: ModuleEntityState =
   moduleEntityAdapter.getInitialState({ selectedId: null });
@@ -19,7 +20,8 @@ const _reducer = createReducer(
   initialState,
   ...authReducer(),
   ...productsReducer(),
-  ...ordersReducer()
+  ...ordersReducer(),
+  ...reviewReducer()
 );
 
 export function moduleReducer(

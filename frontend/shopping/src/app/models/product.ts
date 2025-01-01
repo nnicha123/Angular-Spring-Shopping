@@ -1,3 +1,6 @@
+import { Review } from './review';
+import { ReviewCustomerDetails } from './review-customer-details';
+
 export interface Product {
   id: number;
   name: string;
@@ -8,4 +11,5 @@ export interface Product {
   numSold: number;
   price: number;
   numRatings: number;
+  reviews: ReviewCustomerDetails[];
 }

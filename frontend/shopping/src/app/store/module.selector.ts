@@ -32,6 +32,11 @@ export const selectProductsWithId = (id: number) =>
     products.find((product) => product.id === id)
   );
 
+export const selectReviewsForProductId = (productId: number) =>
+  createSelector(selectProductsWithId(productId), (product) => {
+    return product ? product.reviews : [];
+  });
+
 export const selectData = createSelector(selectEntity, (entity) =>
   entity ? entity.data : ({} as ModuleData)
 );

@@ -4,6 +4,7 @@ import { Observable, of, Subject, takeUntil } from 'rxjs';
 import { Review } from '../../models/review';
 import { ReviewCustomerDetails } from '../../models/review-customer-details';
 import { AuthService } from '../../services/auth.service';
+import { ModuleFacade } from '../../store/module.facade';
 
 @Component({
   selector: 'app-review',
@@ -24,21 +25,15 @@ export class ReviewComponent implements OnInit, OnDestroy {
 
   destroy$: Subject<void> = new Subject<void>();
 
-  constructor(
-    private reviewService: ReviewService,
-    private authService: AuthService
-  ) {}
+  constructor(private moduleFacade: ModuleFacade) {}
 
   ngOnInit(): void {
-    if (!this.reviewService.reviewsAvailableForProduct(this.productId)) {
-      this.reviews$ = this.reviewService.getReviewsByProduct(this.productId);
-    } else {
-      this.reviews$ = this.reviewService.getCachedReviewByProduct(
-        this.productId
-      );
-    }
+    this.reviews$ = this.moduleFacade.selectReviewsForProductId(this.productId);
+    this.moduleFacade.user$.pipe(takeUntil(this.destroy$)).subscribe((user) => {
+      this.customerId = user.id || 0;
+    });
+
     this.starsArray[0] = true;
-    this.customerId = this.authService.getCustomerId();
   }
 
   changeRating(index: number) {
@@ -63,12 +58,8 @@ export class ReviewComponent implements OnInit, OnDestroy {
       customerId: this.customerId, //default for now but later take from customerInfo (maybe in facade later on),
     };
     if (confirm('Are You sure you want to add this review?')) {
-      return this.reviewService
-        .addReview(review)
-        .pipe(takeUntil(this.destroy$))
-        .subscribe(() => window.location.reload());
+      this.moduleFacade.addReview(review);
     }
-    return;
   }
 
   get buttonDisabled() {

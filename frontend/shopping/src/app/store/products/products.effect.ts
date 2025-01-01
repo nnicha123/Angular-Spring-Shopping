@@ -1,9 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import * as fromActions from './products.action';
-import { from, map, switchMap } from 'rxjs';
+import * as fromReviewActions from '../review/review.action';
+import { map, Observable, of, switchMap } from 'rxjs';
 import { ProductsService } from '../../services/products.service';
 import { Product } from '../../models/product';
+import { Action } from '@ngrx/store';
 
 @Injectable()
 export class ProductsEffect {

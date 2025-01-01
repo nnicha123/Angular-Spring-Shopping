@@ -24,6 +24,7 @@ import {
   loadProductsSuccess,
 } from './products/products.action';
 import { ProductsEffect } from './products/products.effect';
+import { ReviewEffect } from './review/review.effect';
 
 const actions = {
   loginUser: loginUser,
@@ -44,6 +45,6 @@ const actions = {
   approveOrderError: approveOrderError,
 };
 
-const effects: any[] = [AuthEffect, ProductsEffect, OrdersEffect];
+const effects: any[] = [AuthEffect, ProductsEffect, OrdersEffect, ReviewEffect];
 
 export { actions, effects, moduleReducer };
