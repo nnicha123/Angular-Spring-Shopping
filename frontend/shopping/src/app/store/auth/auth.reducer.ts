@@ -14,7 +14,10 @@ export function authReducer(): ReducerTypes<ModuleEntityState, any>[] {
           {
             id: state.selectedId || 0,
             changes: {
-              data: { ...initialModuleData },
+              data: {
+                ...initialModuleData,
+                id: state.selectedId || 0,
+              },
             },
           },
           state

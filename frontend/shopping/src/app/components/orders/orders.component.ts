@@ -21,7 +21,6 @@ export class OrdersComponent implements OnInit, OnDestroy {
   }
 
   quantityUpdate(quantity: number, index: number) {
-    // this.orderService.updateOrderItemQuantity(quantity, index);
     this.moduleFacade.updateOrderItems(quantity, index);
   }
 

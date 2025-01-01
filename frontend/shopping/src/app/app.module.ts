@@ -7,7 +7,6 @@ import { HttpClientModule } from '@angular/common/http';
 import { ProductsService } from './services/products.service';
 import { CustomerService } from './services/customer.service';
 import { OrderService } from './services/order.service';
-import { OrderItemService } from './services/order-item.service';
 import { ProductComponent } from './components/product/product.component';
 import { OrdersHistoryComponent } from './components/orders-history/orders-history.component';
 import { ProductCardComponent } from './components/product-card/product-card.component';
@@ -78,7 +77,6 @@ const NGRX_MODULES = [
     ProductsService,
     CustomerService,
     OrderService,
-    OrderItemService,
     AuthService,
     ReviewService,
     AuthGuard,
