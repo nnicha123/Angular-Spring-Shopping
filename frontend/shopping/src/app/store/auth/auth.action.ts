@@ -1,6 +1,7 @@
 import { createAction, props } from '@ngrx/store';
 import { Login } from '../../models/login';
 import { Customer } from '../../models/customer';
+import { Register } from '../../models/register';
 
 enum AuthActions {
   LOAD_USER = '[User] Load User',
@@ -8,7 +9,14 @@ enum AuthActions {
   LOGOUT_USER = '[User] Logout User',
   LOGIN_USER_SUCCESS = '[User] Login User Success',
   LOGIN_USER_ERROR = '[User] Login User Error',
+  REGISTER_USER = '[User] Register User',
 }
+
+export const registerUser = createAction(
+  AuthActions.REGISTER_USER,
+  props<{ register: Register }>()
+);
+
 
 export const loadUser = createAction(
   AuthActions.LOAD_USER,

@@ -5,17 +5,16 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
-import { AuthService } from '../../services/auth.service';
-import { Subject, takeUntil } from 'rxjs';
-import { Router } from '@angular/router';
-import { OrderService } from '../../services/order.service';
+import { Subject } from 'rxjs';
+import { Register } from '../../models/register';
+import { ModuleFacade } from '../../store/module.facade';
 
 @Component({
   selector: './app-register',
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.css'],
 })
-export class RegisterComponent implements OnInit, OnDestroy {
+export class RegisterComponent implements OnInit {
   registerForm!: FormGroup;
   inputFocused: {
     firstName: boolean;
@@ -32,13 +31,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
     username: false,
     password: false,
   };
-  destroy$: Subject<void> = new Subject<void>();
-  constructor(
-    private fb: FormBuilder,
-    private authService: AuthService,
-    private orderService: OrderService,
-    private router: Router
-  ) {}
+  constructor(private fb: FormBuilder, private moduleFacade: ModuleFacade) {}
 
   ngOnInit(): void {
     this.registerForm = this.fb.group({
@@ -66,22 +59,16 @@ export class RegisterComponent implements OnInit, OnDestroy {
     const username = this.registerForm.get('username')?.value;
     const password = this.registerForm.get('password')?.value;
 
-    this.authService
-      .register({
-        firstName,
-        lastName,
-        address,
-        imageUrl,
-        username,
-        password,
-        role: 'CUSTOMER',
-      })
-      .pipe(takeUntil(this.destroy$))
-      .subscribe();
-  }
+    const register: Register = {
+      firstName,
+      lastName,
+      address,
+      imageUrl,
+      username,
+      password,
+      role: 'CUSTOMER',
+    };
 
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
+    this.moduleFacade.registerUser(register);
   }
 }

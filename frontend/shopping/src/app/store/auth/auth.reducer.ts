@@ -24,19 +24,24 @@ export function authReducer(): ReducerTypes<ModuleEntityState, any>[] {
         ),
       };
     }),
-    on(fromActions.loginUser, fromActions.loadUser, (state, action) => {
-      return {
-        ...moduleEntityAdapter.updateOne(
-          {
-            id: state.selectedId || 0,
-            changes: {
-              status: 'loading',
+    on(
+      fromActions.loginUser,
+      fromActions.loadUser,
+      fromActions.registerUser,
+      (state, action) => {
+        return {
+          ...moduleEntityAdapter.updateOne(
+            {
+              id: state.selectedId || 0,
+              changes: {
+                status: 'loading',
+              },
             },
-          },
-          state
-        ),
-      };
-    }),
+            state
+          ),
+        };
+      }
+    ),
     on(fromActions.loginUserSuccess, (state, action) => {
       const data = getData(state);
       return {

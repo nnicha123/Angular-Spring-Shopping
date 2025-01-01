@@ -49,6 +49,22 @@ export class AuthEffect {
     )
   );
 
+  registerUser$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(fromActions.registerUser),
+      switchMap((action) => {
+        const register = action.register;
+        return this.authService
+          .register(register)
+          .pipe(
+            map((customer: Customer) =>
+              fromActions.loginUserSuccess({ customer })
+            )
+          );
+      })
+    )
+  );
+
   logout$ = createEffect(
     () =>
       this.actions$.pipe(

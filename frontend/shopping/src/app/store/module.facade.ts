@@ -11,6 +11,7 @@ import { Customer, Role } from '../models/customer';
 import * as fromSelectors from './module.selector';
 import { Order, Status } from '../models/order';
 import { OrderItemFront } from '../models/orderItem';
+import { Register } from '../models/register';
 
 @Injectable()
 export class ModuleFacade {
@@ -30,6 +31,10 @@ export class ModuleFacade {
 
   loginUser(login: Login): void {
     this.store.dispatch(fromAuthActions.loginUser({ login }));
+  }
+
+  registerUser(register: Register): void {
+    this.store.dispatch(fromAuthActions.registerUser({ register }));
   }
 
   logout(): void {
