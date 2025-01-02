@@ -16,5 +16,10 @@
       <app-rating style="margin-top: 15px" [rating]="rating"></app-rating>
     </div>
   </div>
-  <div class="footer" style="color: rgb(255, 249, 254)">Buy</div>
+  <div *ngIf="!isAdmin" class="footer" style="color: rgb(255, 249, 254)">
+    Buy
+  </div>
+  <div *ngIf="isAdmin" class="footer" style="color: rgb(255, 249, 254)">
+    Update
+  </div>
 </div>

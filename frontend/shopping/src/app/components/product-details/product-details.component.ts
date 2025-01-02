@@ -1,10 +1,15 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Observable, Subject, takeUntil } from 'rxjs';
+import { Observable, Subject, takeUntil, tap } from 'rxjs';
 import { Product } from '../../models/product';
 import { ActivatedRoute } from '@angular/router';
 import { OrderItemFront } from '../../models/orderItem';
 import { ModuleFacade } from '../../store/module.facade';
-import { ReviewByProduct } from '../../models/review-customer-details';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 
 @Component({
   selector: 'app-product-details',
@@ -20,16 +25,31 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
   product$!: Observable<Product | undefined>;
   isAdmin: boolean = false;
 
+  adminForm!: FormGroup;
+
   constructor(
     private route: ActivatedRoute,
-    private moduleFacade: ModuleFacade
+    private moduleFacade: ModuleFacade,
+    private fb: FormBuilder
   ) {}
 
   ngOnInit(): void {
+    this.adminForm = this.fb.group({
+      name: new FormControl('', [Validators.required]),
+      description: new FormControl('', [Validators.required]),
+    });
+
     this.route.paramMap.pipe(takeUntil(this.destroy$)).subscribe((params) => {
       this.id = +(params.get('id') || 0);
 
-      this.product$ = this.moduleFacade.selectProductWithId(this.id);
+      this.product$ = this.moduleFacade.selectProductWithId(this.id).pipe(
+        tap((product) => {
+          this.adminForm.setValue({
+            name: product?.name,
+            description: product?.description,
+          });
+        })
+      );
     });
 
     this.moduleFacade.userRole$

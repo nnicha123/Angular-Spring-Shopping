@@ -8,6 +8,7 @@ import { Product } from '../../models/product';
 })
 export class ProductCardComponent implements OnInit {
   @Input() product!: Product;
+  @Input() isAdmin: boolean = false;
   showFullText = false;
 
   rating: number = 0;

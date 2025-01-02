@@ -36,7 +36,10 @@
           [routerLink]="['/details', product.id]"
           style="text-decoration: none"
         >
-          <app-product-card [product]="product"></app-product-card>
+          <app-product-card
+            [product]="product"
+            [isAdmin]="(customer$ | async)?.role === 'ADMIN'"
+          ></app-product-card>
         </a>
       </div>
     </div>
