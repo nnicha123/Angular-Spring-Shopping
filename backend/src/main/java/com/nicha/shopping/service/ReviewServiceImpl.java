@@ -38,6 +38,14 @@ public class ReviewServiceImpl implements ReviewService {
 
 	}
 	
+
+	@Override
+	public List<ReviewCustomerDetailsDTO> findAll() {
+		List<Review> reviews =  this.reviewRepository.findAll();
+		List<ReviewCustomerDetailsDTO> reviewCustomerDetails = getReviewCustomerDetails(reviews);
+		return reviewCustomerDetails;
+	}
+	
 	public List<ReviewCustomerDetailsDTO> getReviewCustomerDetails(List<Review> reviews){
 		List<ReviewCustomerDetailsDTO> reviewCustomerDetails = new ArrayList<>();
 		
@@ -68,5 +76,6 @@ public class ReviewServiceImpl implements ReviewService {
 		this.reviewRepository.save(review);
 		
 	}
+
 
 }

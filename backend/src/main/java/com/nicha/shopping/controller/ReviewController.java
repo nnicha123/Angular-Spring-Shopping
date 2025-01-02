@@ -24,6 +24,11 @@ public class ReviewController {
 		this.reviewService = reviewService;
 	}
 	
+	@GetMapping
+	List<ReviewCustomerDetailsDTO> getAllReviews(){
+		return this.reviewService.findAll();
+	}
+	
 	@GetMapping("/customer/{customerId}")
 	List<ReviewCustomerDetailsDTO> getReviewByCustomerId(@PathVariable Long customerId){
 		return this.reviewService.findByCustomerId(customerId);
