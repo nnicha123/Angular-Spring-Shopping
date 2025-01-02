@@ -11,14 +11,11 @@ enum ReviewActions {
   ADD_REVIEW_ERROR = '[Review] Add Review Error',
 }
 
-export const loadReviews = createAction(
-  ReviewActions.LOAD_REVIEWS,
-  props<{ productId: number }>()
-);
+export const loadReviews = createAction(ReviewActions.LOAD_REVIEWS);
 
 export const loadReviewsSuccess = createAction(
   ReviewActions.LOAD_REVIEWS_SUCCESS,
-  props<{ productId: number; reviews: ReviewCustomerDetails[] }>()
+  props<{ reviews: ReviewCustomerDetails[] }>()
 );
 
 export const loadReviewsError = createAction(

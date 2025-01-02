@@ -13,4 +13,5 @@ export interface ReviewCustomerDetails {
 export interface ReviewByProduct {
   productId: number;
   reviews: ReviewCustomerDetails[];
+  avgRating: number;
 }

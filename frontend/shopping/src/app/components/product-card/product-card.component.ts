@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Product } from '../../models/product';
 
 @Component({
@@ -6,9 +6,17 @@ import { Product } from '../../models/product';
   templateUrl: './product-card.component.html',
   styleUrls: ['./product-card.component.css'],
 })
-export class ProductCardComponent {
+export class ProductCardComponent implements OnInit {
   @Input() product!: Product;
   showFullText = false;
+
+  rating: number = 0;
+
+  constructor() {}
+
+  ngOnInit(): void {
+    this.rating = this.product?.review?.avgRating || 0;
+  }
 
   toggleShowFullText() {
     this.showFullText = !this.showFullText;

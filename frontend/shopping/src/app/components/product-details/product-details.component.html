@@ -10,9 +10,9 @@
           {{ product.description }}
         </div>
         <span class="rating-info">
-          <app-rating [rating]="product.rating"></app-rating>
+          <app-rating [rating]="product?.review?.avgRating || 0"></app-rating>
           <span style="margin-left: 10px">{{
-            "(" + product.numRatings + ") reviews"
+            "(" + (product?.review?.reviews?.length || "0") + ") reviews"
           }}</span>
         </span>
         <h2>{{ product.price | currency : "USD" }}</h2>
@@ -52,7 +52,7 @@
     <!-- Review section -->
 
     <div class="review-container">
-      <app-review [productId]="product.id"></app-review>
+      <app-review [review]="product.review"></app-review>
     </div>
   </div>
 </div>

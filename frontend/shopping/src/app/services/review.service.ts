@@ -2,10 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { URL } from '../utilities';
-import {
-  ReviewByProduct,
-  ReviewCustomerDetails,
-} from '../models/review-customer-details';
+import { ReviewCustomerDetails } from '../models/review-customer-details';
 import { Review } from '../models/review';
 
 @Injectable({
@@ -15,6 +12,10 @@ export class ReviewService {
   url: string = URL + '/review';
 
   constructor(private httpClient: HttpClient) {}
+
+  getAllReviews(): Observable<ReviewCustomerDetails[]> {
+    return this.httpClient.get<ReviewCustomerDetails[]>(this.url);
+  }
 
   getReviewsByProduct(productId: number): Observable<ReviewCustomerDetails[]> {
     const url = this.url + `/product/${productId}`;

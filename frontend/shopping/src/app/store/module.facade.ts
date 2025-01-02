@@ -14,7 +14,10 @@ import { Order, Status } from '../models/order';
 import { OrderItemFront } from '../models/orderItem';
 import { Register } from '../models/register';
 import { Review } from '../models/review';
-import { ReviewCustomerDetails } from '../models/review-customer-details';
+import {
+  ReviewByProduct,
+  ReviewCustomerDetails,
+} from '../models/review-customer-details';
 
 @Injectable()
 export class ModuleFacade {
@@ -68,8 +71,8 @@ export class ModuleFacade {
     this.store.dispatch(fromOrderActions.addOrderItems({ orderItem }));
   }
 
-  loadReviewForProduct(productId: number) {
-    this.store.dispatch(fromReviewActions.loadReviews({ productId }));
+  loadReviews() {
+    this.store.dispatch(fromReviewActions.loadReviews());
   }
 
   addReview(review: Review) {
@@ -86,7 +89,9 @@ export class ModuleFacade {
     return this.store.pipe(select(fromSelectors.selectProductsWithId(id)));
   }
 
-  selectReviewsForProductId(productId: number): Observable<ReviewCustomerDetails[]> {
+  selectReviewsForProductId(
+    productId: number
+  ): Observable<ReviewByProduct | undefined> {
     return this.store.pipe(
       select(fromSelectors.selectReviewsForProductId(productId))
     );

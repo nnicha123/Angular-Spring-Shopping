@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import * as fromActions from './review.action';
+import * as fromProductsActions from '../products/products.action';
 import { map, switchMap, withLatestFrom } from 'rxjs';
 import { ReviewService } from '../../services/review.service';
-import { Review } from '../../models/review';
 import { ReviewCustomerDetails } from '../../models/review-customer-details';
 import { select, Store } from '@ngrx/store';
 import { ModuleEntityState } from '../definitions/store.definitions';
@@ -17,13 +17,22 @@ export class ReviewEffect {
     private reviewService: ReviewService
   ) {}
 
-  loadReview$ = createEffect(() =>
+  loadProductsSuccess = createEffect(() =>
+    this.actions$.pipe(
+      ofType(fromProductsActions.loadProductsSuccess),
+      switchMap(() => {
+        return [fromActions.loadReviews()];
+      })
+    )
+  );
+
+  loadReviews$ = createEffect(() =>
     this.actions$.pipe(
       ofType(fromActions.loadReviews),
-      switchMap(({ productId }) => {
-        return this.reviewService.getReviewsByProduct(productId).pipe(
+      switchMap(() => {
+        return this.reviewService.getAllReviews().pipe(
           map((reviews: ReviewCustomerDetails[]) => {
-            return fromActions.loadReviewsSuccess({ productId, reviews });
+            return fromActions.loadReviewsSuccess({ reviews });
           })
         );
       })

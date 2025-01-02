@@ -13,10 +13,7 @@
         (mouseleave)="showFullText = false"
         >{{ product.description | truncate : 30 : showFullText }}</span
       >
-      <app-rating
-        style="margin-top: 15px"
-        [rating]="product.rating"
-      ></app-rating>
+      <app-rating style="margin-top: 15px" [rating]="rating"></app-rating>
     </div>
   </div>
   <div class="footer" style="color: rgb(255, 249, 254)">Buy</div>

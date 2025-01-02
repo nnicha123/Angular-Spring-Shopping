@@ -34,7 +34,7 @@ export const selectProductsWithId = (id: number) =>
 
 export const selectReviewsForProductId = (productId: number) =>
   createSelector(selectProductsWithId(productId), (product) => {
-    return product ? product.reviews : [];
+    return product ? product.review : undefined;
   });
 
 export const selectData = createSelector(selectEntity, (entity) =>

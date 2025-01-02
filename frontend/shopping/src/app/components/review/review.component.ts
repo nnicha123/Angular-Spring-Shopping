@@ -1,10 +1,8 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { ReviewService } from '../../services/review.service';
-import { Observable, of, Subject, takeUntil } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
 import { Review } from '../../models/review';
-import { ReviewCustomerDetails } from '../../models/review-customer-details';
-import { AuthService } from '../../services/auth.service';
 import { ModuleFacade } from '../../store/module.facade';
+import { ReviewByProduct } from '../../models/review-customer-details';
 
 @Component({
   selector: 'app-review',
@@ -12,8 +10,7 @@ import { ModuleFacade } from '../../store/module.facade';
   styleUrls: ['./review.component.css'],
 })
 export class ReviewComponent implements OnInit, OnDestroy {
-  @Input() productId: number = 0;
-  reviews$: Observable<ReviewCustomerDetails[] | undefined> = of([]);
+  @Input() review: ReviewByProduct | undefined;
 
   @Input() rating: number = 1;
   @Input() fontSize: number = 20;
@@ -28,7 +25,6 @@ export class ReviewComponent implements OnInit, OnDestroy {
   constructor(private moduleFacade: ModuleFacade) {}
 
   ngOnInit(): void {
-    this.reviews$ = this.moduleFacade.selectReviewsForProductId(this.productId);
     this.moduleFacade.user$.pipe(takeUntil(this.destroy$)).subscribe((user) => {
       this.customerId = user.id || 0;
     });
@@ -54,11 +50,13 @@ export class ReviewComponent implements OnInit, OnDestroy {
       id: 0, //new review
       rating: this.rating,
       comment: this.comment,
-      productId: this.productId,
+      productId: this.review?.productId || 0,
       customerId: this.customerId, //default for now but later take from customerInfo (maybe in facade later on),
     };
     if (confirm('Are You sure you want to add this review?')) {
       this.moduleFacade.addReview(review);
+      this.comment = '';
+      this.rating = 1;
     }
   }
 

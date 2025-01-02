@@ -5,6 +5,7 @@ import {
 } from '../definitions/store.definitions';
 import * as fromActions from './review.action';
 import { getProducts } from '../utils';
+import { ReviewCustomerDetails } from '../../models/review-customer-details';
 
 export function reviewReducer(): ReducerTypes<ModuleEntityState, any>[] {
   return [
@@ -23,12 +24,17 @@ export function reviewReducer(): ReducerTypes<ModuleEntityState, any>[] {
     }),
     on(fromActions.loadReviewsSuccess, (state, action) => {
       const reviews = action.reviews;
-      const productId = action.productId;
       let products = getProducts(state);
       products = products.map((product) => {
-        if (product.id === productId) {
-          product.reviews = reviews;
-        }
+        let productReviews = reviews.filter(
+          (review) => review.productId === product.id
+        );
+        product.review = {
+          ...product.review,
+          productId: product.id,
+          reviews: productReviews,
+          avgRating: calcAvgRating(productReviews),
+        };
         return product;
       });
 
@@ -46,12 +52,16 @@ export function reviewReducer(): ReducerTypes<ModuleEntityState, any>[] {
       };
     }),
     on(fromActions.addReviewSuccess, (state, action) => {
-      const review = action.review;
+      const newReview = action.review;
       const productId = action.review.productId;
       let products = getProducts(state);
       products = products.map((product) => {
         if (product.id === productId) {
-          product.reviews = [...product.reviews, review];
+          product.review = {
+            ...product.review,
+            reviews: [...product.review.reviews, newReview],
+            avgRating: calcAvgRating([...product.review.reviews, newReview]),
+          };
         }
         return product;
       });
@@ -70,4 +80,13 @@ export function reviewReducer(): ReducerTypes<ModuleEntityState, any>[] {
       };
     }),
   ];
+}
+
+function calcAvgRating(reviews: ReviewCustomerDetails[]): number {
+  if (reviews.length === 0) return 0;
+  const ratingSum = reviews.reduce(
+    (total, reviews) => total + reviews.rating,
+    0
+  );
+  return Math.ceil(ratingSum / reviews.length);
 }
