@@ -8,6 +8,9 @@ enum ProductsActions {
   ADD_PRODUCT = '[Products] Add Products',
   ADD_PRODUCT_SUCCESS = '[Products] Add Products Success',
   ADD_PRODUCT_ERROR = '[Products] Add Products Error',
+  UPDATE_PRODUCT = '[Products] Update Product',
+  UPDATE_PRODUCT_SUCCESS = '[Products] Update Product Success',
+  UPDATE_PRODUCT_ERROR = '[Products] Update Product Error',
 }
 
 export const loadProducts = createAction(ProductsActions.LOAD_PRODUCTS);
@@ -34,5 +37,20 @@ export const addProductSuccess = createAction(
 
 export const addProductError = createAction(
   ProductsActions.ADD_PRODUCT_ERROR,
+  props<{ error: any }>()
+);
+
+export const updateProduct = createAction(
+  ProductsActions.UPDATE_PRODUCT,
+  props<{ product: Product }>()
+);
+
+export const updateProductSuccess = createAction(
+  ProductsActions.UPDATE_PRODUCT_SUCCESS,
+  props<{ product: Product }>()
+);
+
+export const updateProductError = createAction(
+  ProductsActions.UPDATE_PRODUCT_ERROR,
   props<{ error: any }>()
 );

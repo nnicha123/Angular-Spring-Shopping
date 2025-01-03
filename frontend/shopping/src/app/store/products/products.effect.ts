@@ -39,4 +39,14 @@ export class ProductsEffect {
       })
     )
   );
+  updateProduct$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(fromActions.updateProduct),
+      switchMap(({ product }) => {
+        return this.productsService
+          .updateProduct(product)
+          .pipe(map(() => fromActions.updateProductSuccess({ product })));
+      })
+    )
+  );
 }

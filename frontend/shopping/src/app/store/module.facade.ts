@@ -31,6 +31,10 @@ export class ModuleFacade {
     this.store.dispatch(fromProductsActions.loadProducts());
   }
 
+  updateProduct(product: Product): void {
+    this.store.dispatch(fromProductsActions.updateProduct({ product }));
+  }
+
   loadUser(customerId: number): void {
     this.store.dispatch(fromAuthActions.loadUser({ customerId }));
   }

@@ -20,4 +20,9 @@ export class ProductsService {
   addProduct(newProduct: Product): Observable<void> {
     return this.httpClient.post<void>(this.url, newProduct);
   }
+
+  updateProduct(updatedProduct: Product): Observable<void> {
+    const url = this.url + '/' + updatedProduct.id;
+    return this.httpClient.put<void>(url, updatedProduct);
+  }
 }

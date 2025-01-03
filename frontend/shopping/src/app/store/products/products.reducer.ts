@@ -5,6 +5,7 @@ import {
 } from '../definitions/store.definitions';
 import * as fromActions from './products.action';
 import { getData, getProducts, initialModuleData } from '../utils';
+import { Product } from '../../models/product';
 
 export function productsReducer(): ReducerTypes<ModuleEntityState, any>[] {
   return [
@@ -41,7 +42,7 @@ export function productsReducer(): ReducerTypes<ModuleEntityState, any>[] {
         ),
       };
     }),
-    on(fromActions.addProduct, (state, action) => {
+    on(fromActions.addProduct, fromActions.updateProduct, (state, action) => {
       return {
         ...moduleEntityAdapter.updateOne(
           {
@@ -62,6 +63,24 @@ export function productsReducer(): ReducerTypes<ModuleEntityState, any>[] {
             id: state.selectedId || 0,
             changes: {
               products: [...products, action.product],
+              status: 'ready',
+            },
+          },
+          state
+        ),
+      };
+    }),
+    on(fromActions.updateProductSuccess, (state, action) => {
+      let updatedProducts = getProducts(state).map((product: Product) => {
+        return product.id === action.product.id ? action.product : product;
+      });
+
+      return {
+        ...moduleEntityAdapter.updateOne(
+          {
+            id: state.selectedId || 0,
+            changes: {
+              products: [...updatedProducts],
               status: 'ready',
             },
           },

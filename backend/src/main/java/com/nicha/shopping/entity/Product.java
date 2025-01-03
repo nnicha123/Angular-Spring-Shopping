@@ -36,5 +36,5 @@ public class Product {
 	private Integer numSold;
 	
 	@Column(name = "price")
-	private Integer price;
+	private Double price;
 }

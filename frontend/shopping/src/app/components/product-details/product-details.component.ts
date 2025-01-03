@@ -25,6 +25,12 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
   product$!: Observable<Product | undefined>;
   isAdmin: boolean = false;
 
+  product: Product | undefined;
+
+  adminUpdating: boolean = false;
+
+  updateMode: boolean = this.isAdmin && this.adminUpdating;
+
   adminForm!: FormGroup;
 
   constructor(
@@ -37,6 +43,7 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
     this.adminForm = this.fb.group({
       name: new FormControl('', [Validators.required]),
       description: new FormControl('', [Validators.required]),
+      price: new FormControl(0, [Validators.required]),
     });
 
     this.route.paramMap.pipe(takeUntil(this.destroy$)).subscribe((params) => {
@@ -47,7 +54,9 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
           this.adminForm.setValue({
             name: product?.name,
             description: product?.description,
+            price: product?.price,
           });
+          this.product = product;
         })
       );
     });
@@ -77,6 +86,22 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
       price,
     };
     this.moduleFacade.addOrderItem(orderItem);
+  }
+
+  wishToUpdate() {
+    this.adminUpdating = true;
+    this.updateMode = true;
+  }
+
+  confirmUpdate() {
+    this.adminUpdating = false;
+    this.updateMode = false;
+    console.log(this.adminForm.value);
+    const updatedProduct: Product = {
+      ...this.product,
+      ...this.adminForm.value,
+    };
+    this.moduleFacade.updateProduct(updatedProduct);
   }
 
   ngOnDestroy(): void {

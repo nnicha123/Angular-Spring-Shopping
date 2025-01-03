@@ -6,25 +6,44 @@
       </div>
       <div class="product-description">
         <form [formGroup]="adminForm">
-          <h1>{{ product.name }}</h1>
-          <input type="text" *ngIf="isAdmin" formControlName="name" />
-          <div style="margin-bottom: 30px; font-size: 15px">
+          <h1 *ngIf="!updateMode">{{ product.name }}</h1>
+          <input
+            class="title"
+            type="text"
+            *ngIf="updateMode"
+            formControlName="name"
+          />
+          <div *ngIf="!updateMode" style="margin-bottom: 30px; font-size: 15px">
             {{ product.description }}
           </div>
-          <textarea *ngIf="isAdmin" formControlName="description"> </textarea>
-        </form>
+          <textarea
+            class="description-textarea"
+            *ngIf="updateMode"
+            formControlName="description"
+          >
+          </textarea>
 
-        <span class="rating-info">
-          <app-rating [rating]="product?.review?.avgRating || 0"></app-rating>
-          <span style="margin-left: 10px">{{
-            "(" + (product?.review?.reviews?.length || "0") + ") reviews"
-          }}</span>
-        </span>
-        <h2>{{ product.price | currency : "USD" }}</h2>
-        <span class="quantity">
+          <span class="rating-info">
+            <app-rating [rating]="product?.review?.avgRating || 0"></app-rating>
+            <span style="margin-left: 10px">{{
+              "(" + (product?.review?.reviews?.length || "0") + ") reviews"
+            }}</span>
+          </span>
+          <h2 *ngIf="!updateMode">{{ product.price | currency : "USD" }}</h2>
+          <span style="display: flex" *ngIf="updateMode">
+            <p class="price-input" style="border: none">$</p>
+            <input
+              type="number"
+              step=".01"
+              formControlName="price"
+              class="price-input"
+            />
+          </span>
+        </form>
+        <span class="quantity" *ngIf="!isAdmin">
           <button
             (click)="updateQuantity('decrement')"
-            [disabled]="this.quantity == minQuantity || isAdmin"
+            [disabled]="this.quantity == minQuantity"
           >
             -
           </button>
@@ -36,17 +55,25 @@
             [min]="minQuantity"
           />
           <button
-            [disabled]="this.quantity == maxQuantity || isAdmin"
+            [disabled]="this.quantity == maxQuantity"
             (click)="updateQuantity('increment')"
           >
             +
           </button>
         </span>
+        <span *ngIf="isAdmin">
+          <button *ngIf="!adminUpdating" (click)="wishToUpdate()">
+            Update Information
+          </button>
+          <button *ngIf="adminUpdating" (click)="confirmUpdate()">
+            Confirm Update
+          </button>
+        </span>
         <button
+          *ngIf="!isAdmin"
           style="margin-left: 20px"
           class="button-basket"
           (click)="addToBasket(product)"
-          [disabled]="isAdmin"
           routerLink="/basket"
         >
           Add to Basket {{ "(" + this.quantity + ")" }}
