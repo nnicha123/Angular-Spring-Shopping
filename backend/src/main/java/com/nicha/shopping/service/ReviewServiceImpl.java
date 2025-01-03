@@ -77,5 +77,10 @@ public class ReviewServiceImpl implements ReviewService {
 		
 	}
 
+	@Override
+	public void deleteById(Long id) {
+		this.reviewRepository.deleteById(id);
+	}
+
 
 }

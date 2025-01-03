@@ -83,6 +83,10 @@ export class ModuleFacade {
     this.store.dispatch(fromReviewActions.addReview({ review }));
   }
 
+  deleteReview(review: ReviewCustomerDetails) {
+    this.store.dispatch(fromReviewActions.deleteReview({ review }));
+  }
+
   selectOrdersWithStatus(status: Status): Observable<Order[]> {
     return this.store.pipe(
       select(fromSelectors.selectOrdersWithStatus(status))

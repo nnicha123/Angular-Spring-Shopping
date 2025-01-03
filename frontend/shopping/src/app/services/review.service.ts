@@ -25,4 +25,9 @@ export class ReviewService {
   addReview(review: Review) {
     return this.httpClient.post<void>(this.url, review);
   }
+
+  deleteReview(id: number) {
+    const url = this.url + '/' + id;
+    return this.httpClient.delete<void>(url);
+  }
 }

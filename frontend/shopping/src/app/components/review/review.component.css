@@ -87,6 +87,20 @@ button:disabled {
 .review-right {
     font-size: 13px;
     margin-right: 5px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: space-between;
+}
+
+.review-right a {
+    color: #5124b7;
+    font-size: 10px;
+}
+.review-right a:hover {
+    color: #5124b7;
+    text-decoration: underline;
+    cursor: pointer;
 }
 
 .comment {

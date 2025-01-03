@@ -3,6 +3,7 @@ package com.nicha.shopping.controller;
 import java.util.List;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -42,5 +43,10 @@ public class ReviewController {
 	@PostMapping
 	void addReview(@RequestBody Review review) {
 		this.reviewService.addReview(review);
+	}
+	
+	@DeleteMapping("/{id}")
+	void deleteReview(@PathVariable Long id) {
+		this.reviewService.deleteById(id);
 	}
 }

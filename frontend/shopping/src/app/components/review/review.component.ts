@@ -2,7 +2,10 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
 import { Review } from '../../models/review';
 import { ModuleFacade } from '../../store/module.facade';
-import { ReviewByProduct } from '../../models/review-customer-details';
+import {
+  ReviewByProduct,
+  ReviewCustomerDetails,
+} from '../../models/review-customer-details';
 
 @Component({
   selector: 'app-review',
@@ -19,6 +22,7 @@ export class ReviewComponent implements OnInit, OnDestroy {
   touchedRating: boolean = false;
 
   customerId: number = 0;
+  isAdmin: boolean = false;
 
   destroy$: Subject<void> = new Subject<void>();
 
@@ -27,6 +31,7 @@ export class ReviewComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.moduleFacade.user$.pipe(takeUntil(this.destroy$)).subscribe((user) => {
       this.customerId = user.id || 0;
+      this.isAdmin = user.role === 'ADMIN';
     });
 
     this.starsArray[0] = true;
@@ -58,6 +63,14 @@ export class ReviewComponent implements OnInit, OnDestroy {
       this.comment = '';
       this.rating = 1;
     }
+  }
+
+  deleteReview(review: ReviewCustomerDetails) {
+    this.moduleFacade.deleteReview(review);
+  }
+
+  canDelete(review: ReviewCustomerDetails) {
+    return this.isAdmin || review.customerId === this.customerId;
   }
 
   get buttonDisabled() {

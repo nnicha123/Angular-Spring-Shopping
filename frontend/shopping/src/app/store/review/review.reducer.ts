@@ -9,19 +9,24 @@ import { ReviewCustomerDetails } from '../../models/review-customer-details';
 
 export function reviewReducer(): ReducerTypes<ModuleEntityState, any>[] {
   return [
-    on(fromActions.loadReviews, fromActions.addReview, (state, action) => {
-      return {
-        ...moduleEntityAdapter.updateOne(
-          {
-            id: state.selectedId || 0,
-            changes: {
-              status: 'loading',
+    on(
+      fromActions.loadReviews,
+      fromActions.addReview,
+      fromActions.deleteReview,
+      (state, action) => {
+        return {
+          ...moduleEntityAdapter.updateOne(
+            {
+              id: state.selectedId || 0,
+              changes: {
+                status: 'loading',
+              },
             },
-          },
-          state
-        ),
-      };
-    }),
+            state
+          ),
+        };
+      }
+    ),
     on(fromActions.loadReviewsSuccess, (state, action) => {
       const reviews = action.reviews;
       let products = getProducts(state);
@@ -73,6 +78,35 @@ export function reviewReducer(): ReducerTypes<ModuleEntityState, any>[] {
             changes: {
               status: 'ready',
               products,
+            },
+          },
+          state
+        ),
+      };
+    }),
+    on(fromActions.deleteReviewSuccess, (state, action) => {
+      const reviewToDelete = action.review;
+      let updatedProduct = getProducts(state).map((product) => {
+        if (product.id === reviewToDelete.productId) {
+          let updatedReviews = [...product.review.reviews].filter(
+            (review) => review.id !== reviewToDelete.id
+          );
+          product.review = {
+            ...product.review,
+            reviews: [...updatedReviews],
+            avgRating: calcAvgRating([...updatedReviews]),
+          };
+        }
+        return product;
+      });
+
+      return {
+        ...moduleEntityAdapter.updateOne(
+          {
+            id: state.selectedId || 0,
+            changes: {
+              status: 'ready',
+              products: updatedProduct,
             },
           },
           state

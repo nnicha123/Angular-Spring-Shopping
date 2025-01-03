@@ -40,7 +40,12 @@
         </div>
       </div>
       <div class="review-right">
-        {{ r.updatedAt | date }}
+        <div>
+          {{ r.updatedAt | date }}
+        </div>
+        <a *ngIf="canDelete(r)" (click)="deleteReview(r)"
+          ><i class="fa-solid fa-trash" style="margin-right: 2px"></i>Delete</a
+        >
       </div>
     </div>
   </div>

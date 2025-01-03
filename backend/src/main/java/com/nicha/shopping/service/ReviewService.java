@@ -10,4 +10,5 @@ public interface ReviewService {
 	List<ReviewCustomerDetailsDTO> findByProductId(Long productId);
 	void addReview(Review review);
 	List<ReviewCustomerDetailsDTO> findAll();
+	void deleteById(Long id);
 }

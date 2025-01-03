@@ -9,6 +9,9 @@ enum ReviewActions {
   ADD_REVIEW = '[Review] Add Review',
   ADD_REVIEW_SUCCESS = '[Review] Add Review Success',
   ADD_REVIEW_ERROR = '[Review] Add Review Error',
+  DELETE_REVIEW = '[Review] Delete Review',
+  DELETE_REVIEW_SUCCESS = '[Review] Delete Review Success',
+  DELETE_REVIEW_ERROR = '[Review] Delete Review Error',
 }
 
 export const loadReviews = createAction(ReviewActions.LOAD_REVIEWS);
@@ -36,4 +39,19 @@ export const addReviewSuccess = createAction(
 export const addReviewError = createAction(
   ReviewActions.ADD_REVIEW_ERROR,
   props<{ errors: any }>()
+);
+
+export const deleteReview = createAction(
+  ReviewActions.DELETE_REVIEW,
+  props<{ review: ReviewCustomerDetails }>()
+);
+
+export const deleteReviewSuccess = createAction(
+  ReviewActions.DELETE_REVIEW_SUCCESS,
+  props<{ review: ReviewCustomerDetails }>()
+);
+
+export const deleteReviewError = createAction(
+  ReviewActions.DELETE_REVIEW_ERROR,
+  props<{ error: any }>()
 );

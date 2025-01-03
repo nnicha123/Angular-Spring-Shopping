@@ -60,4 +60,15 @@ export class ReviewEffect {
       })
     )
   );
+
+  deleteReview$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(fromActions.deleteReview),
+      switchMap(({ review }) => {
+        return this.reviewService
+          .deleteReview(review.id)
+          .pipe(map(() => fromActions.deleteReviewSuccess({ review })));
+      })
+    )
+  );
 }
